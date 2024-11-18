@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/branding">
+        <file>images/brand/logo.png</file>
+        <file>images/brand/logoOriginal.png</file>
+        <file>images/brand/background.jpg</file>
+        <file>images/brand/logoSmall.png</file>
+    </qresource>
+    <qresource prefix="/covers"/>
+</RCC>

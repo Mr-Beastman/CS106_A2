@@ -2,109 +2,19 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="windowModality">
-   <enum>Qt::WindowModality::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1022</width>
-    <height>716</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>220</y>
-      <width>331</width>
-      <height>189</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="loginGrid">
-     <item row="1" column="0">
-      <layout class="QGridLayout" name="buttonGrid">
-       <property name="sizeConstraint">
-        <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-       </property>
-       <property name="leftMargin">
-        <number>10</number>
-       </property>
-       <property name="rightMargin">
-        <number>10</number>
-       </property>
-       <property name="horizontalSpacing">
-        <number>10</number>
-       </property>
-       <property name="verticalSpacing">
-        <number>6</number>
-       </property>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="loginButton">
-         <property name="text">
-          <string>Login</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="registerButton">
-         <property name="text">
-          <string>Register</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <layout class="QGridLayout" name="inputGrid">
-         <item row="0" column="0">
-          <widget class="QLabel" name="usernameLabel">
-           <property name="text">
-            <string>Username</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="passwordInput"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="passwordLabel">
-           <property name="text">
-            <string>Password</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="usernameInput"/>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLineEdit" name="lineEdit_3"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1022</width>
-     <height>21</height>
-    </rect>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
  </widget>
  <resources/>

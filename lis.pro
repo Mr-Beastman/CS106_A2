@@ -9,18 +9,27 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dataManagement.cpp \
+    loginView.cpp \
     main.cpp \
     mainWindow.cpp \
-    userLogin.cpp \
+    registrationView.cpp \
+    userManagement.cpp \
     utilities.cpp
 
 HEADERS += \
+    dataManagement.h \
+    loginView.h \
     mainWindow.h \
-    userLogin.h \
+    registrationView.h \
+    userManagement.h \
     utilities.h
 
 FORMS += \
-    mainWindow.ui
+    loginView.ui \
+    mainWindow.ui \
+    memberView.ui \
+    registrationView.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -29,3 +38,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     loginDatabase.db
+
+RESOURCES += \
+    images.qrc

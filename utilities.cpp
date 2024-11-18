@@ -1,11 +1,11 @@
-#include "utilities.h"
+#include "Utilities.h"
 
-utilities::utilities() {}
+Utilities::Utilities() {}
 
 //to find correct file path regardless of where it is installed
 //parameters : none
 //returns : string containing file path
-QString utilities::findPath() {
+QString Utilities::findPath() {
 
     //getting the base directory of the application
     QString baseDirectory = QCoreApplication:: applicationDirPath();
@@ -16,13 +16,22 @@ QString utilities::findPath() {
     dir.cdUp();
     dir.cdUp();
 
-    QString filePath = dir.path();
-
     //returning file path
-    return filePath;
+    return dir.path();
 }
 
-QString utilities::setDatabasePath()
+//get the correct file path for the database
+//parameters : none
+//returns : string containing database path
+QString Utilities::setDatabasePath()
 {
-    return utilities::findPath()+QDir::separator()+"database"+QDir::separator()+"libraryDatabase.db";
+    return (Utilities::findPath()+"/database/libraryDatabase.json");
+}
+
+//get the correct file path for the book covers
+//parameters : none
+//returns : string containing cover folder path
+QString Utilities::setCoverPath(QString coverISBN)
+{
+    return Utilities::findPath()+QDir::separator()+"coverImages"+QDir::separator()+coverISBN;
 }

@@ -4,13 +4,14 @@
 #include <QCoreApplication>
 #include <QDir>
 
-class utilities
+class Utilities
 {
 public:
-    utilities();
+    Utilities();
 
     static QString findPath();
     static QString setDatabasePath();
+    static QString setCoverPath(QString coverISBN);
 };
 
 #endif // UTILITIES_H
