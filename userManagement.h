@@ -10,7 +10,7 @@ public:
 
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     bool isAdmin(const QString& usernameInput);
-    bool isActive();
+    bool isActive(const QString &usernameInput);
     bool addUser();
 };
 

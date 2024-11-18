@@ -38,8 +38,31 @@ bool UserManagement::verifyLogin(const QString& usernameInput, const QString& pa
     return false;
 }
 
-bool UserManagement::isActive(){
-    return true;
+bool UserManagement::isActive(const QString& usernameInput){
+    //checking user data exists
+    if(!jsonData.contains("users") || !jsonData["users"].isArray()){
+        qDebug()<< "No user data present";
+        return false;
+    }
+
+    //adding all users to array
+    QJsonArray usersArray = jsonData["users"].toArray();
+
+    //loop through users checking for match
+    for (const QJsonValue &userValue : usersArray){
+        //convert user to object
+        QJsonObject user = userValue.toObject();
+
+        //get stored detials
+        QString storedUsername = user["username"].toString();
+
+        //once username is found check isAdmin
+        if(usernameInput==storedUsername){
+            return user["isActive"].toBool();
+        }
+    }
+
+    return false;
 }
 
 bool UserManagement::isAdmin(const QString& usernameInput){

@@ -14,7 +14,8 @@ private:
 private slots:
     void loginButtonClicked();
     void registerButtonClicked();
-    void onLoginFail();
+    void loginError();
+    void notActiveError();
 
 public:
     explicit LoginView(QWidget* parent = nullptr);

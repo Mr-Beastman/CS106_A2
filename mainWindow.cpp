@@ -54,15 +54,19 @@ void MainWindow::userLogin(const QString& username, QString password){
 
         //clearing error messgaes
         LoginView *loginPage = dynamic_cast<LoginView*>(stackedWidget->widget(0));
-        if(loginPage){
-            loginPage->clearError();
-        }
+        loginPage->clearError();
 
         //checking userType
         if(userManager->isAdmin(username)){
             qDebug()<<"Loading Admin View";
         } else {
-            qDebug()<<"Loading Member View";
+            if(userManager->isActive(username)){
+                qDebug()<<"Loading Member View";
+            } else {
+                qDebug()<<"Member is not active";
+                emit notActiveAccount();
+            }
+
         }
     } else {
         qDebug()<<"loginFail signal sent";

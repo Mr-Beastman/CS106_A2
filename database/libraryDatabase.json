@@ -3,23 +3,31 @@
     {
       "username": "admin",
       "password": "admin",
-      "isAdmin": true
+      "isAdmin": true,
+	  "isActive": true
     },
     {
       "username": "mrworldwide",
       "password": "tester1",
-      "isAdmin": false
+      "isAdmin": false,
+	  "isActive": true
+    },
+    {
+      "username": "stormblessed",
+      "password": "SylBlade",
+      "isAdmin": false,
+	  "isActive": false
     }
   ],
   "books": [
     {
-      "bookISBN": "0765365278",
+      "bookId": "0765365278",
       "title": "The Way of Kings",
       "author": "Brandon Sanderson",
       "availableCopies": 5
     },
     {
-      "bookISBN": "B0CVD8D7H6",
+      "bookId": "B0CVD8D7H6",
       "title": "Heretical Fishing Book 1",
       "author": "Haylock Jobson",
       "availableCopies": 5

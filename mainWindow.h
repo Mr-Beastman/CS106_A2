@@ -30,6 +30,7 @@ public:
 
 signals:
     void loginFail();
+    void notActiveAccount();
 };
 
 #endif // MAINWINDOW_H
