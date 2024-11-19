@@ -23,4 +23,33 @@
             "username": "windrunner"
         }
     ]
+
+}
+{
+    "books": [
+        {
+            "title": "Hawkeye",
+            "author": "Matt Fraction",
+            "isbn": "9781302952822",
+            "desc": "Matt Fraction's all-time great run on Hawkeye, collected entirely in one omnibus!",
+            "genre": "Superhero",
+            "sect": "Comics"
+        },
+        {
+            "title": "Solitaire",
+            "author": "Alice Oseman",
+            "isbn": "9780007559220",
+            "desc": "In case you’re wondering, this is not a love story.",
+            "genre": "Drama",
+            "sect": "Young Adults"
+        },
+        {
+            "title": "Alex Rider #01: Stormbreaker",
+            "author": "Anthony Horowitz",
+            "isbn": "9781406360196",
+            "desc": "Fourteen-year-old Alex is forcibly recruited into MI6.",
+            "genre": "Action",
+            "sect": "Childrens"
+        }
+    ]
 }
