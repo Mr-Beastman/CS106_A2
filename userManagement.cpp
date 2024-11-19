@@ -65,6 +65,39 @@ bool UserManagement::isActive(const QString& usernameInput){
     return false;
 }
 
+bool UserManagement::addUser(const QString& nameInput,
+                             const QString& usernameInput,
+                             const QString& passwordInput,
+                             const QString& phoneInput,
+                             const QString& emailInput,
+                             const QString& addressInput){
+
+        //creating Json obj with new user details;
+        QJsonObject newUser;
+        newUser["name"] = nameInput;
+        newUser["username"] = usernameInput;
+        newUser["password"] = passwordInput;
+        newUser["phone"] = phoneInput;
+        newUser["email"] = emailInput;
+        newUser["address"] = addressInput;
+        newUser["isAdmin"] = false;
+        newUser["isActive"] = false;
+
+        //add newUser to the existing array
+        QJsonArray userArray = jsonData["users"].toArray();
+        userArray.append(newUser);
+        jsonData["users"] =userArray;
+
+        //save updates to json file
+        if(saveData()){
+            qDebug()<<"New user has been added";
+            return true;
+        }
+
+        qDebug()<<"Failed to save new user";
+        return false;
+    }
+
 bool UserManagement::isAdmin(const QString& usernameInput){
     //checking user data exists
     if(!jsonData.contains("users") || !jsonData["users"].isArray()){
@@ -90,8 +123,4 @@ bool UserManagement::isAdmin(const QString& usernameInput){
     }
 
     return false;
-}
-
-bool UserManagement::addUser(){
-    return true;
 }

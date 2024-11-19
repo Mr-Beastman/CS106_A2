@@ -29,7 +29,7 @@ bool DataManagement::readData(){
 bool DataManagement::saveData(){
     QFile file(filePath);
 
-    if(!file.open(QIODevice::ReadOnly)){
+    if(!file.open(QIODevice::WriteOnly)){
         qDebug()<<"Failed to open database file for saving";
         return false;
     }

@@ -11,7 +11,13 @@ public:
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     bool isAdmin(const QString& usernameInput);
     bool isActive(const QString &usernameInput);
-    bool addUser();
+    bool addUser(
+        const QString& nameInput,
+        const QString& usernameInput,
+        const QString& passwordInput,
+        const QString& phoneInput,
+        const QString& emailInput,
+        const QString& addressInput);
 };
 
 #endif // USERMANAGEMENT_H

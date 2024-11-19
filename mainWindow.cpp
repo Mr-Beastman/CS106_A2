@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     //creating views to be added into stackedWidget
     LoginView *loginPage = new LoginView(this);
-    RegistrationView *registrationPage = new RegistrationView(this);
+    RegistrationView *registrationPage = new RegistrationView(userManager,this);
 
     //adding views to stackedWidget
     stackedWidget->addWidget(loginPage);
@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     connect(loginPage, &LoginView::loginAttempt, this, &MainWindow::userLogin);
     connect(loginPage, &LoginView::callRegisterView, this, &MainWindow::showRegister);
-    connect(registrationPage, &::RegistrationView::loginRequest, this, &MainWindow::showLogin);
+    connect(registrationPage, &RegistrationView::loginRequest, this, &MainWindow::showLogin);
 
     stackedWidget->setCurrentIndex(0);
 

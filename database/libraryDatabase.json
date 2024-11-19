@@ -1,36 +1,24 @@
 {
-  "users": [
-    {
-      "username": "admin",
-      "password": "admin",
-      "isAdmin": true,
-	  "isActive": true
-    },
-    {
-      "username": "mrworldwide",
-      "password": "tester1",
-      "isAdmin": false,
-	  "isActive": true
-    },
-    {
-      "username": "stormblessed",
-      "password": "SylBlade",
-      "isAdmin": false,
-	  "isActive": false
-    }
-  ],
-  "books": [
-    {
-      "bookId": "0765365278",
-      "title": "The Way of Kings",
-      "author": "Brandon Sanderson",
-      "availableCopies": 5
-    },
-    {
-      "bookId": "B0CVD8D7H6",
-      "title": "Heretical Fishing Book 1",
-      "author": "Haylock Jobson",
-      "availableCopies": 5
-    }
-  ]
+    "users": [
+        {
+            "address": "1 fake street",
+            "email": "email@example.com",
+            "isActive": true,
+            "isAdmin": true,
+            "name": "Mr Admin",
+            "password": "password",
+            "phone": "021021021",
+            "username": "admin"
+        },
+        {
+            "address": "2 fake street",
+            "email": "stormlight@gmail.com",
+            "isActive": false,
+            "isAdmin": false,
+            "name": "Kaladin Stormblessed",
+            "password": "SylBlade",
+            "phone": "020020200202020",
+            "username": "windrunner"
+        }
+    ]
 }
