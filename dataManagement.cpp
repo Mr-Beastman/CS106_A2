@@ -1,6 +1,13 @@
 #include "dataManagement.h"
 #include "utilities.h"
 
+//getters
+const QJsonObject DataManagement::getFileData() {
+    return jsonData;
+}
+
+//set the filePath value
+//no parameters or returns
 DataManagement::DataManagement() {
     filePath=Utilities::setDatabasePath();
 }

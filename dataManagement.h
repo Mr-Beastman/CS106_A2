@@ -13,6 +13,10 @@ protected:
     QString filePath;
 
 public:
+
+    //getters
+    const QJsonObject getFileData();
+
     DataManagement();
     bool readData();
     bool saveData();

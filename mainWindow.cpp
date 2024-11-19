@@ -3,6 +3,7 @@
 
 #include "loginView.h"
 #include "registrationView.h"
+#include "adminView.h"
 #include "utilities.h"
 
 //constructor
@@ -21,10 +22,12 @@ MainWindow::MainWindow(QWidget* parent) :
     //creating views to be added into stackedWidget
     LoginView *loginPage = new LoginView(this);
     RegistrationView *registrationPage = new RegistrationView(userManager,this);
+    AdminView *adminPage = new AdminView(this);
 
     //adding views to stackedWidget
     stackedWidget->addWidget(loginPage);
     stackedWidget->addWidget(registrationPage);
+    stackedWidget->addWidget(adminPage);
 
     //connecting view signals
 
@@ -59,6 +62,7 @@ void MainWindow::userLogin(const QString& username, QString password){
         //checking userType
         if(userManager->isAdmin(username)){
             qDebug()<<"Loading Admin View";
+            stackedWidget->setCurrentIndex(2);
         } else {
             if(userManager->isActive(username)){
                 qDebug()<<"Loading Member View";

@@ -3,8 +3,7 @@
 #include "mainWindow.h"
 
 
-LoginView::LoginView(QWidget *parent) :
-    QWidget(parent){
+LoginView::LoginView(QWidget *parent) : QWidget(parent){
     ui.setupUi(this);
 
     //connect buttons
