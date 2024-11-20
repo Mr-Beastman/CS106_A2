@@ -1,6 +1,41 @@
 {
+    "books": [
+        {
+            "author": "Matt Fraction",
+            "desc": "Matt Fraction's all-time great run on Hawkeye, collected entirely in one omnibus!",
+            "genre": "Superhero",
+            "isbn": "9781302952822",
+            "sect": "Comics",
+            "title": "Hawkeye"
+        },
+        {
+            "author": "Alice Oseman",
+            "desc": "In case you’re wondering, this is not a love story.",
+            "genre": "Drama",
+            "isbn": "9780007559220",
+            "sect": "Young Adults",
+            "title": "Solitaire"
+        },
+        {
+            "author": "Anthony Horowitz",
+            "desc": "Fourteen-year-old Alex is forcibly recruited into MI6.",
+            "genre": "Action",
+            "isbn": "9781406360196",
+            "sect": "Childrens",
+            "title": "Alex Rider #01: Stormbreaker"
+        },
+        {
+            "author": "Haylock Jobson",
+            "desc": "When summoned to a fantastical world and granted powers by a broken System, most freshly minted protagonists would strap on their big-boy boots and get ready for their stats to start climbing. But Fischer isn't like most MCs. In fact, he doesn't want to be a hero at all.\nFame? Fortune? Power? He had enough of all that in his old life. Discovering forbidden fishing techniques and petting every cute animal that comes within scritching distance? Now that's a good time.\nUnfortunately for Fischer, cosmic forces rarely care for mortal feelings. He's hounded on all sides by inept cults, conspiring nobles, and more magical misunderstandings than those of a preteen relationship. Even his dutiful pet crab is firing energy blades like an anime antagonist.\nSo grab your fishing rod and a good snack, and pet your dog for me. The catch of a lifetime awaits!",
+            "genre": "Fantasy",
+            "isbn": "1039453104",
+            "sect": "Young Adult",
+            "title": "Heretical Fishing Book 1"
+        }
+    ],
     "users": [
         {
+            "account": "123456",
             "address": "1 fake street",
             "email": "email@example.com",
             "isActive": true,
@@ -8,10 +43,10 @@
             "name": "Mr Admin",
             "password": "password",
             "phone": "021021021",
-			"account": "123456",
             "username": "admin"
         },
         {
+            "account": "788910",
             "address": "2 fake street",
             "email": "stormlight@gmail.com",
             "isActive": false,
@@ -19,37 +54,7 @@
             "name": "Kaladin Stormblessed",
             "password": "SylBlade",
             "phone": "020020200202020",
-			"account": "788910",
             "username": "windrunner"
-        }
-    ]
-
-}
-{
-    "books": [
-        {
-            "title": "Hawkeye",
-            "author": "Matt Fraction",
-            "isbn": "9781302952822",
-            "desc": "Matt Fraction's all-time great run on Hawkeye, collected entirely in one omnibus!",
-            "genre": "Superhero",
-            "sect": "Comics"
-        },
-        {
-            "title": "Solitaire",
-            "author": "Alice Oseman",
-            "isbn": "9780007559220",
-            "desc": "In case you’re wondering, this is not a love story.",
-            "genre": "Drama",
-            "sect": "Young Adults"
-        },
-        {
-            "title": "Alex Rider #01: Stormbreaker",
-            "author": "Anthony Horowitz",
-            "isbn": "9781406360196",
-            "desc": "Fourteen-year-old Alex is forcibly recruited into MI6.",
-            "genre": "Action",
-            "sect": "Childrens"
         }
     ]
 }
