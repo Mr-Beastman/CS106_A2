@@ -8,6 +8,7 @@ class UserManagement : public DataManagement
 public:
     UserManagement(const QString& dbPath);
 
+    int userID(int& userNum);
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     bool isAdmin(const QString& usernameInput);
     bool isActive(const QString &usernameInput);
@@ -17,7 +18,8 @@ public:
         const QString& passwordInput,
         const QString& phoneInput,
         const QString& emailInput,
-        const QString& addressInput);
+        const QString& addressInput,
+        int& userNum);
 };
 
 #endif // USERMANAGEMENT_H
