@@ -4,14 +4,12 @@
 #include <QDialog>
 
 #include "ui_addBookView.h"
-#include "bookManagement.h"
 
 namespace Ui {
 class AddBookView;
 }
 
-class AddBookView : public QDialog
-{
+class AddBookView : public QDialog {
     Q_OBJECT
 
 private:

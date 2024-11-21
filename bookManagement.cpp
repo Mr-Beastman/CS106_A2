@@ -1,8 +1,7 @@
 #include "bookManagement.h"
 #include "dataManagement.h"
 
-bookManagement::bookManagement(const QString& dbPath) : DataManagement(){
-    readData();
+bookManagement::bookManagement() : DataManagement(){
 }
 
 bool bookManagement::addBook(const QString& titleInput,

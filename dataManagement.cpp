@@ -1,22 +1,33 @@
 #include "dataManagement.h"
 #include "utilities.h"
 
+//setters
+void DataManagement::setFileData(const QJsonObject newData){
+    jsonData = newData;
+}
+
 //getters
 const QJsonObject DataManagement::getFileData() {
     return jsonData;
 }
 
-//set the filePath value
-//no parameters or returns
-DataManagement::DataManagement() {
-    filePath=Utilities::setDatabasePath();
-}
+DataManagement::DataManagement() {}
 
 bool DataManagement::readData(){
+
+    filePath = Utilities::setDatabasePath();
+
+    qDebug()<<"adding to qFile path :"<<filePath;
+
     QFile file(filePath);
 
+    if(!file.exists()){
+        qDebug()<<"DataManagement: Database file does not exist.";
+        return false;
+    }
+
     if(!file.open(QIODevice::ReadOnly)){
-        qDebug()<<"Failed to open database file";
+        qDebug()<<"Failed to open database file to read";
         return false;
     }
 
@@ -25,6 +36,7 @@ bool DataManagement::readData(){
 
     if(database.isObject()){
         jsonData=database.object();
+        qDebug()<<"JSON data stored";
         file.close();
         return true;
     }

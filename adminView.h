@@ -9,13 +9,13 @@
 #include <QListWidget>
 
 #include "ui_adminView.h"
-#include "dataManagement.h"
 
 namespace Ui {
 class AdminView;
 }
 
 class AdminView : public QWidget {
+
     Q_OBJECT
 
 private:
@@ -26,7 +26,6 @@ private slots:
 
 public:
     explicit AdminView(QWidget* parent = nullptr);
-    DataManagement dataManager;
 
     void loadUsers();
     void displayUsers();

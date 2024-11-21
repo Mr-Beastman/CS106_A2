@@ -93,8 +93,8 @@ QTextBrowser {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1111</width>
-        <height>812</height>
+        <width>1125</width>
+        <height>800</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -329,6 +329,26 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <item row="0" column="1">
                  <widget class="QLineEdit" name="nameLineEdit"/>
                 </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="usernameLabel">
+                  <property name="text">
+                   <string>Username</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="usernameLineEdit"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="passwordLabel">
+                  <property name="text">
+                   <string>Password</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="passwordLineEdit"/>
+                </item>
                 <item row="3" column="0">
                  <widget class="QLabel" name="phoneLabel">
                   <property name="text">
@@ -358,36 +378,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 </item>
                 <item row="5" column="1">
                  <widget class="QLineEdit" name="addressLineEdit"/>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="postcodeLabel">
-                  <property name="text">
-                   <string>Postcode</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1">
-                 <widget class="QLineEdit" name="postcodeLineEdit"/>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="usernameLabel">
-                  <property name="text">
-                   <string>Username</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="passwordLabel">
-                  <property name="text">
-                   <string>Password</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="usernameLineEdit"/>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QLineEdit" name="passwordLineEdit"/>
                 </item>
                </layout>
               </widget>

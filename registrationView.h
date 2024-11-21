@@ -2,7 +2,6 @@
 #define REGISTRATIONVIEW_H
 
 #include <QWidget>
-#include "userManagement.h"
 
 namespace Ui {
     class RegistrationView;
@@ -14,14 +13,13 @@ class RegistrationView : public QWidget {
 
 private:
     Ui::RegistrationView *ui;
-    UserManagement* userManager;
 
 private slots:
     void submitButtonClicked();
     void cancelButtonClicked();
 
 public:
-    explicit RegistrationView(UserManagement* userManager, QWidget *parent = nullptr);
+    explicit RegistrationView(QWidget *parent = nullptr);
     ~RegistrationView();
 
 signals:

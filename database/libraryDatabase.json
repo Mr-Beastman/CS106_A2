@@ -49,11 +49,11 @@
             "account": "788910",
             "address": "2 fake street",
             "email": "stormlight@gmail.com",
-            "isActive": false,
+            "isActive": true,
             "isAdmin": false,
             "name": "Kaladin Stormblessed",
             "password": "SylBlade",
-            "phone": "020020200202020",
+            "phone": "44544455544444445",
             "username": "windrunner"
         }
     ]

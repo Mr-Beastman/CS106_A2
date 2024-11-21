@@ -1,10 +1,10 @@
 #include "registrationView.h"
 #include "ui_registrationView.h"
+#include "mainWindow.h"
 
-RegistrationView::RegistrationView(UserManagement* userManager, QWidget *parent) :
+RegistrationView::RegistrationView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::RegistrationView),
-    userManager(userManager)
+    ui(new Ui::RegistrationView)
 {
     ui->setupUi(this);
 
@@ -18,6 +18,10 @@ RegistrationView::~RegistrationView() {
 
 
 void RegistrationView::submitButtonClicked() {
+
+    MainWindow* mainWindow = dynamic_cast<MainWindow*>(parent());
+    UserManagement* userManager = mainWindow->getUserManager();
+
     QString nameInput = ui->nameLineEdit->text();
     QString usernameInput = ui->usernameLineEdit->text();
     QString passwordInput = ui->passwordLineEdit->text();

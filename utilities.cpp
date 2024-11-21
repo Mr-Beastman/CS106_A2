@@ -16,6 +16,8 @@ QString Utilities::findPath() {
     dir.cdUp();
     dir.cdUp();
 
+
+    qDebug()<<"Ultilites : Directory Path "<<dir.path();
     //returning file path
     return dir.path();
 }
@@ -25,6 +27,7 @@ QString Utilities::findPath() {
 //returns : string containing database path
 QString Utilities::setDatabasePath()
 {
+    qDebug()<<"Ultilites: Setting database path to "<<(Utilities::findPath()+"/database/libraryDatabase.json");
     return (Utilities::findPath()+"/database/libraryDatabase.json");
 }
 

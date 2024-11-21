@@ -27,36 +27,10 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QVBoxLayout" name="viewBackground" stretch="0,2">
+    <layout class="QVBoxLayout" name="viewBackground" stretch="2">
      <property name="spacing">
       <number>0</number>
      </property>
-     <item>
-      <widget class="QLabel" name="windowTitleLabel">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#titleLabel{
-	
-	color: rgb(0, 0, 0);
-	background-color: rgb(215, 236, 199);
-}</string>
-       </property>
-       <property name="text">
-        <string>    Add New Book</string>
-       </property>
-      </widget>
-     </item>
      <item>
       <layout class="QVBoxLayout" name="bookInfoLayout">
        <item>

@@ -14,6 +14,9 @@ protected:
 
 public:
 
+    //setters
+    void setFileData(const QJsonObject newData);
+
     //getters
     const QJsonObject getFileData();
 

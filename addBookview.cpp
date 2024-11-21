@@ -1,11 +1,9 @@
 #include "AddBookView.h"
-#include "utilities.h"
+#include "mainWindow.h"
+#include "adminView.h"
 
-AddBookView::AddBookView(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AddBookView)
 
-{
+AddBookView::AddBookView(QWidget *parent) : QDialog(parent), ui(new Ui::AddBookView) {
     ui->setupUi(this);
 
     // set up title
@@ -20,6 +18,12 @@ AddBookView::~AddBookView() {
 }
 
 void AddBookView::saveButtonClicked() {
+
+    AdminView* adminView = dynamic_cast <AdminView*>(parent());
+    MainWindow* mainWindow = dynamic_cast<MainWindow*>(adminView->parent());
+
+    bookManagement* bookManager = mainWindow->getBookManager();
+
     QString title = ui->titleLineEdit->text();
     QString author = ui->authorLineEdit->text();
     QString isbn = ui->isbnLineEdit->text();
@@ -27,9 +31,7 @@ void AddBookView::saveButtonClicked() {
     QString section = ui->sectionLineEdit->text();
     QString description = ui->descriptionTextEdit->toPlainText();
 
-    bookManagement bookManager(Utilities::setDatabasePath());
-
-    if(bookManager.addBook(title, author, isbn, description, genre, section)){
+    if(bookManager->addBook(title, author, isbn, description, genre, section)){
         qDebug()<<"Book Added Succesfully";
         this->accept();
     } else {

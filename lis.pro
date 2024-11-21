@@ -16,7 +16,9 @@ SOURCES += \
     loginView.cpp \
     main.cpp \
     mainWindow.cpp \
+    memberView.cpp \
     registrationView.cpp \
+    updateUserView.cpp \
     userManagement.cpp \
     utilities.cpp
 
@@ -27,7 +29,9 @@ HEADERS += \
     dataManagement.h \
     loginView.h \
     mainWindow.h \
+    memberView.h \
     registrationView.h \
+    updateUserView.h \
     userManagement.h \
     utilities.h
 
@@ -37,7 +41,8 @@ FORMS += \
     loginView.ui \
     mainWindow.ui \
     memberView.ui \
-    registrationView.ui
+    registrationView.ui \
+    updateUserView.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
