@@ -6,6 +6,10 @@ void DataManagement::setFileData(const QJsonObject newData){
     jsonData = newData;
 }
 
+QString DataManagement::getFilePath(){
+    return filePath;
+}
+
 //getters
 const QJsonObject DataManagement::getFileData() {
     return jsonData;
@@ -46,6 +50,7 @@ bool DataManagement::readData(){
 }
 
 bool DataManagement::saveData(){
+    qDebug()<<"Attemping save to "+filePath;
     QFile file(filePath);
 
     if(!file.open(QIODevice::WriteOnly)){

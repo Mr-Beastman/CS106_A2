@@ -16,6 +16,7 @@ public:
         const QString& descInput,
         const QString& genreInput,
         const QString& sectInput);
+    QString getCoverImage(QString& isbn);
 };
 
 #endif // BOOKMANAGEMENT_H

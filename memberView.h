@@ -26,10 +26,17 @@ private slots:
     void updateButtonClicked();
     void refreashView();
 public:
-    //viewRelated functions
+    //view related
     explicit MemberView(QWidget* parent = nullptr);
     ~MemberView();
+
+    //accountTab Related
     void displayCurrentMember(const QJsonObject& currentUser);
+
+    //catalogueTab related
+    void loadCatalogue();
+
+
 
 
 };

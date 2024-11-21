@@ -18,6 +18,7 @@ public:
     void setFileData(const QJsonObject newData);
 
     //getters
+    QString getFilePath();
     const QJsonObject getFileData();
 
     DataManagement();

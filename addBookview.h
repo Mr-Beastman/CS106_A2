@@ -14,6 +14,11 @@ class AddBookView : public QDialog {
 
 private:
     Ui::AddBookView *ui;
+    QString imageLocation;
+
+    //overrides
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 
 private slots:
     void saveButtonClicked();

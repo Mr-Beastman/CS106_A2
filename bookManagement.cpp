@@ -1,7 +1,9 @@
 #include "bookManagement.h"
 #include "dataManagement.h"
+#include "utilities.h"
 
 bookManagement::bookManagement() : DataManagement(){
+    readData();
 }
 
 bool bookManagement::addBook(const QString& titleInput,
@@ -34,4 +36,8 @@ bool bookManagement::addBook(const QString& titleInput,
 
     qDebug()<<"Failed to save new book";
     return false;
+}
+
+QString bookManagement::getCoverImage(QString& isbn){
+    return Utilities::setCoverPath()+isbn+".png";
 }

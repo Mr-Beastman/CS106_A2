@@ -11,7 +11,7 @@ public:
 
     static QString findPath();
     static QString setDatabasePath();
-    static QString setCoverPath(QString coverISBN);
+    static QString setCoverPath();
 };
 
 #endif // UTILITIES_H

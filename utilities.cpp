@@ -34,7 +34,7 @@ QString Utilities::setDatabasePath()
 //get the correct file path for the book covers
 //parameters : none
 //returns : string containing cover folder path
-QString Utilities::setCoverPath(QString coverISBN)
+QString Utilities::setCoverPath()
 {
-    return Utilities::findPath()+QDir::separator()+"coverImages"+QDir::separator()+coverISBN;
+    return Utilities::findPath()+QDir::separator()+"/images/covers/";
 }
