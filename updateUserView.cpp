@@ -57,7 +57,6 @@ void UpdateUserView::saveButtonClicked() {
     }
 
     UserManagement* userManager = mainWindow->getUserManager();
-
     QJsonObject currentUser = userManager->getCurrentUser();
 
     //store values from from ui lineEdits

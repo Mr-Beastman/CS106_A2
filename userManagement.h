@@ -18,7 +18,7 @@ public:
     QJsonObject getCurrentUser();
     QJsonObject getUser(const QString &username);
 
-    int userID(int& userNum);
+    int userID();
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     bool isAdmin(const QString& usernameInput);
     bool isActive(const QString &usernameInput);
@@ -29,8 +29,6 @@ public:
         const QString& phoneInput,
         const QString& emailInput,
         const QString& addressInput);
-        const QString& addressInput;
-        int& userNum);
 
 };
 

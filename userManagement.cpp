@@ -109,8 +109,7 @@ bool UserManagement::addUser(const QString& nameInput,
                              const QString& passwordInput,
                              const QString& phoneInput,
                              const QString& emailInput,
-                             const QString& addressInput,
-                             int& userNum){
+                             const QString& addressInput){
 
         //creating Json obj with new user details;
         QJsonObject newUser;
@@ -122,7 +121,7 @@ bool UserManagement::addUser(const QString& nameInput,
         newUser["address"] = addressInput;
         newUser["isAdmin"] = false;
         newUser["isActive"] = false;
-        newUser["ID"] = userNum;
+        newUser["account"] = userID();
 
 
         //add newUser to the existing array
@@ -166,19 +165,19 @@ QJsonObject UserManagement::getUser(const QString& username) {
     return QJsonObject();
 }
 
-int UserManagement::userID(int& userNum) {
+int UserManagement::userID() {
 
 generate:
-    userNum = (std::rand() % (99999));
+    int userNum = (std::rand() % (99999));
     bool valid = false;
 
-        QJsonArray IDArray = jsonData["ID"].toArray();
+        QJsonArray IDArray = jsonData["users"].toArray();
     for (const QJsonValue &userValue : IDArray){
         //convert user to object
         QJsonObject user = userValue.toObject();
 
         //get stored detials
-        int storedID = user["ID"].toInt();
+        int storedID = user["account"].toInt();
 
         //once username is found check isAdmin
         if(userNum == storedID){
@@ -191,7 +190,7 @@ generate:
     if (valid == true) {
         return userNum;
     }
-    return 0;
+    return userNum;
 }
 
 bool UserManagement::isAdmin(const QString& usernameInput){

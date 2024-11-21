@@ -35,7 +35,7 @@
     ],
     "users": [
         {
-            "account": "123456",
+            "account": 123456,
             "address": "1 fake street",
             "email": "email@example.com",
             "isActive": true,
@@ -46,7 +46,7 @@
             "username": "admin"
         },
         {
-            "account": "788910",
+            "account": 788910,
             "address": "2 fake street",
             "email": "stormlight@gmail.com",
             "isActive": true,
@@ -55,6 +55,17 @@
             "password": "SylBlade",
             "phone": "44544455544444445",
             "username": "windrunner"
+        },
+        {
+            "account": 9247,
+            "address": "22 Silverkeep, Witcher’s Hollow, Kaer Morhen",
+            "email": "WhiteWolf@silverblade.com",
+            "isActive": true,
+            "isAdmin": false,
+            "name": "Geralt of Rivia",
+            "password": "witcher@905",
+            "phone": "+64 22 621 2398",
+            "username": "WhiteWolf"
         }
     ]
 }

@@ -23,7 +23,7 @@ void MemberView::displayCurrentMember(const QJsonObject& currentUser) {
 
     if(!currentUser.isEmpty()){
         ui->nameOutputLabel->setText(currentUser["name"].toString());
-        ui->accountOutputLabel->setText(currentUser["account"].toString());
+        ui->accountOutputLabel->setText(QString::number(currentUser["account"].toInt()));
         ui->phoneOutputLabel->setText(currentUser["phone"].toString());
         ui->emailOutputLabel->setText(currentUser["email"].toString());
         ui->addressOutputLabel->setText(currentUser["address"].toString());

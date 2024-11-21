@@ -19,7 +19,19 @@ RegistrationView::~RegistrationView() {
 
 void RegistrationView::submitButtonClicked() {
 
-    MainWindow* mainWindow = dynamic_cast<MainWindow*>(parent());
+    //getting to mainwindow
+    MainWindow* mainWindow = nullptr;
+    QWidget* parentWidget = this->parentWidget();
+
+    while(parentWidget){
+        mainWindow = qobject_cast<MainWindow*>(parentWidget);
+        if(mainWindow){
+            break;
+        }
+        parentWidget = parentWidget->parentWidget();
+    }
+
+
     UserManagement* userManager = mainWindow->getUserManager();
 
     QString nameInput = ui->nameLineEdit->text();
