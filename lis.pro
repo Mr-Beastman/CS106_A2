@@ -20,8 +20,7 @@ SOURCES += \
     memberView.cpp \
     registrationView.cpp \
     updateUserView.cpp \
-    userManagement.cpp \
-    utilities.cpp
+    userManagement.cpp
 
 HEADERS += \
     addBookview.h \
@@ -34,8 +33,7 @@ HEADERS += \
     memberView.h \
     registrationView.h \
     updateUserView.h \
-    userManagement.h \
-    utilities.h
+    userManagement.h
 
 FORMS += \
     addBookView.ui \

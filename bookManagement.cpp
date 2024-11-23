@@ -1,12 +1,32 @@
 #include "bookManagement.h"
 #include "dataManagement.h"
-#include "utilities.h"
 
-bookManagement::bookManagement() : DataManagement(){
-    readData();
+// --------------- private ---------------
+
+//constructor
+BookManagement::BookManagement() : DataManagement(){}
+
+//intializing static memebers
+BookManagement * BookManagement::bookManager = nullptr;
+QMutex BookManagement::bookMtx;
+
+// --------------- public ---------------
+
+//getter for bookManager singleton
+BookManagement *BookManagement::getBookManager() {
+    if(bookManager == nullptr) {
+        QMutexLocker locker(&bookMtx);
+        if(bookManager == nullptr){
+            bookManager = new BookManagement();
+        }
+    }
+    return bookManager;
 }
 
-bool bookManagement::addBook(const QString& titleInput,
+//add book to Json file database
+//parameters : book title, author, isbn, description, genre and section.
+//returns : none
+bool BookManagement::addBook(const QString& titleInput,
                              const QString& authorInput,
                              const QString& isbnInput,
                              const QString& descInput,
@@ -23,7 +43,7 @@ bool bookManagement::addBook(const QString& titleInput,
     newBook["sect"] = sectInput;
 
 
-    //add newUser to the existing array
+    //add the new book to the existing array
     QJsonArray bookArray = jsonData["books"].toArray();
     bookArray.append(newBook);
     jsonData["books"] =bookArray;
@@ -34,10 +54,21 @@ bool bookManagement::addBook(const QString& titleInput,
         return true;
     }
 
-    qDebug()<<"Failed to save new book";
+    qDebug()<<"BookManagment: Failed to save new book";
     return false;
 }
 
-QString bookManagement::getCoverImage(QString& isbn){
-    return Utilities::setCoverPath()+isbn+".png";
+//identify file path
+//pareamters : none
+//returns : string containing folder path
+QString BookManagement::findCoverPath(){
+    return findPath()+QDir::separator()+"/images/covers/";
 }
+
+//get path to requested cover image
+//parameters: the isbn number of the book requestes
+//returns: none
+QString BookManagement::findCoverImage(QString& isbn){
+    return findCoverPath()+isbn+".png";
+}
+

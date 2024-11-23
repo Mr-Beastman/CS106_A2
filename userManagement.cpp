@@ -1,9 +1,13 @@
 #include "userManagement.h"
 #include "dataManagement.h"
 
-UserManagement::UserManagement() : DataManagement(){
-    readData();
-}
+// --------------- private ---------------
+
+UserManagement::UserManagement() : DataManagement(){}
+
+//intializing static memebers
+UserManagement * UserManagement::userManager = nullptr;
+QMutex UserManagement::userMtx;
 
 //setters
 void UserManagement::setCurrentUser(const QString usernameInput) {
@@ -38,6 +42,17 @@ void UserManagement::setCurrentUser(const QString usernameInput) {
 //getters
 QJsonObject UserManagement::getCurrentUser(){
     return currentUser;
+}
+
+//getter for bookManager singleton
+UserManagement *UserManagement::getUserManager() {
+    if(userManager == nullptr) {
+        QMutexLocker locker(&userMtx);
+        if(userManager == nullptr){
+            userManager = new UserManagement();
+        }
+    }
+    return userManager;
 }
 
 bool UserManagement::verifyLogin(const QString& usernameInput, const QString& passwordInput){

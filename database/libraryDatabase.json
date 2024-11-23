@@ -55,7 +55,7 @@
         },
         {
             "account": 788910,
-            "address": "2 fake street",
+            "address": "2 faker street",
             "email": "stormlight@gmail.com",
             "isActive": true,
             "isAdmin": false,

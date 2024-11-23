@@ -1,18 +1,11 @@
 #include "memberView.h"
-#include "mainWindow.h"
-#include "dataManagement.h"
 #include "updateUserView.h"
+#include "bookManagement.h"
+#include "userManagement.h"
 #include "bookListView.h"
-#include "utilities.h"
 
 MemberView::MemberView(QWidget *parent) : QWidget(parent), ui(new Ui::MemberView) {
     ui->setupUi(this);
-
-    MainWindow* mainWindow = dynamic_cast<MainWindow*>(parent);
-    UserManagement* userManager = mainWindow->getUserManager();
-
-    displayCurrentMember(userManager->getCurrentUser());
-    loadCatalogue();
 
     //connect buttons
     connect(ui->updateButton, &QPushButton::clicked, this, &MemberView::updateButtonClicked);
@@ -37,25 +30,8 @@ void MemberView::displayCurrentMember(const QJsonObject& currentUser) {
 }
 
 void MemberView::refreashView(){
-    //accessing to MainWindow to force refreash
-    MainWindow* mainWindow = nullptr;
-    QWidget* parentWidget = qobject_cast<QWidget*>(parent());
-
-    while(parentWidget != nullptr){
-        mainWindow = dynamic_cast<MainWindow*>(parentWidget);
-        if(mainWindow != nullptr){
-            break;
-        }
-        parentWidget = parentWidget->parentWidget();
-    }
-
-    if(mainWindow != nullptr){
-        qDebug()<<"Refreashing Member View";
-        UserManagement* userManager = mainWindow->getUserManager();
-        displayCurrentMember(userManager->getCurrentUser());
-    } else {
-        qDebug()<<"Failed to refreash Window";
-    }
+    UserManagement* userManager = UserManagement::getUserManager();
+    displayCurrentMember(userManager->getCurrentUser());
 }
 
 
@@ -69,20 +45,10 @@ void MemberView::updateButtonClicked() {
 
 //catalogueTab functions
 void MemberView::loadCatalogue(){
-    MainWindow* mainWindow = nullptr;
-    QWidget* parentWidget = qobject_cast<QWidget*>(parent());
 
-    while(parentWidget != nullptr){
-        mainWindow = dynamic_cast<MainWindow*>(parentWidget);
-        if(mainWindow != nullptr){
-            break;
-        }
-        parentWidget = parentWidget->parentWidget();
-    }
+    BookManagement *bookManager = BookManagement::getBookManager();
 
-    DataManagement* dataManager = mainWindow->getDataManager();
-
-    QJsonObject database = dataManager->getFileData();
+    QJsonObject database = bookManager->getFileData();
 
     QJsonArray bookData = database["books"].toArray();
 
@@ -120,14 +86,13 @@ void MemberView::loadCatalogue(){
         // adding cover image
         QLabel* coverLabel = bookListView->findChild<QLabel*>("coverLabel");
         if (coverLabel) {
-            QString coverImagePath = Utilities::setCoverPath() + book["isbn"].toString() + ".png";
+            QString coverImagePath = bookManager->findCoverPath() + book["isbn"].toString() + ".png";
             QPixmap cover(coverImagePath);
-            QPixmap scaledCover = cover.scaled(150, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            QString noCoverImagePath = Utilities::setCoverPath() + "noCover.png";
+            QString noCoverImagePath = bookManager->findCoverPath() + "noCover.png";
             QPixmap noCover(noCoverImagePath);
 
             if (!cover.isNull()) {
-                coverLabel->setPixmap(scaledCover);
+                coverLabel->setPixmap(cover);
             } else {
                 coverLabel->setPixmap(noCover);
             }

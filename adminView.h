@@ -27,7 +27,6 @@ private slots:
 public:
     explicit AdminView(QWidget* parent = nullptr);
 
-    void loadUsers();
     void displayUsers();
 };
 

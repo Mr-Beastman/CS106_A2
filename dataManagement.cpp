@@ -1,13 +1,39 @@
 #include "dataManagement.h"
-#include "utilities.h"
 
-//setters
-void DataManagement::setFileData(const QJsonObject newData){
-    jsonData = newData;
+
+// --------------- private functions ---------------
+void DataManagement::setDatabasePath() {
+    filePath = (findPath()+"/database/libraryDatabase.json");
 }
 
-QString DataManagement::getFilePath(){
-    return filePath;
+// --------------- protected fucntions ---------------
+
+//identify file path
+//pareamters : none
+//returns : string containing folder path
+QString DataManagement::findPath() {
+    //getting the base directory of the application
+    QString baseDirectory = QCoreApplication:: applicationDirPath();
+
+    //moving up directory levels to project folder
+    QDir dir(baseDirectory);
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+
+    //returning file path
+    return dir.path();
+}
+
+
+// --------------- public fucntions ---------------
+
+//constuctor
+DataManagement::DataManagement() {}
+
+//setters
+void DataManagement::setFileData(const QJsonObject newData) {
+    jsonData = newData;
 }
 
 //getters
@@ -15,13 +41,16 @@ const QJsonObject DataManagement::getFileData() {
     return jsonData;
 }
 
-DataManagement::DataManagement() {}
+QString DataManagement::getFilePath() {
+    return filePath;
+}
 
+
+
+//reads data from Json file and stores in it a member variable
 bool DataManagement::readData(){
 
-    filePath = Utilities::setDatabasePath();
-
-    qDebug()<<"adding to qFile path :"<<filePath;
+    setDatabasePath();
 
     QFile file(filePath);
 
@@ -31,7 +60,7 @@ bool DataManagement::readData(){
     }
 
     if(!file.open(QIODevice::ReadOnly)){
-        qDebug()<<"Failed to open database file to read";
+        qDebug()<<"DataManagement: Failed to open database file to read";
         return false;
     }
 
@@ -40,21 +69,20 @@ bool DataManagement::readData(){
 
     if(database.isObject()){
         jsonData=database.object();
-        qDebug()<<"JSON data stored";
         file.close();
         return true;
     }
 
-    qDebug()<<"Invalid Json format";
+    qDebug()<<"DataManagement: Json file uses an invalid format";
+    file.close();
     return false;
 }
 
 bool DataManagement::saveData(){
-    qDebug()<<"Attemping save to "+filePath;
     QFile file(filePath);
 
     if(!file.open(QIODevice::WriteOnly)){
-        qDebug()<<"Failed to open database file for saving";
+        qDebug()<<"DataManagement: Failed to open database file for saving";
         return false;
     }
 

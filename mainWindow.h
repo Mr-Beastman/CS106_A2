@@ -8,6 +8,12 @@
 #include "userManagement.h"
 #include "bookManagement.h"
 
+#include "loginView.h"
+#include "registrationView.h"
+#include "adminView.h"
+#include "memberView.h"
+
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,10 +26,16 @@ private:
     Ui::MainWindow *ui;
     QStackedWidget *stackedWidget;
 
-    //manager members
+    //manager members to store intial instance.
     DataManagement* dataManager;
     UserManagement* userManager;
-    bookManagement* bookManager;
+    BookManagement* bookManager;
+
+    //page members
+    LoginView* loginPage;
+    RegistrationView* registrationPage;
+    AdminView* adminPage;
+    MemberView* memberPage;
 
 private slots:
     void showLogin();
@@ -35,10 +47,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    //getters
-    DataManagement* getDataManager();
-    UserManagement* getUserManager();
-    bookManagement* getBookManager();
 
 signals:
     void loginFail();

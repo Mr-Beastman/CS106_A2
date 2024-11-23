@@ -1,7 +1,5 @@
 #include "AddBookView.h"
-#include "mainWindow.h"
-#include "adminView.h"
-#include "utilities.h"
+#include "bookManagement.h"
 
 #include <QDragEnterEvent>
 #include <QMimeData>
@@ -65,22 +63,7 @@ void AddBookView::dropEvent(QDropEvent *event){
 
 void AddBookView::saveButtonClicked() {
 
-    //getting to mainwindow
-    MainWindow* mainWindow = nullptr;
-    QWidget* parentWidget = this->parentWidget();
-
-    while(parentWidget){
-        mainWindow = qobject_cast<MainWindow*>(parentWidget);
-        if(mainWindow){
-            break;
-        }
-        parentWidget = parentWidget->parentWidget();
-    }
-
-    bookManagement* bookManager = mainWindow->getBookManager();
-    DataManagement* dataManager = mainWindow->getDataManager();
-
-    qDebug()<<"checking it's here "+dataManager->getFilePath();
+    BookManagement* bookManager = BookManagement::getBookManager();
 
     QString title = ui->titleLineEdit->text();
     QString author = ui->authorLineEdit->text();
@@ -95,7 +78,7 @@ void AddBookView::saveButtonClicked() {
 
         //save image if one provided
         if(!imageLocation.isEmpty()){
-            QString saveLocation = Utilities::setCoverPath()+isbn+".png";
+            QString saveLocation = bookManager->findCoverPath()+isbn+".png";
             if(QFile::copy(imageLocation,saveLocation)){
                 qDebug()<<"Image saved Successfully";
             } else {

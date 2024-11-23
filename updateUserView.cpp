@@ -19,19 +19,7 @@ UpdateUserView::~UpdateUserView() {
 
 void UpdateUserView::preloadUser() {
 
-    //logic to handle different parents eg admin or member view
-    QWidget* childOf = this->parentWidget();
-    MainWindow* mainWindow=nullptr;
-
-    while(childOf){
-        mainWindow=dynamic_cast<MainWindow*>(childOf);
-        if(mainWindow){
-            break;
-        }
-        childOf = childOf->parentWidget();
-    }
-
-    UserManagement* userManager = mainWindow->getUserManager();
+    UserManagement* userManager = UserManagement::getUserManager();
 
     QJsonObject currentUser = userManager->getCurrentUser();
 
@@ -56,7 +44,7 @@ void UpdateUserView::saveButtonClicked() {
         childOf = childOf->parentWidget();
     }
 
-    UserManagement* userManager = mainWindow->getUserManager();
+    UserManagement* userManager = UserManagement::getUserManager();
     QJsonObject currentUser = userManager->getCurrentUser();
 
     //store values from from ui lineEdits

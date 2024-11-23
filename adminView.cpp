@@ -1,50 +1,20 @@
 #include "adminView.h"
 #include "ui_adminView.h"
 #include "addBookview.h"
-#include "mainWindow.h"
+#include "userManagement.h"
 
 AdminView::AdminView(QWidget *parent) : QWidget(parent) {
     ui.setupUi(this);
-
-    MainWindow* mainWindow = dynamic_cast<MainWindow*>(parent);
-    DataManagement* dataManager = mainWindow->getDataManager();
-
-    //set up for manage members
-    //loading data for member display
-    if(dataManager->readData()){
-        loadUsers();
-        qDebug()<<"starting load user process";
-    } else {
-        qDebug()<<"Failed to load user data to display";
-    }
 
     //set up for manage catalogue
     connect(ui.addButton, &QPushButton::clicked, this, &AdminView::addButtonClicked);
 }
 
-//manage members functions
-void AdminView::loadUsers() {
-
-    MainWindow* mainWindow = dynamic_cast<MainWindow*>(parent());
-    DataManagement* dataManager = mainWindow->getDataManager();
-
-    QJsonObject data = dataManager->getFileData();
-
-    if(!data.contains("users") || !data["users"].isArray()){
-        qDebug()<<"Invalid or missing data";
-        return;
-    }
-
-    qDebug()<<"loadUsers succesfull";
-    displayUsers();
-}
-
 void AdminView::displayUsers() {
 
-    MainWindow* mainWindow = dynamic_cast<MainWindow*>(parent());
-    DataManagement* dataManager = mainWindow->getDataManager();
+    UserManagement *userManager = UserManagement::getUserManager();
 
-    QJsonArray data = dataManager->getFileData()["users"].toArray();
+    QJsonArray data = userManager->getFileData()["users"].toArray();
 
     for(int i = 0; i<data.size(); ++i){
         QJsonObject user = data[i].toObject();

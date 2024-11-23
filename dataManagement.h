@@ -4,13 +4,22 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFile>
+#include <QDir>
 #include <QJsonDocument>
+#include <QCoreApplication>
 #include <QDebug>
+#include <QMutex>
 
 class DataManagement {
+
+private:
+    void setDatabasePath();
+
 protected:
     QJsonObject jsonData;
     QString filePath;
+
+    QString findPath();
 
 public:
 

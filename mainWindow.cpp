@@ -2,9 +2,6 @@
 #include "ui_mainWindow.h"
 
 #include "loginView.h"
-#include "registrationView.h"
-#include "adminView.h"
-#include "memberView.h"
 
 //constructor
 MainWindow::MainWindow(QWidget* parent) :
@@ -12,23 +9,31 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(new Ui::MainWindow),
     stackedWidget(new QStackedWidget(this)),
     dataManager(new DataManagement()),
-    userManager(new UserManagement()),
-    bookManager(new bookManagement())
+    userManager(UserManagement::getUserManager()),
+    bookManager(BookManagement::getBookManager())
 {
     ui->setupUi(this);
+
+    if(dataManager->readData()){
+        qDebug()<<"MainWindow: Library Database Loaded";
+    } else {
+        qFatal()<<"MainWindow: Library Failed to Load, user cannot log in. Closing Program";
+    }
 
     // Set the stacked widget as the central widget of the main window
     setCentralWidget(stackedWidget);
 
     //creating views to be added into stackedWidget
-    LoginView *loginPage = new LoginView(this);
-    RegistrationView *registrationPage = new RegistrationView(this);
-    AdminView *adminPage = new AdminView(this);
+    loginPage = new LoginView(this);
+    registrationPage = new RegistrationView(this);
+    adminPage = new AdminView(this);
+    memberPage = new MemberView(this);
 
     //adding views to stackedWidget
     stackedWidget->addWidget(loginPage);
     stackedWidget->addWidget(registrationPage);
     stackedWidget->addWidget(adminPage);
+    stackedWidget->addWidget(memberPage);
 
 
     //connecting view signals
@@ -37,7 +42,6 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(loginPage, &LoginView::callRegisterView, this, &MainWindow::showRegister);
     connect(registrationPage, &RegistrationView::loginRequest, this, &MainWindow::showLogin);
 
-    dataManager->readData();
     stackedWidget->setCurrentIndex(0);
 
 
@@ -50,21 +54,9 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
-DataManagement *MainWindow::getDataManager() {
-    return dataManager;
-}
-
-UserManagement *MainWindow::getUserManager() {
-    return userManager;
-}
-
-bookManagement *MainWindow::getBookManager() {
-    return bookManager;
-}
-
 //functions to change view display
 void MainWindow::showLogin(){
-    qDebug()<<"Displaying Login Screen";
+    qDebug()<<"MainWindow: Displaying Login Screen";
     stackedWidget->setCurrentIndex(0);
 }
 
@@ -77,16 +69,25 @@ void MainWindow::userLogin(const QString& username, QString password){
 
         //checking userType
         if(userManager->isAdmin(username)){
-            qDebug()<<"Loading Admin View";
+            qDebug()<<"MainWindow: Admin Login Succesful. Loading Admin View";
+
+            //recording current user
             userManager->setCurrentUser(username);
+
+            //populate admin views
+            adminPage->displayUsers();
+
+            //direct user to page
             stackedWidget->setCurrentIndex(2);
         } else {
             if(userManager->isActive(username)){
-                qDebug()<<"Loading Member View";
-                //creating memberPage with current user
-                qDebug()<<("Setting current member as "+username);
+                qDebug()<<"MainWindow: Member Login Succesful. Loading Member View";
+
+                //recording current user
                 userManager->setCurrentUser(username);
-                MemberView *memberPage = new MemberView(this);
+
+                memberPage->displayCurrentMember(userManager->getCurrentUser());
+
                 stackedWidget->addWidget(memberPage);
                 stackedWidget->setCurrentIndex(3);
             } else {
@@ -96,13 +97,13 @@ void MainWindow::userLogin(const QString& username, QString password){
 
         }
     } else {
-        qDebug()<<"loginFail signal sent";
+        qDebug()<<"MainWindow: loginFail signal sent";
         emit loginFail();
     }
 }
 
 void MainWindow::showRegister(){
-    qDebug()<<"Displaying Registration Page";
+    qDebug()<<"MainWindow: Displaying Registration Page";
 
     //clearing error messgaes
     LoginView *loginPage = dynamic_cast<LoginView*>(stackedWidget->widget(0));

@@ -3,12 +3,27 @@
 
 #include "dataManagement.h"
 
-class bookManagement : public DataManagement {
+class BookManagement : public DataManagement {
 
 private:
+    BookManagement();
+    ~BookManagement();
+
+    //setting up singtleton
+    //static ptr to bookmanager instance
+    static BookManagement* bookManager;
+    static QMutex bookMtx;
 
 public:
-    bookManagement();
+    //enforcing singleton
+    //removing copy contructor to prevent copies
+    BookManagement(const BookManagement& obj) = delete;
+    //removing assigment operator to prevent assignment
+    BookManagement& operator=(const BookManagement& obj) = delete;
+
+    //get the bookmanager instance
+    static BookManagement* getBookManager();
+
     bool addBook(
         const QString& titleInput,
         const QString& authorInput,
@@ -16,7 +31,13 @@ public:
         const QString& descInput,
         const QString& genreInput,
         const QString& sectInput);
-    QString getCoverImage(QString& isbn);
+
+    //functions related to saving & getting cover images
+    QString findCoverPath();
+    QString findCoverImage(QString& isbn);
+
 };
+
+
 
 #endif // BOOKMANAGEMENT_H
