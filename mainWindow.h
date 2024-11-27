@@ -7,6 +7,7 @@
 #include "dataManagement.h"
 #include "userManagement.h"
 #include "bookManagement.h"
+#include "transactionManagement.h"
 
 #include "loginView.h"
 #include "registrationView.h"
@@ -30,6 +31,7 @@ private:
     DataManagement* dataManager;
     UserManagement* userManager;
     BookManagement* bookManager;
+    TransactionManagement* transactionManager;
 
     //page members
     LoginView* loginPage;

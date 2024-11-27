@@ -20,6 +20,7 @@ private slots:
 public:
     explicit LoginView(QWidget* parent = nullptr);
     void clearError();
+    void clearInputs();
 
 signals:
     void callRegisterView();

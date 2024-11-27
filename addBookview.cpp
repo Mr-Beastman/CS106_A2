@@ -86,6 +86,9 @@ void AddBookView::saveButtonClicked() {
             }
         }
 
+        //send signal to dashboards to update
+        emit updateDisplayRequest();
+
         this->accept();
     } else {
         qDebug()<<"Failed to add book";

@@ -2,6 +2,7 @@
 #define BOOKLISTVIEW_H
 
 #include <QWidget>
+#include <QTimer>
 
 namespace Ui {
 class BookListView;
@@ -14,9 +15,16 @@ class BookListView : public QWidget
 private:
     Ui::BookListView *ui;
 
+private slots:
+    void checkoutBook();
+    void placeHold();
+
 public:
     explicit BookListView(QWidget *parent = nullptr);
     ~BookListView();
+
+signals:
+    void refreashView();
 
 };
 

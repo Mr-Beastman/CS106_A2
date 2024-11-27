@@ -21,23 +21,34 @@ class MemberView : public QWidget {
 private:
     Ui::MemberView* ui;
 
+
+
 private slots:
     //accountTab related
     void updateButtonClicked();
-    void refreashView();
+
+    void logoutButtonClicked();
+
 public:
     //view related
     explicit MemberView(QWidget* parent = nullptr);
     ~MemberView();
 
+
+
     //accountTab Related
     void displayCurrentMember(const QJsonObject& currentUser);
+    void displayCheckedOut(const QJsonObject& currentUser);
+    void displayHoldRequests(const QJsonObject& currentUser);
 
     //catalogueTab related
     void loadCatalogue();
 
+public slots:
+    void refreashView();
 
-
+signals:
+    void logoutRequest();
 
 };
 

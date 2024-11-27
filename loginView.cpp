@@ -15,36 +15,38 @@ LoginView::LoginView(QWidget *parent) : QWidget(parent){
     if(mainWindow){
         connect(mainWindow, &MainWindow::loginFail, this, &LoginView::loginError);
         connect(mainWindow, &MainWindow::notActiveAccount, this, &LoginView::notActiveError);
-        qDebug()<<"Connection made for loginFail Signal";
     }
 
     ui.errorLabel->clear();
+
+    qDebug()<<"LoginView: Login in created displayed";
 }
 
 //view specific functions
 
 void LoginView::loginButtonClicked() {
-    QString username = ui.usernameLineEdit->text();
+    QString username = (ui.usernameLineEdit->text()).toLower();
     QString password = ui.passwordLineEdit->text();
     emit loginAttempt(username, password);
-    qDebug()<<"loginAttempt signal sent";
 }
 
 void LoginView::registerButtonClicked() {
     emit callRegisterView();
-    qDebug()<<"callRegisterView signal sent";
 }
 
 void LoginView::loginError() {
-    qDebug()<<"setting login error message";
     ui.errorLabel->setText("Invalid Login Details. Please try again");
 }
 
 void LoginView::notActiveError() {
-    qDebug()<<"setting account error message";
     ui.errorLabel->setText("Accout is not Active. Please visit Library to Activate");
 }
 
 void LoginView::clearError(){
     ui.errorLabel->clear();
+}
+
+void LoginView::clearInputs() {
+    ui.usernameLineEdit->clear();
+    ui.passwordLineEdit->clear();
 }

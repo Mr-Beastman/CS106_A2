@@ -26,6 +26,9 @@ private slots:
 public:
     explicit AddBookView(QWidget *parent = nullptr);
     ~AddBookView();
+
+signals:
+    void updateDisplayRequest();
 };
 
 #endif // ADDBOOKVIEW_H

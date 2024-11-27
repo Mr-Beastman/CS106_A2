@@ -19,6 +19,7 @@ SOURCES += \
     mainWindow.cpp \
     memberView.cpp \
     registrationView.cpp \
+    transactionManagement.cpp \
     updateUserView.cpp \
     userManagement.cpp
 
@@ -32,6 +33,7 @@ HEADERS += \
     mainWindow.h \
     memberView.h \
     registrationView.h \
+    transactionManagement.h \
     updateUserView.h \
     userManagement.h
 

@@ -27,7 +27,10 @@
 	background-image: url(:/branding/images/brand/background.jpg);
 }</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2,0">
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
       <item>
        <widget class="QLabel" name="bannerLogo">
         <property name="text">
@@ -51,6 +54,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="logoutButton">
+        <property name="text">
+         <string>Log Out</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -63,9 +73,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-158</y>
         <width>1067</width>
-        <height>700</height>
+        <height>1222</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -84,19 +94,31 @@
        <item>
         <widget class="QTabWidget" name="memberTab">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="catalogueTab">
           <attribute name="title">
            <string>View Catalogue</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_8">
+           <property name="leftMargin">
+            <number>50</number>
+           </property>
+           <property name="rightMargin">
+            <number>50</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="tabContents">
              <item>
               <layout class="QVBoxLayout" name="filterContents">
                <item>
                 <widget class="QLabel" name="label">
+                 <property name="minimumSize">
+                  <size>
+                   <width>250</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string>Filter Search</string>
                  </property>
@@ -106,6 +128,12 @@
              </item>
              <item>
               <layout class="QVBoxLayout" name="searchContents">
+               <property name="leftMargin">
+                <number>25</number>
+               </property>
+               <property name="rightMargin">
+                <number>25</number>
+               </property>
                <item>
                 <layout class="QHBoxLayout" name="searchBarLayout">
                  <item>
@@ -287,18 +315,55 @@
             </widget>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="finesContent">
-             <item>
-              <widget class="QLabel" name="finesLabel">
-               <property name="text">
-                <string>Fines</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QListWidget" name="finesList"/>
-             </item>
-            </layout>
+            <widget class="QWidget" name="finesContent" native="true">
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QLabel" name="finesLabel">
+                <property name="text">
+                 <string>Fines</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QStackedWidget" name="stackedWidget">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="QWidget" name="finesListPage">
+                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                  <item>
+                   <widget class="QListWidget" name="finesList">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="noFinesPage">
+                 <layout class="QVBoxLayout" name="verticalLayout_3">
+                  <item>
+                   <widget class="QLabel" name="noFinesLabel">
+                    <property name="text">
+                     <string>No Fines</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
            <item>
             <layout class="QVBoxLayout" name="issuedContent">
@@ -310,7 +375,20 @@
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="issuedList"/>
+              <widget class="QListWidget" name="issuedList">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -324,7 +402,14 @@
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="holdList"/>
+              <widget class="QListWidget" name="holdList">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -338,7 +423,14 @@
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="historyList"/>
+              <widget class="QListWidget" name="historyList">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>

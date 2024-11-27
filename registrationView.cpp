@@ -1,6 +1,5 @@
 #include "registrationView.h"
 #include "ui_registrationView.h"
-#include "mainWindow.h"
 
 RegistrationView::RegistrationView(QWidget *parent) :
     QWidget(parent),
@@ -22,7 +21,7 @@ void RegistrationView::submitButtonClicked() {
     UserManagement* userManager = UserManagement::getUserManager();
 
     QString nameInput = ui->nameLineEdit->text();
-    QString usernameInput = ui->usernameLineEdit->text();
+    QString usernameInput = (ui->usernameLineEdit->text()).toLower();
     QString passwordInput = ui->passwordLineEdit->text();
     QString phoneInput = ui->phoneLineEdit->text();
     QString emailInput = ui->emailLineEdit->text();

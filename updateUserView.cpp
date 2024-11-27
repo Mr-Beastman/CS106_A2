@@ -86,12 +86,9 @@ void UpdateUserView::saveButtonClicked() {
 
         QJsonObject fileData = userManager -> getFileData();
         fileData["users"] = usersArray;
-        userManager->setFileData(fileData);
 
         if(userManager->saveData()){
             qDebug()<<"UpdateUserView: User has been updated";
-            //update the store value
-            userManager->setCurrentUser(currentUser["username"].toString());
             //signal memberView to refreash
             emit requestRefreash();
         } else {

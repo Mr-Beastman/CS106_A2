@@ -19,15 +19,21 @@ class AdminView : public QWidget {
     Q_OBJECT
 
 private:
-    Ui::AdminView ui;
+    Ui::AdminView* ui;
 
 private slots:
     void addButtonClicked();
+    void logoutButtonClicked();
 
 public:
     explicit AdminView(QWidget* parent = nullptr);
 
+    void loadAdminCatalogue();
     void displayUsers();
+    void updateDisplays();
+
+signals:
+    void logoutRequest();
 };
 
 #endif // ADMINVIEW_H

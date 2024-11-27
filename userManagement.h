@@ -3,18 +3,17 @@
 
 #include "dataManagement.h"
 
-class UserManagement : public DataManagement {
+class UserManagement : virtual public DataManagement {
 
 private:
-    UserManagement();
-    ~UserManagement();
-
     //setting up singtleton
     //static ptr to bookmanager instance
     static UserManagement* userManager;
     static QMutex userMtx;
 
 protected:
+    UserManagement();
+    QJsonArray userArray;
     QJsonObject currentUser;
 
 public:
@@ -25,19 +24,22 @@ public:
     UserManagement& operator=(const UserManagement& obj) = delete;
 
     //setters
-    void setCurrentUser(const QString usernameInput);
+    void setCurrentUser(const QJsonObject userObj);
+    void setUserArray();
+    void updateCurrentUser(QJsonObject updated);
+    void clearCurrentUser();
 
     //getters
-    QJsonObject getCurrentUser();
-    QJsonObject getUser(const QString &username);
-
+    QJsonObject& getCurrentUser();
+    QJsonArray& getUserArray();
+    QJsonObject getUserObj(const QString &username);
     //get the bookmanager instance
     static UserManagement* getUserManager();
 
-    int userID();
+    //methods
+
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
-    bool isAdmin(const QString& usernameInput);
-    bool isActive(const QString &usernameInput);
+    //vertical format for ease of reading
     bool addUser(
         const QString& nameInput,
         const QString& usernameInput,
@@ -45,7 +47,9 @@ public:
         const QString& phoneInput,
         const QString& emailInput,
         const QString& addressInput);
-
+    bool isAdmin(const QString& usernameInput);
+    bool isActive(const QString &usernameInput);
+    int userID();
 };
 
 #endif // USERMANAGEMENT_H

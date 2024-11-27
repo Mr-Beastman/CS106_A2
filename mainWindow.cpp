@@ -8,17 +8,14 @@ MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     stackedWidget(new QStackedWidget(this)),
-    dataManager(new DataManagement()),
-    userManager(UserManagement::getUserManager()),
-    bookManager(BookManagement::getBookManager())
+    dataManager(DataManagement::getDataManager())
 {
     ui->setupUi(this);
 
-    if(dataManager->readData()){
-        qDebug()<<"MainWindow: Library Database Loaded";
-    } else {
-        qFatal()<<"MainWindow: Library Failed to Load, user cannot log in. Closing Program";
-    }
+    //intialize managers & set arrays
+    userManager = UserManagement::getUserManager();
+    bookManager = BookManagement::getBookManager();
+    transactionManager = TransactionManagement::getTransactionManager();
 
     // Set the stacked widget as the central widget of the main window
     setCentralWidget(stackedWidget);
@@ -37,14 +34,18 @@ MainWindow::MainWindow(QWidget* parent) :
 
 
     //connecting view signals
-
     connect(loginPage, &LoginView::loginAttempt, this, &MainWindow::userLogin);
     connect(loginPage, &LoginView::callRegisterView, this, &MainWindow::showRegister);
     connect(registrationPage, &RegistrationView::loginRequest, this, &MainWindow::showLogin);
+    connect(adminPage, &AdminView::logoutRequest, this, &::MainWindow::logOut);
+    connect(memberPage, &MemberView::logoutRequest, this, &MainWindow::logOut);
 
     stackedWidget->setCurrentIndex(0);
 
-
+    //read and store data
+    dataManager->readData();
+    userManager->setUserArray();
+    bookManager->setBookArray();
 
     qDebug()<<"Main window created";
 }
@@ -57,38 +58,43 @@ MainWindow::~MainWindow(){
 //functions to change view display
 void MainWindow::showLogin(){
     qDebug()<<"MainWindow: Displaying Login Screen";
+    loginPage->clearInputs();
+    loginPage->clearError();
     stackedWidget->setCurrentIndex(0);
 }
 
 void MainWindow::userLogin(const QString& username, QString password){
+
+    //refreashing data
+    bookManager->readData();
+    bookManager->setBookArray();
+    userManager->setUserArray();
+
     if(userManager->verifyLogin(username,password)){
+        //set current user
+        userManager->setCurrentUser(userManager->getUserObj(username));
 
         //clearing error messgaes
-        LoginView *loginPage = dynamic_cast<LoginView*>(stackedWidget->widget(0));
         loginPage->clearError();
 
         //checking userType
         if(userManager->isAdmin(username)){
             qDebug()<<"MainWindow: Admin Login Succesful. Loading Admin View";
-
-            //recording current user
-            userManager->setCurrentUser(username);
-
             //populate admin views
             adminPage->displayUsers();
-
-            //direct user to page
+            adminPage->loadAdminCatalogue();
+            //directing user to appropriate page
             stackedWidget->setCurrentIndex(2);
         } else {
+            //else if member check that user in active
             if(userManager->isActive(username)){
                 qDebug()<<"MainWindow: Member Login Succesful. Loading Member View";
-
-                //recording current user
-                userManager->setCurrentUser(username);
-
+                //populate member views
                 memberPage->displayCurrentMember(userManager->getCurrentUser());
-
-                stackedWidget->addWidget(memberPage);
+                memberPage->displayCheckedOut(userManager->getCurrentUser());
+                memberPage->displayHoldRequests(userManager->getCurrentUser());
+                memberPage->loadCatalogue();
+                //directing user to appropriate page
                 stackedWidget->setCurrentIndex(3);
             } else {
                 qDebug()<<"Member is not active";
@@ -114,19 +120,13 @@ void MainWindow::showRegister(){
     stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::logOut()
-{
+void MainWindow::logOut() {
     //clearing current user
-    userManager->setCurrentUser("");
-
-    //deleting currentUser memberpage
-    QWidget* memberPage = stackedWidget->widget(3);
-    if(memberPage){
-        stackedWidget->removeWidget(memberPage);
-        delete memberPage;
-    }
-
+    userManager->clearCurrentUser();
+    //reverting back to login page
     stackedWidget->setCurrentIndex(0);
+    //clear previous inputs
+    loginPage->clearInputs();
     qDebug()<<"User Logged out succesfully";
 }
 

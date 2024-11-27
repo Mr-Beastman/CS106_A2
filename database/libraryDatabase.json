@@ -1,90 +1,79 @@
 {
     "books": [
         {
-            "author": "Matt Fraction",
-            "desc": "Matt Fraction's all-time great run on Hawkeye, collected entirely in one omnibus!",
-            "genre": "Superhero",
-            "isbn": "9781302952822",
-            "sect": "Comics",
-            "title": "Hawkeye"
-        },
-        {
-            "author": "Alice Oseman",
-            "desc": "In case you’re wondering, this is not a love story.",
-            "genre": "Drama",
-            "isbn": "9780007559220",
-            "sect": "Young Adults",
-            "title": "Solitaire"
-        },
-        {
-            "author": "Anthony Horowitz",
-            "desc": "Fourteen-year-old Alex is forcibly recruited into MI6.",
-            "genre": "Action",
-            "isbn": "9781406360196",
-            "sect": "Childrens",
-            "title": "Alex Rider #01: Stormbreaker"
+            "author": "Brandon Sanderson",
+            "desc": "Speak again the ancient oaths: Life before death. Strength before weakness. Journey before Destination. Return to men the Shards they once bore. The Knights Radiant must stand again. Roshar is a world of stone and storms. Uncanny tempests of incredible power sweep across the rocky terrain so frequently that they have shaped ecology and civilization alike. Animals hide in shells, trees pull in branches, and grass retracts into the soilless ground. Cities are built only where the topography offers shelter. It has been centuries since the fall of the ten consecrated orders known as the Knights Radiant, but their Shardblades and Shardplate remain: mystical swords and suits of armor that transform ordinary men into near-invincible warriors. Men trade kingdoms for Shardblades. Wars were fought for them, and won by them. One such war rages on a ruined landscape called the Shattered Plains. There, Kaladin, who traded his medical apprenticeship for a spear to protect his little brother, has been reduced to slavery. In a war that makes no sense, where ten armies fight separately against a single foe, he struggles to save his men and to fathom the leaders who consider them expendable. Brightlord Dalinar Kholin commands one of those other armies. Like his brother, the late king, he is fascinated by an ancient text called The Way of Kings. Troubled by over-powering visions of ancient times and the Knights Radiant, he has begun to doubt his own sanity. Across the ocean, an untried young woman named Shallan seeks to train under an eminent scholar and notorious heretic, Dalinar's niece, Jasnah. Though she genuinely loves learning, Shallan's motives are less than pure. As she plans a daring theft, her research for Jasnah hints at secrets of the Knights Radiant and the true cause of the war.",
+            "genre": "Fantasy",
+            "inQueue": [
+            ],
+            "isAvailable": false,
+            "isbn": "0765326353",
+            "sect": "Young Adult",
+            "title": "The Way of Kings : Stormlight Archives One"
         },
         {
             "author": "Haylock Jobson",
-            "desc": "When summoned to a fantastical world and granted powers by a broken System, most freshly minted protagonists would strap on their big-boy boots and get ready for their stats to start climbing. But Fischer isn't like most MCs. In fact, he doesn't want to be a hero at all.\nFame? Fortune? Power? He had enough of all that in his old life. Discovering forbidden fishing techniques and petting every cute animal that comes within scritching distance? Now that's a good time.\nUnfortunately for Fischer, cosmic forces rarely care for mortal feelings. He's hounded on all sides by inept cults, conspiring nobles, and more magical misunderstandings than those of a preteen relationship. Even his dutiful pet crab is firing energy blades like an anime antagonist.\nSo grab your fishing rod and a good snack, and pet your dog for me. The catch of a lifetime awaits!",
-            "genre": "Fantasy",
+            "desc": "A world abandoned by the gods, mystifying cosmic forces, unimaginable power for those willing to ascend, and a hero who would rather . . . go fishing???\nWhen summoned to a fantastical world and granted powers by a broken System, most freshly minted protagonists would strap on their big-boy boots and get ready for their stats to start climbing. But Fischer isn't like most MCs. In fact, he doesn't want to be a hero at all.\nFame? Fortune? Power? He had enough of all that in his old life. Discovering forbidden fishing techniques and petting every cute animal that comes within scritching distance? Now that's a good time.\nUnfortunately for Fischer, cosmic forces rarely care for mortal feelings. He's hounded on all sides by inept cults, conspiring nobles, and more magical misunderstandings than those of a preteen relationship. Even his dutiful pet crab is firing energy blades like an anime antagonist.\nSo grab your fishing rod and a good snack, and pet your dog for me. The catch of a lifetime awaits!",
+            "genre": "LitRpg",
+            "inQueue": [
+            ],
+            "isAvailable": true,
             "isbn": "1039453104",
-            "sect": "Young Adult",
+            "sect": "",
             "title": "Heretical Fishing Book 1"
         },
         {
-            "author": "Rebecca Yarro",
-            "desc": "Enter the brutal and elite world of a war college for dragon riders from #1 New York Times bestselling author Rebecca Yarros\nTwenty-year-old Violet Sorrengail was supposed to enter the Scribe Quadrant, living a quiet life among books and history. Now, the commanding general--also known as her tough-as-talons mother--has ordered Violet to join the hundreds of candidates striving to become the elite of Navarre: dragon riders.\nBut when you're smaller than everyone else and your body is brittle, death is only a heartbeat away...because dragons don't bond to \"fragile\" humans. They incinerate them.\nWith fewer dragons willing to bond than cadets, most would kill Violet to better their own chances of success. The rest would kill her just for being her mother's daughter--like Xaden Riorson, the most powerful and ruthless wingleader in the Riders Quadrant.\nShe'll need every edge her wits can give her just to see the next sunrise.\nYet, with every day that passes, the war outside grows more deadly, the kingdom's protective wards are failing, and the death toll continues to rise. Even worse, Violet begins to suspect leadership is hiding a terrible secret.\nFriends, enemies, lovers. Everyone at Basgiath War College has an agenda--because once you enter, there are only two ways out: graduate or die.",
-            "genre": "Fantasy",
-            "isbn": "1649374046",
+            "author": "Rebecca Yarros",
+            "desc": "Welcome to the brutal and elite world of Basgiath War College . . .\n\nTwenty-year-old Violet Sorrengail was supposed to enter the Scribe Quadrant, living a quiet life among books and history. Now, the commanding general - also known as her tough-as-talons mother - has ordered Violet to join the hundreds of candidates striving to become the elite of Navarre: dragon riders.\n\nBut when you're smaller than everyone else and your body is brittle, death is only a heartbeat away . . . because dragons don't bond to 'fragile' humans. They incinerate them.\n\nWith fewer dragons willing to bond than cadets, most would kill Violet to better their own chances of success. The rest would kill her just for being her mother's daughter - like Xaden Riorson, the most powerful and ruthless wingleader in the Riders Quadrant.\n\nShe'll need every edge her wits can give her just to see the next sunrise.\n\nYet, with every day that passes, the war outside grows more deadly, the kingdom's protective wards are failing, and the death toll continues to rise. Even worse, Violet begins to suspect leadership is hiding a terrible secret.\n\nEveryone at Basgiath has an agenda, and every night could be your last. So, sleep with one eye open because once you enter, there are only two ways out: graduate or die.",
+            "genre": "Romantasy",
+            "inQueue": [
+            ],
+            "isAvailable": true,
+            "isbn": "0349437009",
             "sect": "Adult",
             "title": "Fourth Wing"
+        },
+        {
+            "author": "J r r Tolkien",
+            "desc": "The Hobbit is the unforgettable story of Bilbo, a peace-loving hobbit, who embarks on a strange and magical adventure. A timeless classic. Bilbo Baggins enjoys a quiet and contented life, with no desire to travel far from the comforts of home; then one day the wizard Gandalf and a band of dwarves arrive unexpectedly and enlist his services – as a burglar – on a dangerous expedition to raid the treasure-hoard of Smaug the dragon. Bilbo’s life is never to be the same again. Seldom has any book been so widely read and loved as J. R.R. Tolkien’s classic tale, ‘The Hobbit’. Since its first publication in 1937 it has remained in print to delight each new generation of readers all over the world, and its hero, Bilbo Baggins, has taken his place among the ranks of the immortals of fiction.",
+            "genre": "Fantasy",
+            "inQueue": [
+            ],
+            "isAvailable": true,
+            "isbn": "9780007458424",
+            "sect": "Young Adult",
+            "title": "The Hobbit: Collins Modern Classics"
         }
     ],
     "users": [
         {
-            "account": 123456,
-            "address": "1 fake street",
-            "email": "email@example.com",
-            "isActive": true,
-            "isAdmin": true,
-            "name": "Mr Admin",
-            "password": "password",
-            "phone": "021021021",
-            "username": "admin"
-        },
-        {
-            "account": 788910,
-            "address": "2 faker street",
-            "email": "stormlight@gmail.com",
+            "account": 29071,
+            "activeLoans": [
+                {
+                    "checkoutDate": "Wed Nov 27 21:08:54 2024",
+                    "dueDate": "Fri Dec 27 21:08:54 2024",
+                    "isbn": "0765326353"
+                }
+            ],
+            "address": "Urithiru",
+            "email": "StormBlessed@Stromlight.com",
             "isActive": true,
             "isAdmin": false,
             "name": "Kaladin Stormblessed",
             "password": "SylBlade",
-            "phone": "44544455544444445",
+            "phone": "000000001",
             "username": "windrunner"
         },
         {
-            "account": 9247,
-            "address": "22 Silverkeep, Witcher’s Hollow, Kaer Morhen",
-            "email": "WhiteWolf@silverblade.com",
+            "account": 4588,
+            "address": "City Library",
+            "email": "Admin@CityLibrary.com",
             "isActive": true,
-            "isAdmin": false,
-            "name": "Geralt of Rivia",
-            "password": "witcher@905",
-            "phone": "+64 22 621 2398",
-            "username": "WhiteWolf"
-        },
-        {
-            "account": 27217,
-            "address": "12 Rivendell Way, Elvenwood, Middle-Earth",
-            "email": "arwen.w@starlight.com",
-            "isActive": false,
-            "isAdmin": false,
-            "name": "Arwen Windwalker",
-            "password": "ElvenGrace@2024",
-            "phone": "+64 22 377 4859",
-            "username": "windwalker_arwen"
+            "isAdmin": true,
+            "name": "The Admin",
+            "password": "password",
+            "phone": "0111",
+            "username": "admin"
         }
     ]
 }

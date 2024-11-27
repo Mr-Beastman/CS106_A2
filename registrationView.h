@@ -2,6 +2,7 @@
 #define REGISTRATIONVIEW_H
 
 #include <QWidget>
+#include <userManagement.h>
 
 namespace Ui {
     class RegistrationView;

@@ -3,14 +3,42 @@
 
 // --------------- private ---------------
 
-//constructor
-BookManagement::BookManagement() : DataManagement(){}
-
 //intializing static memebers
 BookManagement * BookManagement::bookManager = nullptr;
 QMutex BookManagement::bookMtx;
 
+// --------------- protected ---------------
+
+//constructor
+BookManagement::BookManagement() : DataManagement() {}
+
 // --------------- public ---------------
+
+//setters
+void BookManagement::setBookArray(){
+    if(libraryDatabase.isEmpty()){
+        readData();
+    }
+    bookArray = libraryDatabase["books"].toArray();
+}
+
+//getters
+QJsonArray& BookManagement::getBookArray() {
+    return bookArray;
+}
+
+QJsonObject BookManagement::getBookDetails(const QString &isbn){
+    for(int i = 0; bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
+        qDebug()<<book["title"].toString();
+        if(book["isbn"].toString() == isbn){
+            return book;
+            break;
+        }
+    }
+    qDebug()<<"BookManagement: Book Information not found.";
+    return QJsonObject();
+}
 
 //getter for bookManager singleton
 BookManagement *BookManagement::getBookManager() {
@@ -23,9 +51,11 @@ BookManagement *BookManagement::getBookManager() {
     return bookManager;
 }
 
+//methods
+
 //add book to Json file database
 //parameters : book title, author, isbn, description, genre and section.
-//returns : none
+//returns : true if ran successfully, false if errror encountered.
 bool BookManagement::addBook(const QString& titleInput,
                              const QString& authorInput,
                              const QString& isbnInput,
@@ -41,12 +71,12 @@ bool BookManagement::addBook(const QString& titleInput,
     newBook["desc"] = descInput;
     newBook["genre"] = genreInput;
     newBook["sect"] = sectInput;
-
+    newBook["inQueue"] = QJsonArray();
+    newBook["isAvailable"] = true;
 
     //add the new book to the existing array
-    QJsonArray bookArray = jsonData["books"].toArray();
     bookArray.append(newBook);
-    jsonData["books"] =bookArray;
+    libraryDatabase["books"] = bookArray;
 
     //save updates to json file
     if(saveData()){
@@ -55,6 +85,22 @@ bool BookManagement::addBook(const QString& titleInput,
     }
 
     qDebug()<<"BookManagment: Failed to save new book";
+    return false;
+}
+
+//confirm book is available by checking isAvailable flag
+//parameters : isbn of book to check.
+//returns : true available/false not available
+bool BookManagement::isAvailable(const QString& isbn) {
+
+    for(int i = 0; bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
+        if(book["isbn"].toString() == isbn){
+            return book["isAvailable"].toBool();
+        }
+    }
+
+    qDebug()<<"BookManagement: "<<isbn<<" not found";
     return false;
 }
 

@@ -2,6 +2,25 @@
 
 
 // --------------- private functions ---------------
+
+//constuctor
+DataManagement::DataManagement() {}
+
+DataManagement *DataManagement::getDataManager(){
+    if(dataManager == nullptr) {
+        QMutexLocker locker(&dataMtx);
+        if(dataManager == nullptr){
+            dataManager = new DataManagement();
+        }
+    }
+    return dataManager;
+}
+
+
+//intializing static memebers
+DataManagement * DataManagement::dataManager = nullptr;
+QMutex DataManagement::dataMtx;
+
 void DataManagement::setDatabasePath() {
     filePath = (findPath()+"/database/libraryDatabase.json");
 }
@@ -28,18 +47,17 @@ QString DataManagement::findPath() {
 
 // --------------- public fucntions ---------------
 
-//constuctor
-DataManagement::DataManagement() {}
-
 //setters
-void DataManagement::setFileData(const QJsonObject newData) {
-    jsonData = newData;
-}
 
 //getters
-const QJsonObject DataManagement::getFileData() {
-    return jsonData;
+const QJsonObject& DataManagement::getFileData() {
+    if(libraryDatabase.isEmpty()){
+        readData();
+    }
+    return libraryDatabase;
 }
+
+
 
 QString DataManagement::getFilePath() {
     return filePath;
@@ -68,7 +86,7 @@ bool DataManagement::readData(){
     QJsonDocument database = QJsonDocument::fromJson(data);
 
     if(database.isObject()){
-        jsonData=database.object();
+        libraryDatabase=database.object();
         file.close();
         return true;
     }
@@ -79,6 +97,8 @@ bool DataManagement::readData(){
 }
 
 bool DataManagement::saveData(){
+    setDatabasePath();
+
     QFile file(filePath);
 
     if(!file.open(QIODevice::WriteOnly)){
@@ -86,7 +106,8 @@ bool DataManagement::saveData(){
         return false;
     }
 
-    QJsonDocument doc(jsonData);
+    QJsonDocument doc(libraryDatabase);
+
     file.write(doc.toJson());
     file.close();
     return true;
