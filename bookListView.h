@@ -8,8 +8,8 @@ namespace Ui {
 class BookListView;
 }
 
-class BookListView : public QWidget
-{
+class BookListView : public QWidget {
+
     Q_OBJECT
 
 private:
@@ -19,12 +19,15 @@ private slots:
     void checkoutBook();
     void placeHold();
 
+
 public:
     explicit BookListView(QWidget *parent = nullptr);
     ~BookListView();
+    void editBook();
 
 signals:
     void refreashView();
+    void refreashMemberView();
 
 };
 

@@ -36,11 +36,11 @@ void RegistrationView::submitButtonClicked() {
                                             addressInput);
 
     if(memberAdded){
-        qDebug()<<"Member added Succesfully";
+        qDebug()<<"RegistrationView: Member added Succesfully";
         //return to login screen
         emit loginRequest();
     } else {
-        qDebug()<<"Failed to add member";
+        qDebug()<<"RegistrationView: Failed to add member";
     }
 }
 

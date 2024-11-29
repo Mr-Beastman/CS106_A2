@@ -3,14 +3,20 @@
 #include "addBookview.h"
 #include "userManagement.h"
 #include "bookManagement.h"
+#include "transactionManagement.h"
 #include "bookListView.h"
 
 AdminView::AdminView(QWidget *parent) : QWidget(parent), ui(new Ui::AdminView) {
     ui->setupUi(this);
 
-    //set up for manage catalogue
+    //connect buttons
     connect(ui->addButton, &QPushButton::clicked, this, &AdminView::addButtonClicked);
     connect(ui->logoutButton, &QPushButton::clicked, this, &AdminView::logoutButtonClicked);
+
+
+    //connect signals
+    // ModifyBookView* modifyBookPage = new ModifyBookView(this);
+    // connect(modifyBookPage, &ModifyBookView::requestRefreash, this, &AdminView::updateDisplays);
 }
 
 void AdminView::displayUsers() {
@@ -56,6 +62,10 @@ void AdminView::displayUsers() {
 
         //adding entry widget to the ui file
         ui->membersList->addItem(entry);
+
+        //assigning account# to entry
+        entry->setData(Qt::UserRole, user["account"].toString());
+
         ui->membersList->setItemWidget(entry, userWidget);
     }
 
@@ -78,6 +88,7 @@ void AdminView::addButtonClicked(){
 void AdminView::loadAdminCatalogue(){
 
     BookManagement *bookManager = BookManagement::getBookManager();
+    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
 
     QJsonArray& bookData = bookManager->getBookArray();
 
@@ -88,35 +99,8 @@ void AdminView::loadAdminCatalogue(){
     for(int i = 0; i<bookData.size(); ++i){
         QJsonObject book = bookData[i].toObject();
 
-        BookListView* bookListView = new BookListView(ui->catalogueList);
-
-        // // Adding data to the entry
-        QLabel* titleLabel = bookListView->findChild<QLabel*>("titleOutputLabel");
-        titleLabel->setText(book["title"].toString());
-
-        QLabel* authorLabel = bookListView->findChild<QLabel*>("authorOutputLabel");
-        authorLabel->setText(book["author"].toString());
-
-        QLabel* isbnLabel = bookListView->findChild<QLabel*>("isbnOutputLabel");
-        isbnLabel->setText(book["isbn"].toString());
-
-        // adding cover image
-        QLabel* coverLabel = bookListView->findChild<QLabel*>("coverLabel");
-        if (coverLabel) {
-            QString coverImagePath = bookManager->findCoverPath() + book["isbn"].toString() + ".png";
-            QPixmap cover(coverImagePath);
-            QString noCoverImagePath = bookManager->findCoverPath() + "noCover.png";
-            QPixmap noCover(noCoverImagePath);
-
-            if (!cover.isNull()) {
-                coverLabel->setPixmap(cover);
-            } else {
-                coverLabel->setPixmap(noCover);
-            }
-            coverLabel->setScaledContents(true);
-        } else {
-            qDebug() << "MemberView: Cover label not found";
-        }
+        QJsonObject entry;
+        BookListView* bookListView = bookManager->createBookList(book, entry);
 
         //adding entry to list
         QListWidgetItem* item = new QListWidgetItem(ui->catalogueList);
@@ -128,11 +112,35 @@ void AdminView::loadAdminCatalogue(){
             item->setBackground(QBrush(QColor(187,211,180)));
         }
 
+        QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
+        int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("adminPage"));
+        stackedWidget->setCurrentIndex(index);
+
+        QLabel* checkedOut =  bookListView->findChild<QLabel*>("CheckedOutputLabel");
+        checkedOut->setText(transactionManager->checkedOutTo(book["isbn"].toString()));
+
         item->setSizeHint(bookListView->sizeHint());
+
+        item->setData(Qt::UserRole, book["isbn"].toString());
+
         ui->catalogueList->setItemWidget(item, bookListView);
+
+        connect(bookListView, &BookListView::refreashView, this, &AdminView::updateDisplays);
     }
 }
 
+void AdminView::onBookClicked(QListWidgetItem *book) {
+    //getting the assigned isbn from clicked item
+    QString isbn = book->data(Qt::UserRole).toString();
+
+    //getting book details
+    BookManagement* bookManger = BookManagement::getBookManager();
+    QJsonObject bookDetails = bookManger->getBookDetails(isbn);
+
+    qDebug()<<"MemberView: Generating Book Info View";
+
+    emit requestBookInfo(bookDetails);
+}
 
 //view methods
 void AdminView::logoutButtonClicked() {

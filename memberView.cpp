@@ -11,6 +11,11 @@ MemberView::MemberView(QWidget *parent) : QWidget(parent), ui(new Ui::MemberView
     //connect buttons
     connect(ui->updateButton, &QPushButton::clicked, this, &MemberView::updateButtonClicked);
     connect(ui->logoutButton, &QAbstractButton::clicked, this, &MemberView::logoutButtonClicked);
+
+    //connect signals
+    connect(ui->issuedList, &QListWidget::itemClicked, this, &MemberView::onBookClicked);
+    connect(ui->holdList, &QListWidget::itemClicked, this, &MemberView::onBookClicked);
+    connect(ui->catalogueList, &QListWidget::itemClicked, this, &MemberView::onBookClicked);
 }
 
 MemberView::~MemberView() {
@@ -18,7 +23,26 @@ MemberView::~MemberView() {
 }
 
 //view related functions
-void MemberView::displayCurrentMember(const QJsonObject& currentUser) {
+
+void MemberView::refreashMemberView(){
+    qDebug()<<"MemberView: Refreashing member views to show updated information";
+    UserManagement* userManager = UserManagement::getUserManager();
+    BookManagement* bookManager = BookManagement::getBookManager();
+
+    //ensuring most current data is loaded
+    bookManager->readData();
+    bookManager->setBookArray();
+    userManager->setUserArray();
+
+    displayCurrentMember();
+    displayCheckedOut();
+    displayHoldRequests();
+    loadCatalogue();
+}
+
+void MemberView::displayCurrentMember() {
+    UserManagement* userManager  = UserManagement::getUserManager();
+    QJsonObject& currentUser = userManager->getCurrentUser();
 
     if(!currentUser.isEmpty()){
         ui->nameOutputLabel->setText(currentUser["name"].toString());
@@ -27,35 +51,14 @@ void MemberView::displayCurrentMember(const QJsonObject& currentUser) {
         ui->emailOutputLabel->setText(currentUser["email"].toString());
         ui->addressOutputLabel->setText(currentUser["address"].toString());
     } else {
-        qDebug()<<"User Not found";
+        qDebug()<<"MemberView: User Not found, cannot display information";
     }
 }
-
-void MemberView::refreashView(){
-    qDebug()<<"MemberView: Refreashing member views to show updated information";
-    UserManagement* userManager = UserManagement::getUserManager();
-    BookManagement* bookManager = BookManagement::getBookManager();
-
-    //ensure most current data is loaded
-    bookManager->readData();
-    bookManager->setBookArray();
-    userManager->setUserArray();
-
-    displayCurrentMember(userManager->getCurrentUser());
-    displayCheckedOut(userManager->getCurrentUser());
-    displayHoldRequests(userManager->getCurrentUser());
-    loadCatalogue();
-}
-
-// void logoutButtonClicked(){
-//     emit logoutRequest();
-// }
-
 
 //accountTab functions
 void MemberView::updateButtonClicked() {
     UpdateUserView* updateUserView = new UpdateUserView(this);
-    connect(updateUserView, &UpdateUserView::requestRefreash, this, &MemberView::refreashView);
+    connect(updateUserView, &UpdateUserView::requestRefreash, this, &MemberView::refreashMemberView);
     updateUserView->exec();
 }
 
@@ -66,66 +69,52 @@ void MemberView::logoutButtonClicked() {
 //populates ui with books currently checked out to the current user
 //parameters: QjsonObject containing user to display
 //returns : none
-void MemberView::displayCheckedOut(const QJsonObject& currentUser) {
-
-    QJsonArray checkedOut = currentUser["activeLoans"].toArray();
+void MemberView::displayCheckedOut() {
+    //getting mangers
+    UserManagement* userManager = UserManagement::getUserManager();
     BookManagement* bookManager = BookManagement::getBookManager();
+    //getting user details
+    QJsonObject& currentUser = userManager->getCurrentUser();
+    QJsonArray checkedOut = currentUser["activeLoans"].toArray();
 
-    //if array is empty end early
+
+    //if array is empty setting to no display
     if(checkedOut.isEmpty()){
+        qDebug()<<"MemberView: Setting Checkedout display to empty";
+        stackedWidgetDisplay(ui->issuedStackedWidget, ui->noIssuedPage);
         return;
     }
 
+    //setting Checkout view to display lsit
+    qDebug()<<"MemberView: Setting Checkedout Display checkedout Items";
+    stackedWidgetDisplay(ui->issuedStackedWidget, ui->issuedPage);
+
+    //ensuring clean list before populating
     ui->issuedList->clear();
 
-    qDebug()<<"User has : "<<checkedOut.size()<<" books checked out";
-
+    //building list to display
+    qDebug()<<"MemberView: Generating users checkedout items";
     for(int i = 0; i<checkedOut.size(); ++i){
         QJsonObject entry = checkedOut[i].toObject();
         QJsonObject book = bookManager->getBookDetails(entry["isbn"].toString());
 
-        BookListView* bookListView = new BookListView(ui->issuedList);
-        connect(bookListView, &BookListView::refreashView, this, &MemberView::refreashView);
+        //creating item
+        BookListView* bookListItem = bookManager->createBookList(book, entry);
 
-        // // Adding data to the entry
-        QLabel* titleLabel = bookListView->findChild<QLabel*>("titleOutputLabel");
-        titleLabel->setText(book["title"].toString());
-
-        QLabel* authorLabel = bookListView->findChild<QLabel*>("authorOutputLabel");
-        authorLabel->setText(book["author"].toString());
-
-        QLabel* isbnLabel = bookListView->findChild<QLabel*>("isbnOutputLabel");
-        isbnLabel->setText(book["isbn"].toString());
-
-        QLabel* dueLabel = bookListView->findChild<QLabel*>("dueOutputLabel");
-        dueLabel->setText(entry["dueDate"].toString());
-
+        //connect refrash signal
+        connect(bookListItem, &BookListView::refreashMemberView, this, &MemberView::refreashMemberView);
 
         //display due date and renew options
-        QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
-        int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userCheckedoutPage"));
+        QStackedWidget* stackedWidget = bookListItem->findChild<QStackedWidget*>("optionsStackedWidget");
+        int index = stackedWidget->indexOf(bookListItem->findChild<QWidget*>("userCheckedoutPage"));
         stackedWidget->setCurrentIndex(index);
-
-        // adding cover image
-        QLabel* coverLabel = bookListView->findChild<QLabel*>("coverLabel");
-        if (coverLabel) {
-            QString coverImagePath = bookManager->findCoverPath() + book["isbn"].toString() + ".png";
-            QPixmap cover(coverImagePath);
-            QString noCoverImagePath = bookManager->findCoverPath() + "noCover.png";
-            QPixmap noCover(noCoverImagePath);
-
-            if (!cover.isNull()) {
-                coverLabel->setPixmap(cover);
-            } else {
-                coverLabel->setPixmap(noCover);
-            }
-            coverLabel->setScaledContents(true);
-        } else {
-            qDebug() << "MemberView: Cover label not found";
-        }
 
         //adding entry to list
         QListWidgetItem* item = new QListWidgetItem(ui->issuedList);
+        item->setSizeHint(bookListItem->sizeHint());
+
+        //assigning isbn to item
+        item->setData(Qt::UserRole, book["isbn"].toString());
 
         //adding alternating colors
         if(i % 2 == 0){
@@ -134,71 +123,41 @@ void MemberView::displayCheckedOut(const QJsonObject& currentUser) {
             item->setBackground(QBrush(QColor(187,211,180)));
         }
 
-        connect(bookListView, &BookListView::refreashView, this, &MemberView::refreashView);
-
-        item->setSizeHint(bookListView->sizeHint());
-        ui->issuedList->setItemWidget(item, bookListView);
+        ui->issuedList->setItemWidget(item, bookListItem);
     }
 
     qDebug()<<"MemberView: Issued items for "<<currentUser["username"].toString()<<" displayed";
 }
 
-void MemberView::displayHoldRequests(const QJsonObject& currentUser) {
-
-    QJsonArray holdRequests = currentUser["holdRequests"].toArray();
+void MemberView::displayHoldRequests() {
+    //get managers
     BookManagement* bookManager = BookManagement::getBookManager();
+    UserManagement* userManager = UserManagement::getUserManager();
 
-    //if array is empty end early
+    //get current user details
+    QJsonObject& currentUser = userManager->getCurrentUser();
+    QJsonArray holdRequests = currentUser["holdRequests"].toArray();
+
+    //setting to display "no holds" if array empty
     if(holdRequests.isEmpty()){
+        qDebug()<<"MemberView: Setting Hold display to empty";
+        stackedWidgetDisplay(ui->holdStackedWidget, ui->noHoldPage);
         return;
     }
 
+    //setting view to display list if array !empty
+    qDebug()<<"MemberView: Setting hold to display items";
+    stackedWidgetDisplay(ui->holdStackedWidget, ui->holdPage);
+
+    //clean list view
     ui->holdList->clear();
 
+    //build items for list to display
     for(int i = 0; i<holdRequests.size(); ++i){
         QJsonObject entry = holdRequests[i].toObject();
-
         QJsonObject book = bookManager->getBookDetails(entry["isbn"].toString());
 
-        BookListView* bookListView = new BookListView(ui->holdList);
-        connect(bookListView, &BookListView::refreashView, this, &MemberView::refreashView);
-
-        // // Adding data to the entry
-        QLabel* titleLabel = bookListView->findChild<QLabel*>("titleOutputLabel");
-        titleLabel->setText(book["title"].toString());
-
-        QLabel* authorLabel = bookListView->findChild<QLabel*>("authorOutputLabel");
-        authorLabel->setText(book["author"].toString());
-
-        QLabel* isbnLabel = bookListView->findChild<QLabel*>("isbnOutputLabel");
-        isbnLabel->setText(book["isbn"].toString());
-
-        QLabel* dueLabel = bookListView->findChild<QLabel*>("dueOutputLabel");
-        dueLabel->setText(entry["dueDate"].toString());
-
-
-        //display due date and renew options
-        QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
-        int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userCheckedoutPage"));
-        stackedWidget->setCurrentIndex(index);
-
-        // adding cover image
-        QLabel* coverLabel = bookListView->findChild<QLabel*>("coverLabel");
-        if (coverLabel) {
-            QString coverImagePath = bookManager->findCoverPath() + book["isbn"].toString() + ".png";
-            QPixmap cover(coverImagePath);
-            QString noCoverImagePath = bookManager->findCoverPath() + "noCover.png";
-            QPixmap noCover(noCoverImagePath);
-
-            if (!cover.isNull()) {
-                coverLabel->setPixmap(cover);
-            } else {
-                coverLabel->setPixmap(noCover);
-            }
-            coverLabel->setScaledContents(true);
-        } else {
-            qDebug() << "MemberView: Cover label not found";
-        }
+        BookListView* bookListView = bookManager->createBookList(book, entry);
 
         //adding entry to list
         QListWidgetItem* item = new QListWidgetItem(ui->holdList);
@@ -210,23 +169,36 @@ void MemberView::displayHoldRequests(const QJsonObject& currentUser) {
             item->setBackground(QBrush(QColor(187,211,180)));
         }
 
-        connect(bookListView, &BookListView::refreashView, this, &MemberView::refreashView);
+        connect(bookListView, &BookListView::refreashMemberView, this, &MemberView::refreashMemberView);
 
         item->setSizeHint(bookListView->sizeHint());
+
+        //assigning isbn with item
+        item->setData(Qt::UserRole, book["isbn"].toString());
+
         ui->holdList->setItemWidget(item, bookListView);
     }
 
     qDebug()<<"MemberView: Issued items for "<<currentUser["username"].toString()<<" displayed";
 }
 
+void MemberView::stackedWidgetDisplay(QStackedWidget *toSet, QWidget *page) {
+    QStackedWidget* stackedWidget = toSet;
+    int index = stackedWidget->indexOf(page);
+    stackedWidget->setCurrentIndex(index);
+}
+
 
 //catalogueTab functions
 void MemberView::loadCatalogue(){
-
+    //getting managers
     BookManagement *bookManager = BookManagement::getBookManager();
+    UserManagement *userManager = UserManagement::getUserManager();
 
-
+    //getting userDetails
     QJsonArray& bookData = bookManager->getBookArray();
+    QJsonObject& currentUser = userManager->getCurrentUser();
+    QJsonArray checkedOut = currentUser["activeLoans"].toArray();
 
     //clear list
     ui->catalogueList->clear();
@@ -235,51 +207,41 @@ void MemberView::loadCatalogue(){
     for(int i = 0; i<bookData.size(); ++i){
         QJsonObject book = bookData[i].toObject();
 
-        BookListView* bookListView = new BookListView(ui->catalogueList);
-        connect(bookListView, &BookListView::refreashView, this, &MemberView::refreashView);
+        bool userCheckedout = false;
 
-
-        // // Adding data to the entry
-        QLabel* titleLabel = bookListView->findChild<QLabel*>("titleOutputLabel");
-        titleLabel->setText(book["title"].toString());
-
-        QLabel* authorLabel = bookListView->findChild<QLabel*>("authorOutputLabel");
-        authorLabel->setText(book["author"].toString());
-
-        QLabel* isbnLabel = bookListView->findChild<QLabel*>("isbnOutputLabel");
-        isbnLabel->setText(book["isbn"].toString());
-
-        //setting availability and member options
-        if(bookManager->isAvailable(book["isbn"].toString())){
-            QLabel* availabilityTextLabel = bookListView->findChild<QLabel*>("availabilityTextLabel");
-            availabilityTextLabel->setText("Available");
-            QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
-            int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userAvailablePage"));
-            stackedWidget->setCurrentIndex(index);
-        } else {
-            QLabel* availabilityTextLabel = bookListView->findChild<QLabel*>("availabilityTextLabel");
-            availabilityTextLabel->setText("Not Available");
-            QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
-            int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userNotAvailablePage"));
-            stackedWidget->setCurrentIndex(index);
+        for(int j = 0; j<checkedOut.size(); j++){
+            QJsonObject loaned = checkedOut[j].toObject();
+            if(loaned["isbn"].toString() == book["isbn"].toString()){
+                userCheckedout = true;
+                break;
+            }
         }
 
-        // adding cover image
-        QLabel* coverLabel = bookListView->findChild<QLabel*>("coverLabel");
-        if (coverLabel) {
-            QString coverImagePath = bookManager->findCoverPath() + book["isbn"].toString() + ".png";
-            QPixmap cover(coverImagePath);
-            QString noCoverImagePath = bookManager->findCoverPath() + "noCover.png";
-            QPixmap noCover(noCoverImagePath);
+        QJsonObject entry;
+        BookListView* bookListView = bookManager->createBookList(book, entry);
 
-            if (!cover.isNull()) {
-                coverLabel->setPixmap(cover);
+        //connect refrash signal
+        connect(bookListView, &BookListView::refreashMemberView, this, &MemberView::refreashMemberView);
+
+        //setting availability and member options
+        if(!userCheckedout){
+            if(bookManager->isAvailable(book["isbn"].toString())){
+                QLabel* availabilityTextLabel = bookListView->findChild<QLabel*>("availabilityTextLabel");
+                availabilityTextLabel->setText("Available");
+                QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
+                int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userAvailablePage"));
+                stackedWidget->setCurrentIndex(index);
             } else {
-                coverLabel->setPixmap(noCover);
+                QLabel* availabilityTextLabel = bookListView->findChild<QLabel*>("availabilityTextLabel");
+                availabilityTextLabel->setText("Not Available");
+                QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
+                int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userNotAvailablePage"));
+                stackedWidget->setCurrentIndex(index);
             }
-            coverLabel->setScaledContents(true);
         } else {
-            qDebug() << "MemberView: Cover label not found";
+            QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
+            int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userCheckedoutPage"));
+            stackedWidget->setCurrentIndex(index);
         }
 
         //adding entry to list
@@ -293,6 +255,23 @@ void MemberView::loadCatalogue(){
         }
 
         item->setSizeHint(bookListView->sizeHint());
+
+        //assigning isbn with item
+        item->setData(Qt::UserRole, book["isbn"].toString());
+
         ui->catalogueList->setItemWidget(item, bookListView);
     }
+}
+
+void MemberView::onBookClicked(QListWidgetItem *book) {
+    //getting the assigned isbn from clicked item
+    QString isbn = book->data(Qt::UserRole).toString();
+
+    //getting book details
+    BookManagement* bookManger = BookManagement::getBookManager();
+    QJsonObject bookDetails = bookManger->getBookDetails(isbn);
+
+    qDebug()<<"MemberView: Generating Book Info View";
+
+    emit requestBookInfo(bookDetails);
 }

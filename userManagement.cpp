@@ -28,9 +28,17 @@ void UserManagement::setUserArray(){
     userArray = libraryDatabase["users"].toArray();
 }
 
-void UserManagement::updateCurrentUser(QJsonObject updated)
-{
-    currentUser = updated;
+QJsonObject UserManagement::updateCurrentUser(const QString &username){
+    for(int i = 0; i<userArray.size(); i++){
+        QJsonObject user = userArray[i].toObject();
+
+        if(user["username"].toString() == username){
+            return user;
+        }
+    }
+
+    qDebug()<<"UserManagement: User not found";
+    return QJsonObject();
 }
 
 void UserManagement::clearCurrentUser(){
@@ -68,7 +76,7 @@ QJsonObject UserManagement::getUserObj(const QString& username) {
     }
 
     //display error and return empty object
-    qDebug()<<"User not found";
+    qDebug()<<"UserManagment: User not found";
     return QJsonObject();
 }
 
@@ -81,6 +89,33 @@ UserManagement *UserManagement::getUserManager() {
         }
     }
     return userManager;
+}
+
+bool UserManagement::updateUserInArray(){
+
+    if(currentUser.empty()){
+        qDebug()<<"UserMangamer: Current user empty";
+        return false;
+    }
+
+    bool updated = false;
+
+    for(int i = 0; i<userArray.size(); i++){
+        QJsonObject user = userArray[i].toObject();
+
+        if(user["username"].toString() == currentUser["username"].toString()){
+            userArray.replace(i, currentUser);
+            updated = true;
+            break;
+        }
+    }
+
+    if(!updated){
+        qDebug()<<"UserManagement: Current user not in array";
+        return false;
+    }
+
+    return true;
 }
 
 //methods
@@ -127,7 +162,7 @@ bool UserManagement::addUser(const QString& nameInput,
 
     //checking user array is populated
     if(userArray.isEmpty()){
-        qDebug()<<"user array empty";
+        qDebug()<<"UserManagment: User array empty";
         setUserArray();
     }
 
@@ -143,18 +178,17 @@ bool UserManagement::addUser(const QString& nameInput,
     newUser["isActive"] = false;
     newUser["account"] = userID();
 
-    qDebug()<<userArray;
     //add newUser to the existing array
     userArray.append(newUser);
     libraryDatabase["users"] = userArray;
 
     //save updates to json file
     if(saveData()){
-        qDebug()<<"New user has been added";
+        qDebug()<<"UserManagment: New user has been added";
         return true;
     }
 
-    qDebug()<<"Failed to save new user";
+    qDebug()<<"UserManagment: Failed to save new user";
     return false;
 }
 
@@ -181,7 +215,7 @@ bool UserManagement::isActive(const QString& usernameInput){
 bool UserManagement::isAdmin(const QString& usernameInput){
     //checking user data exists
     if(!libraryDatabase.contains("users") || !libraryDatabase["users"].isArray()){
-        qDebug()<< "No user data present";
+        qDebug()<< "UserManagment: No user data present";
         return false;
     }
 

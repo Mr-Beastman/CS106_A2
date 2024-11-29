@@ -26,7 +26,7 @@ public:
     //setters
     void setCurrentUser(const QJsonObject userObj);
     void setUserArray();
-    void updateCurrentUser(QJsonObject updated);
+    QJsonObject updateCurrentUser(const QString& username);
     void clearCurrentUser();
 
     //getters
@@ -37,7 +37,7 @@ public:
     static UserManagement* getUserManager();
 
     //methods
-
+    bool updateUserInArray();
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     //vertical format for ease of reading
     bool addUser(

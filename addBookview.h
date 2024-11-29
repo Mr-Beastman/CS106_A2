@@ -3,8 +3,6 @@
 
 #include <QDialog>
 
-#include "ui_addBookView.h"
-
 namespace Ui {
 class AddBookView;
 }

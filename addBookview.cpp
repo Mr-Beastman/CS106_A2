@@ -1,5 +1,6 @@
 #include "AddBookView.h"
 #include "bookManagement.h"
+#include "ui_addBookView.h"
 
 #include <QDragEnterEvent>
 #include <QMimeData>
@@ -74,15 +75,15 @@ void AddBookView::saveButtonClicked() {
 
     //saving the book details
     if(bookManager->addBook(title, author, isbn, description, genre, section)){
-        qDebug()<<"Book Added Succesfully";
+        qDebug()<<"AddBookView: Book Added Succesfully";
 
         //save image if one provided
         if(!imageLocation.isEmpty()){
             QString saveLocation = bookManager->findCoverPath()+isbn+".png";
             if(QFile::copy(imageLocation,saveLocation)){
-                qDebug()<<"Image saved Successfully";
+                qDebug()<<"AddBookView: Image saved Successfully";
             } else {
-                qDebug()<<"Failed to save image";
+                qDebug()<<"AddBookView: Failed to save image";
             }
         }
 
@@ -91,6 +92,6 @@ void AddBookView::saveButtonClicked() {
 
         this->accept();
     } else {
-        qDebug()<<"Failed to add book";
+        qDebug()<<"AddBookView: Failed to add book";
     }
 }

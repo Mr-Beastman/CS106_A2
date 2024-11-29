@@ -13,6 +13,7 @@
 #include "registrationView.h"
 #include "adminView.h"
 #include "memberView.h"
+#include "bookInfoView.h"
 
 
 namespace Ui {
@@ -38,16 +39,20 @@ private:
     RegistrationView* registrationPage;
     AdminView* adminPage;
     MemberView* memberPage;
+    BookInfoView* bookInfoPage;
 
 private slots:
     void showLogin();
     void userLogin(const QString& username, QString password);
     void showRegister();
+    void showBookInfo(QJsonObject& bookDetails);
+    void goBack();
     void logOut();
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void loadData();
 
 
 signals:

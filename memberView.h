@@ -26,7 +26,6 @@ private:
 private slots:
     //accountTab related
     void updateButtonClicked();
-
     void logoutButtonClicked();
 
 public:
@@ -37,18 +36,21 @@ public:
 
 
     //accountTab Related
-    void displayCurrentMember(const QJsonObject& currentUser);
-    void displayCheckedOut(const QJsonObject& currentUser);
-    void displayHoldRequests(const QJsonObject& currentUser);
+    void displayCurrentMember();
+    void displayCheckedOut();
+    void displayHoldRequests();
+    void stackedWidgetDisplay(QStackedWidget* toSet, QWidget* page);
 
     //catalogueTab related
     void loadCatalogue();
 
 public slots:
-    void refreashView();
+    void onBookClicked(QListWidgetItem* book);
+    void refreashMemberView();
 
 signals:
     void logoutRequest();
+    void requestBookInfo(QJsonObject& bookDetails);
 
 };
 

@@ -23,8 +23,9 @@ public:
     static TransactionManagement* getTransactionManager();
 
     //transaction methods
-    bool placeHold(const QString& username, const QString& isbn);
+    bool placeHold(const QString& isbn);
     bool checkoutBook(const QString& isbn);
+    QString checkedOutTo(const QString& isbn);
     bool renewBook(const QString& username, const QString& isbn);
     bool returnBook(const QString&username, const QString& isbn);
     QJsonArray getLoanHistory(const QString& username);

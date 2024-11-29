@@ -31,9 +31,11 @@ public:
     void loadAdminCatalogue();
     void displayUsers();
     void updateDisplays();
+    void onBookClicked(QListWidgetItem *book);
 
 signals:
     void logoutRequest();
+    void requestBookInfo(QJsonObject& bookDetails);
 };
 
 #endif // ADMINVIEW_H

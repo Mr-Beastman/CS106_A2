@@ -1,4 +1,5 @@
 #include "updateUserView.h"
+#include "ui_updateUserView.h"
 #include "mainWindow.h"
 
 UpdateUserView::UpdateUserView(QWidget *parent) : QDialog(parent), ui(new Ui::UpdateUserView) {

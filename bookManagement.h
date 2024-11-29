@@ -2,6 +2,20 @@
 #define BOOKMANAGEMENT_H
 
 #include "dataManagement.h"
+#include "bookListView.h"
+
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QListWidgetItem>
+#include <QStackedWidget>
+#include <QLabel>
+#include <QPixmap>
+#include <QBrush>
+#include <QColor>
+#include <QDir>
+
 
 class BookManagement : virtual public DataManagement {
 
@@ -33,6 +47,7 @@ public:
 
     //methods
     //vertical format for ease of reading
+    BookListView* createBookList(const QJsonObject& book, const QJsonObject& entry);
     bool addBook(
         const QString& titleInput,
         const QString& authorInput,
@@ -40,9 +55,13 @@ public:
         const QString& descInput,
         const QString& genreInput,
         const QString& sectInput);
+    bool updateBook(const QString& isbn, const QJsonObject& updatedBook);
     bool isAvailable(const QString& isbn);
     QString findCoverPath();
     QString findCoverImage(QString& isbn);
+
+signals:
+    void noUpdates();
 
 };
 

@@ -20,37 +20,45 @@ TransactionManagement* TransactionManagement::getTransactionManager(){
 //place hold a curretnly checked out book
 //parameters : username requesting hold and isbn of book to hold
 //returns : true on success false on fail
-bool TransactionManagement::placeHold(const QString &username, const QString &isbn){
+bool TransactionManagement::placeHold(const QString &isbn){
+    //getting managers
+    BookManagement* bookManager = BookManagement::getBookManager();
+    UserManagement* userManager = UserManagement::getUserManager();
+
+    //getting current user
+    QJsonObject currentUser = userManager->getCurrentUser();
 
     //add user request to book data in json file
-    for(int i = 0; bookArray.size(); i++){
+    QJsonArray& bookArray = bookManager->getBookArray();
+    for(int i = 0; i<bookArray.size(); i++){
         QJsonObject book = bookArray[i].toObject();
 
         if(book["isbn"].toString() == isbn){
             QJsonArray bookQueue = book["inQueue"].toArray();
-
             QJsonObject holdEntry;
 
+            //creating hold entry
             //storing username for queue
-            holdEntry["username"] = username;
+            holdEntry["username"] = currentUser["username"].toString();
             //storing time of request to so oldest can be priortised
-            holdEntry["holdDate"] = QDateTime::currentDateTime().toString();
-            //setting a stats active/notified/expired for auto clearing
+            holdEntry["holdDate"] = QDateTime::currentDateTime().date().toString("dd-mm-yyyy");
+            //setting a status active/notified/expired for auto clearing
             holdEntry["holdStatus"] =  "active";
 
             bookQueue.append(holdEntry);
 
             book["inQueue"] = bookQueue;
-
-            bookArray[i] = book;
+            
+            bookArray.replace(i, book);
             break;
         }
     }
 
+    QJsonArray& userArray = userManager->getUserArray();
     //add book isbn to user account so we can check what books they have on hold
-    for(int i = 0; userArray.size(); i++){
+    for(int i = 0; i<userArray.size(); i++){
         QJsonObject user = userArray[i].toObject();
-        if(user["username"].toString() == username){
+        if(user["username"].toString() == currentUser["username"].toString()){
             QJsonArray holdRequests = user["holdRequests"].toArray();
             QJsonObject holdEntry;
 
@@ -59,7 +67,7 @@ bool TransactionManagement::placeHold(const QString &username, const QString &is
 
             user["holdRequests"] = holdRequests;
 
-            userArray[i] = user;
+            userArray.replace(i,user);
             break;
         }
     }
@@ -68,6 +76,10 @@ bool TransactionManagement::placeHold(const QString &username, const QString &is
     libraryDatabase["users"] = userArray;
     libraryDatabase["books"] = bookArray;
 
+    //updating current user
+    userManager->setCurrentUser(currentUser);
+
+    //save updated data to Json file
     if(saveData()){
         qDebug()<<"TransactionManagement: Hold Successfull";
         return true;
@@ -86,10 +98,10 @@ bool TransactionManagement::checkoutBook(const QString& isbn){
     QJsonObject user = userManager->getCurrentUser();
 
     //update book to unavailable
-    QJsonArray bookArray = bookManager->getBookArray();
+    QJsonArray& bookArray = bookManager->getBookArray();
 
     //setting the book to unavailable
-    for(int i = 0; i < bookArray.size(); ++i){
+    for(int i = 0; i<bookArray.size(); ++i){
         QJsonObject book = bookArray[i].toObject();
         if(book["isbn"].toString()==isbn){
             book["isAvailable"]=false;
@@ -110,7 +122,7 @@ bool TransactionManagement::checkoutBook(const QString& isbn){
     user["activeLoans"] = activeLoans;
 
     //updating user in the userArray
-    QJsonArray userArray = userManager->getUserArray();
+    QJsonArray& userArray = userManager->getUserArray();
     for(int i = 0; i<userArray.size(); ++i){
         QJsonObject updatedUser = userArray[i].toObject();
         if(updatedUser["username"].toString() == user["username"].toString()){
@@ -134,4 +146,29 @@ bool TransactionManagement::checkoutBook(const QString& isbn){
 
     qDebug()<<"TransactionManagement: Checkout Failed";
     return false;
+}
+
+QString TransactionManagement::checkedOutTo(const QString &isbn){
+    setUserArray();
+    QJsonArray& userArray = getUserArray();
+
+    //looping through users
+    for(int i = 0; i < userArray.size(); i++){
+        QJsonObject user = userArray[i].toObject();
+
+        //checking users active loans
+        QJsonArray activeLoans = user["activeLoans"].toArray();
+        if(!activeLoans.isEmpty()){
+            for(int j = 0; j < activeLoans.size(); j++){
+                QJsonObject loan = activeLoans[j].toObject();
+
+                if(loan["isbn"].toString() == isbn){
+                    return user["username"].toString();
+                }
+            }
+        }
+    }
+
+    //if no match found return none
+    return "none";
 }
