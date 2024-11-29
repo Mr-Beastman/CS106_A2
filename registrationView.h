@@ -25,13 +25,6 @@ public:
 
 signals:
     void loginRequest();
-    void submitNewUser(
-        const QString& nameInput,
-        const QString& usernameInput,
-        const QString& passwordInput,
-        const QString& phoneInput,
-        const QString& emailInput,
-        const QString& addressInput);
 };
 
 #endif // REGISTRATIONVIEW_H

@@ -40,15 +40,10 @@ public:
     bool updateUserInArray();
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     //vertical format for ease of reading
-    bool addUser(
-        const QString& nameInput,
-        const QString& usernameInput,
-        const QString& passwordInput,
-        const QString& phoneInput,
-        const QString& emailInput,
-        const QString& addressInput);
+    bool addUser(QJsonObject &newUser);
     bool isAdmin(const QString& usernameInput);
     bool isActive(const QString &usernameInput);
+    bool usernameExists(QJsonObject& user);
     int userID();
 };
 

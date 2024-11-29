@@ -158,7 +158,7 @@ bool BookManagement::updateBook(const QString &isbn, const QJsonObject &updatedB
 
             if(book["isbn"].toString() == isbn) {
                 book["title"] = updatedBook["title"];
-                book["author"] = updatedBook["auhtor"];
+                book["author"] = updatedBook["author"];
                 book["isbn"] = updatedBook["isbn"];
                 book["genre"] = updatedBook["genre"];
                 book["sect"] = updatedBook["sect"];

@@ -28,6 +28,7 @@
             "title": "Fourth Wing (The Empyrean Book 1)"
         },
         {
+            "author": "Brandon Sanderson",
             "desc": "Roshar is a world of stone and storms. Uncanny tempests of incredible power sweep across the rocky terrain so frequently that they have shaped ecology and civilization alike. Animals hide in shells, trees pull in branches, and grass retracts into the soilless ground. Cities are built only where the topography offers shelter.\n\nIt has been centuries since the fall of the ten consecrated orders known as the Knights Radiant, but their Shardblades and Shardplate remain: mystical swords and suits of armor that transform ordinary men into near-invincible warriors. Men trade kingdoms for Shardblades. Wars were fought for them, and won by them.\n\nOne such war rages on a ruined landscape called the Shattered Plains. There, Kaladin, who traded his medical apprenticeship for a spear to protect his little brother, has been reduced to slavery. In a war that makes no sense, where ten armies fight separately against a single foe, he struggles to save his men and to fathom the leaders who consider them expendable.\n\nBrightlord Dalinar Kholin commands one of those other armies. Like his brother, the late king, he is fascinated by an ancient text called The Way of Kings. Troubled by over-powering visions of ancient times and the Knights Radiant, he has begun to doubt his own sanity.\n\nAcross the ocean, an untried young woman named Shallan seeks to train under an eminent scholar and notorious heretic, Dalinar's niece, Jasnah. Though she genuinely loves learning, Shallan's motives are less than pure. As she plans a daring theft, her research for Jasnah hints at secrets of the Knights Radiant and the true cause of the war.\n\nThe result of over ten years of planning, writing, and world-building, The Way of Kings is but the opening movement of the Stormlight Archive, a bold masterpiece in the making.\n\nSpeak again the ancient oaths:\n\nLife before death.\nStrength before weakness.\nJourney before Destination.\n\nand return to men the Shards they once bore.\n\nThe Knights Radiant must stand again.",
             "genre": "Fantasy",
             "inQueue": [
@@ -38,6 +39,7 @@
             "title": "The Way of Kings: Book One Stormlight Archive"
         },
         {
+            "author": "J R R Tolkien",
             "desc": "\"In a hole in the ground there lived a hobbit.\" So begins one of the most beloved and delightful tales in the English language—Tolkien's prelude to The Lord of the Rings. Set in the imaginary world of Middle-earth, at once a classic myth and a modern fairy tale, The Hobbit is one of literature's most enduring and well-loved novels.\nBilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely traveling any farther than his pantry or cellar. But his contentment is disturbed when the wizard Gandalf and a company of dwarves arrive on his doorstep one day to whisk him away on an adventure. They have launched a plot to raid the treasure hoard guarded by Smaug the Magnificent, a large and very dangerous dragon. Bilbo reluctantly joins their quest, unaware that on his journey to the Lonely Mountain he will encounter both a magic ring and a frightening creature known as Gollum.",
             "genre": "Fantasy",
             "inQueue": [
@@ -61,7 +63,7 @@
     ],
     "users": [
         {
-            "account": 20607,
+            "account": "20607",
             "activeLoans": [
                 {
                     "checkoutDate": "Thu Nov 28 21:25:32 2024",
@@ -85,7 +87,7 @@
             "username": "bloodbane_varek"
         },
         {
-            "account": 23867,
+            "account": "23867",
             "activeLoans": [
                 {
                     "checkoutDate": "Fri Nov 29 00:28:37 2024",
@@ -108,7 +110,7 @@
             "username": "frostborn_isolde"
         },
         {
-            "account": 100001,
+            "account": "100001",
             "address": "City Library",
             "email": "admin@CityLibrary.com",
             "isActive": true,
@@ -117,6 +119,17 @@
             "password": "password",
             "phone": "00000000000",
             "username": "admin"
+        },
+        {
+            "account": 10160,
+            "address": "Kaladin StormBlessed",
+            "email": "Storms@archive.com",
+            "isActive": false,
+            "isAdmin": false,
+            "name": "Kaladin StormBlessed",
+            "password": "SylBlade",
+            "phone": "022020",
+            "username": "windrunner"
         }
     ]
 }

@@ -20,27 +20,29 @@ void RegistrationView::submitButtonClicked() {
 
     UserManagement* userManager = UserManagement::getUserManager();
 
-    QString nameInput = ui->nameLineEdit->text();
-    QString usernameInput = (ui->usernameLineEdit->text()).toLower();
-    QString passwordInput = ui->passwordLineEdit->text();
-    QString phoneInput = ui->phoneLineEdit->text();
-    QString emailInput = ui->emailLineEdit->text();
-    QString addressInput = ui->addressLineEdit->text();
+    QJsonObject newUser;
+
+    newUser["name"] = ui->nameLineEdit->text();
+    newUser["username"] = (ui->usernameLineEdit->text()).toLower();
+    newUser["password"] = ui->passwordLineEdit->text();
+    newUser["phone"] = ui->phoneLineEdit->text();
+    newUser["email"] = ui->emailLineEdit->text();
+    newUser["address"] = ui->addressLineEdit->text();
 
     //direct calling as signals could not connect
-    bool memberAdded = userManager->addUser(nameInput,
-                                            usernameInput,
-                                            passwordInput,
-                                            phoneInput,
-                                            emailInput,
-                                            addressInput);
+    if(!userManager->usernameExists(newUser)){
+        bool memberAdded = userManager->addUser(newUser);
 
-    if(memberAdded){
-        qDebug()<<"RegistrationView: Member added Succesfully";
-        //return to login screen
-        emit loginRequest();
+        if(memberAdded){
+            qDebug()<<"RegistrationView: Member added Succesfully";
+            //return to login screen
+            emit loginRequest();
+        } else {
+            qDebug()<<"RegistrationView: Failed to add member";
+        }
     } else {
-        qDebug()<<"RegistrationView: Failed to add member";
+        qDebug()<<"RegistrationView: Username already exists";
+        ui->errorLabel->setText("Username already taken. Please try again");
     }
 }
 

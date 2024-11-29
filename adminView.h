@@ -23,6 +23,7 @@ private:
 
 private slots:
     void addButtonClicked();
+    void addMemberButtonClicked();
     void logoutButtonClicked();
 
 public:

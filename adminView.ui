@@ -64,7 +64,7 @@
    <item>
     <widget class="QTabWidget" name="adminTabs">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="accountTab">
       <attribute name="title">
@@ -103,6 +103,9 @@
          </item>
          <item row="0" column="1">
           <layout class="QGridLayout" name="accountNumberGrid">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEdit_2"/>
+           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_2">
              <property name="text">
@@ -110,8 +113,12 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEdit_2"/>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="addMemberButton">
+             <property name="text">
+              <string>Add Member</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

@@ -93,8 +93,8 @@ QTextBrowser {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1125</width>
-        <height>800</height>
+        <width>1111</width>
+        <height>811</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -257,7 +257,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 	background-color: rgb(227, 238, 219);
 }</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0,0">
+            <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0,0,0">
              <property name="sizeConstraint">
               <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
              </property>
@@ -380,6 +380,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <widget class="QLineEdit" name="addressLineEdit"/>
                 </item>
                </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="errorLabel">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
               </widget>
              </item>
              <item>

@@ -153,12 +153,7 @@ bool UserManagement::verifyLogin(const QString& usernameInput, const QString& pa
     return false;
 }
 
-bool UserManagement::addUser(const QString& nameInput,
-                             const QString& usernameInput,
-                             const QString& passwordInput,
-                             const QString& phoneInput,
-                             const QString& emailInput,
-                             const QString& addressInput){
+bool UserManagement::addUser(QJsonObject& newUser){
 
     //checking user array is populated
     if(userArray.isEmpty()){
@@ -166,14 +161,7 @@ bool UserManagement::addUser(const QString& nameInput,
         setUserArray();
     }
 
-    //creating Json obj with new user details;
-    QJsonObject newUser;
-    newUser["name"] = nameInput;
-    newUser["username"] = usernameInput;
-    newUser["password"] = passwordInput;
-    newUser["phone"] = phoneInput;
-    newUser["email"] = emailInput;
-    newUser["address"] = addressInput;
+    //adding background details
     newUser["isAdmin"] = false;
     newUser["isActive"] = false;
     newUser["account"] = userID();
@@ -209,6 +197,19 @@ bool UserManagement::isActive(const QString& usernameInput){
         }
     }
 
+    return false;
+}
+
+bool UserManagement::usernameExists(QJsonObject &user){
+    for(int i = 0; i < userArray.size(); i++){
+        QJsonObject existingUser = userArray[i].toObject();
+        if(existingUser["username"].toString() == user["username"].toString()){
+            qDebug()<<"UserManagment: Username allready exists in database";
+            return true;
+        }
+    }
+
+    qDebug()<<"UserManagement: User name does not exist in database";
     return false;
 }
 

@@ -1,6 +1,7 @@
 #include "adminView.h"
 #include "ui_adminView.h"
 #include "addBookview.h"
+#include "addMemberView.h"
 #include "userManagement.h"
 #include "bookManagement.h"
 #include "transactionManagement.h"
@@ -11,6 +12,7 @@ AdminView::AdminView(QWidget *parent) : QWidget(parent), ui(new Ui::AdminView) {
 
     //connect buttons
     connect(ui->addButton, &QPushButton::clicked, this, &AdminView::addButtonClicked);
+    connect(ui->addMemberButton, &QPushButton::clicked, this, &AdminView::addMemberButtonClicked);
     connect(ui->logoutButton, &QPushButton::clicked, this, &AdminView::logoutButtonClicked);
 
 
@@ -27,6 +29,8 @@ void AdminView::displayUsers() {
         qDebug()<<"AdminView: UserManager is Null";
         return;
     }
+
+    ui->membersList->clear();
 
     QJsonArray& toDisplay = userManager->getUserArray();
 
@@ -81,8 +85,14 @@ void AdminView::updateDisplays(){
 //manage catalogue functions
 void AdminView::addButtonClicked(){
     AddBookView addBookDialog(this);
-    connect(&addBookDialog, &AddBookView::updateDisplayRequest, this, &AdminView::updateDisplays);
     addBookDialog.exec();
+    updateDisplays();
+}
+
+void AdminView::addMemberButtonClicked(){
+    AddMemberView addMemberDialog(this);
+    addMemberDialog.exec();
+    updateDisplays();
 }
 
 void AdminView::loadAdminCatalogue(){
