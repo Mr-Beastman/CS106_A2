@@ -38,27 +38,10 @@
          <item row="2" column="1">
           <widget class="QLineEdit" name="passwordLineEdit"/>
          </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="addressLabel">
+         <item row="4" column="0">
+          <widget class="QLabel" name="emailLabel">
            <property name="text">
-            <string>Address</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="phoneLineEdit"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="nameLabel">
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="usernameLabel">
-           <property name="text">
-            <string>Username</string>
+            <string>Email</string>
            </property>
           </widget>
          </item>
@@ -69,18 +52,45 @@
            </property>
           </widget>
          </item>
+         <item row="7" column="1">
+          <widget class="QCheckBox" name="adminCheckBox">
+           <property name="text">
+            <string>Make this an Admin Account</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="emailLineEdit"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="nameLabel">
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="nameLineEdit"/>
          </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="usernameLineEdit"/>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="emailLabel">
+         <item row="5" column="0">
+          <widget class="QLabel" name="addressLabel">
            <property name="text">
-            <string>Email</string>
+            <string>Address</string>
            </property>
           </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="phoneLineEdit"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="usernameLabel">
+           <property name="text">
+            <string>Username</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="usernameLineEdit"/>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="phoneLabel">
@@ -89,11 +99,15 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="emailLineEdit"/>
-         </item>
          <item row="5" column="1">
           <widget class="QLineEdit" name="addressLineEdit"/>
+         </item>
+         <item row="6" column="1">
+          <widget class="QCheckBox" name="activeCheckBox">
+           <property name="text">
+            <string>Activate Member Now</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

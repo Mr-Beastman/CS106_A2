@@ -26,7 +26,6 @@ public:
     //setters
     void setCurrentUser(const QJsonObject userObj);
     void setUserArray();
-    QJsonObject updateCurrentUser(const QString& username);
     void clearCurrentUser();
 
     //getters
@@ -37,14 +36,13 @@ public:
     static UserManagement* getUserManager();
 
     //methods
-    bool updateUserInArray();
-    bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
-    //vertical format for ease of reading
+    bool usernameExists(QJsonObject& user);
     bool addUser(QJsonObject &newUser);
+    QString createUserID();
+    bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     bool isAdmin(const QString& usernameInput);
     bool isActive(const QString &usernameInput);
-    bool usernameExists(QJsonObject& user);
-    int userID();
+
 };
 
 #endif // USERMANAGEMENT_H

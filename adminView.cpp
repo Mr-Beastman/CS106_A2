@@ -47,11 +47,20 @@ void AdminView::displayUsers() {
         QLabel*phoneEntryLabel = new QLabel("Phone: " +user["phone"].toString());
         QLabel*emailEntryLabel = new QLabel("Email: " +user["email"].toString());
 
+        //display isActive Status
+        QLabel*isActiveLabel = new QLabel();
+        QIcon statusIcon = user["isActive"].toBool()
+            ? style()->standardIcon(QStyle::SP_DialogApplyButton)
+            : style()->standardIcon(QStyle::SP_DialogCancelButton);
+        isActiveLabel->setPixmap(statusIcon.pixmap(16,16));
+
+
         //adding widgest to layout
         layout->addWidget(nameEntryLabel);
         layout->addWidget(accountEntryLabel);
         layout->addWidget(phoneEntryLabel);
         layout->addWidget(emailEntryLabel);
+        layout->addWidget(isActiveLabel);
 
 
         QListWidgetItem *entry = new QListWidgetItem();

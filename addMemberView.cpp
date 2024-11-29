@@ -28,6 +28,18 @@ void AddMemberView::addMemberButtonClicked(){
     newUser["email"]=ui->emailLineEdit->text();
     newUser["address"]=ui->nameLineEdit->text();
 
+    //checking if active box has been checked
+    bool makeActive = ui->activeCheckBox->isChecked();
+    if(makeActive){
+        newUser["isActive"] = true;
+    }
+
+    //checking if admin box has been checked
+    bool makeAdmin = ui->adminCheckBox->isChecked();
+    if(makeAdmin){
+        newUser["isAdmin"] = true;
+    }
+
     if(!userManager->usernameExists(newUser)){
         userManager->addUser(newUser);
         accept();
