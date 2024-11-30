@@ -67,6 +67,28 @@ QJsonObject UserManagement::getUserObj(const QString& username) {
     return QJsonObject();
 }
 
+QJsonObject UserManagement::getUserObjAccount(const QString &account){
+    //checking user data exists
+    if(!libraryDatabase.contains("users") || !libraryDatabase["users"].isArray()){
+        qDebug()<< "No user data present";
+        return QJsonObject();
+    }
+
+    for (int i = 0; userArray.size(); ++i){
+        //convert user to object
+        QJsonObject user = userArray[i].toObject();
+
+        //on matching username
+        if(user["account"].toString()==account){
+            return user;
+        }
+    }
+
+    //display error and return empty object
+    qDebug()<<"UserManagment: User not found";
+    return QJsonObject();
+}
+
 //getter for bookManager singleton
 UserManagement *UserManagement::getUserManager() {
     if(userManager == nullptr) {
@@ -138,6 +160,67 @@ bool UserManagement::addUser(QJsonObject& newUser){
     return false;
 }
 
+bool UserManagement::updateUser(const QString& account, QJsonObject& updatedDetails){
+    //check data is laoded
+    if (userArray.isEmpty()) {
+        qDebug() << "UserManagement: User array is empty";
+        setUserArray(); // If array is empty, reload it
+    }
+
+    //search for match
+    for (int i = 0; i < userArray.size(); ++i) {
+        QJsonObject user = userArray[i].toObject();
+
+        //if found
+        if (user["account"].toString() == account) {
+            //flag to check for updates
+            bool updated = false;
+
+            //check if anything has been updated
+            if (user["name"].toString() != updatedDetails["name"].toString()) {
+                user["name"] = updatedDetails["name"].toString();
+                updated = true;
+            }
+            if (user["phone"].toString() != updatedDetails["phone"].toString()) {
+                user["phone"] = updatedDetails["phone"].toString();
+                updated = true;
+            }
+            if (user["email"].toString() != updatedDetails["email"].toString()) {
+                user["email"] = updatedDetails["email"].toString();
+                updated = true;
+            }
+            if (user["address"].toString() != updatedDetails["address"].toString()) {
+                user["address"] = updatedDetails["address"].toString();
+                updated = true;
+            }
+
+            //if there are updates
+            if (updated) {
+
+                //update database
+                userArray[i] = user;
+                QJsonObject& fileData = getFileData();
+                fileData["users"] = userArray;
+
+                //save
+                if (saveData()) {
+                    qDebug() << "UserManagement: User has been updated";
+                    return true;
+                } else {
+                    qDebug() << "UserManagement: Failed to save updated user data";
+                    return false;
+                }
+            } else {
+                qDebug() << "UserManagement: No changes detected";
+                return false;
+            }
+        }
+    }
+
+    qDebug() << "UserManagement: User not found";
+    return false;  // User not found
+}
+
 //generate a unique user ID;
 //paramters: none
 //returns: QString containing unique ID.
@@ -150,9 +233,9 @@ QString UserManagement::createUserID() {
         userId = (std::rand() % (99999));
         idExists=false;
 
-        for (const QJsonValue &userValue : userArray){
+        for (int i = 0; userArray.size(); i++){
             //convert user to object
-            QJsonObject user = userValue.toObject();
+            QJsonObject user = userArray[i].toObject();
 
             if(userId == user["account"].toInt()){
                 idExists=true;
@@ -251,4 +334,76 @@ bool UserManagement::isActive(const QString& usernameInput){
     }
 
     return false;
+}
+
+bool UserManagement::activateUser(const QString &accountInput) {
+
+    for (int i = 0; i < userArray.size(); i++) {
+        QJsonObject user = userArray[i].toObject();
+
+        if (user["account"].toString() == accountInput) {
+
+            // Check if the user is already active
+            if (isActive(accountInput)) {
+                qDebug() << "UserManagement: User already active";
+                return true;
+            } else {
+                qDebug() << "UserManagement: Activating User";
+
+
+                user["isActive"] = true;
+                userArray[i] = user;
+
+                QJsonObject& fileData = userManager->getFileData();
+                fileData["users"] = userArray;
+
+                if (userManager->saveData()) {
+                    qDebug() << "UserManagement: User has been activated and saved";
+                    return true;
+                } else {
+                    qDebug() << "UserManagement: Could not save updated user data";
+                    return false;
+                }
+            }
+        }
+    }
+
+    qDebug() << "UserManagement: User not found";
+    return false;
+}
+
+bool UserManagement::deleteMember(const QString &accountNumber){
+    //checking if the user data exists
+    if (userArray.isEmpty()) {
+        qDebug() << "UserManagement: User array is empty";
+        setUserArray();
+    }
+
+    //finding user to delete
+    for (int i = 0; i < userArray.size(); ++i) {
+        QJsonObject user = userArray[i].toObject();
+
+        //if found
+        if (user["account"].toString() == accountNumber) {
+            //removing user from array
+            userArray.removeAt(i);
+
+            //update database
+            QJsonObject& fileData = userManager->getFileData();
+            fileData["users"] = userArray;
+
+            if (userManager->saveData()) {
+                qDebug() << "UserManagement: User has been deleted";
+                return true;
+            } else {
+                qDebug() << "UserManagement: Could not save updated user data after deletion";
+                return false;
+            }
+        }
+    }
+
+    //if no user found
+    qDebug() << "UserManagement: User not found";
+    return false;  // User not found
+
 }

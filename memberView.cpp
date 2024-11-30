@@ -25,15 +25,6 @@ MemberView::~MemberView() {
 //view related functions
 
 void MemberView::refreashMemberView(){
-    qDebug()<<"MemberView: Refreashing member views to show updated information";
-    UserManagement* userManager = UserManagement::getUserManager();
-    BookManagement* bookManager = BookManagement::getBookManager();
-
-    //ensuring most current data is loaded
-    bookManager->readData();
-    bookManager->setBookArray();
-    userManager->setUserArray();
-
     displayCurrentMember();
     displayCheckedOut();
     displayHoldRequests();
@@ -46,7 +37,7 @@ void MemberView::displayCurrentMember() {
 
     if(!currentUser.isEmpty()){
         ui->nameOutputLabel->setText(currentUser["name"].toString());
-        ui->accountOutputLabel->setText(QString::number(currentUser["account"].toInt()));
+        ui->accountOutputLabel->setText(currentUser["account"].toString());
         ui->phoneOutputLabel->setText(currentUser["phone"].toString());
         ui->emailOutputLabel->setText(currentUser["email"].toString());
         ui->addressOutputLabel->setText(currentUser["address"].toString());
@@ -57,9 +48,14 @@ void MemberView::displayCurrentMember() {
 
 //accountTab functions
 void MemberView::updateButtonClicked() {
+    qDebug()<<"MemberView: Setting up edit window";
     UpdateUserView* updateUserView = new UpdateUserView(this);
-    connect(updateUserView, &UpdateUserView::requestRefreash, this, &MemberView::refreashMemberView);
+    updateUserView->setAccountNumber(ui->accountOutputLabel->text());
+    updateUserView->preloadUser(ui->accountOutputLabel->text());
+
+    qDebug()<<"MemberView: Loading edit window";
     updateUserView->exec();
+    displayCurrentMember();
 }
 
 void MemberView::logoutButtonClicked() {

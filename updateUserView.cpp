@@ -9,8 +9,6 @@ UpdateUserView::UpdateUserView(QWidget *parent) : QDialog(parent), ui(new Ui::Up
     this->setWindowTitle("Update Details");
     this->setModal(true);
 
-    preloadUser();
-
     connect(ui->saveButton, &QPushButton::clicked, this, &UpdateUserView::saveButtonClicked);
 }
 
@@ -18,92 +16,44 @@ UpdateUserView::~UpdateUserView() {
     delete ui;
 }
 
-void UpdateUserView::preloadUser() {
+void UpdateUserView::setAccountNumber(const QString& account){
+    accountNumber = account;
+}
+
+QString UpdateUserView::getAccountNumber(){
+    return accountNumber;
+}
+
+void UpdateUserView::preloadUser(const QString& account) {
 
     UserManagement* userManager = UserManagement::getUserManager();
 
-    QJsonObject currentUser = userManager->getCurrentUser();
+    QJsonObject user = userManager->getUserObjAccount(account);
 
     //preload lineEdits
-    ui->nameLineEdit->setText(currentUser["name"].toString());
-    ui->phoneLineEdit->setText(currentUser["phone"].toString());
-    ui->emailLineEdit->setText(currentUser["email"].toString());
-    ui->addressLineEdit->setText(currentUser["address"].toString());
+    ui->nameLineEdit->setText(user["name"].toString());
+    ui->phoneLineEdit->setText(user["phone"].toString());
+    ui->emailLineEdit->setText(user["email"].toString());
+    ui->addressLineEdit->setText(user["address"].toString());
 
 }
 
 void UpdateUserView::saveButtonClicked() {
-    //logic to handle different parents eg admin or member view
-    QWidget* childOf = this->parentWidget();
-    MainWindow* mainWindow=nullptr;
-
-    while(childOf){
-        mainWindow=dynamic_cast<MainWindow*>(childOf);
-        if(mainWindow){
-            break;
-        }
-        childOf = childOf->parentWidget();
-    }
 
     UserManagement* userManager = UserManagement::getUserManager();
-    QJsonObject currentUser = userManager->getCurrentUser();
 
-    //store values from from ui lineEdits
-    QString updatedName = ui->nameLineEdit->text();
-    QString updatedPhone = ui->phoneLineEdit->text();
-    QString updatedEmail = ui->emailLineEdit->text();
-    QString updatedAddress = ui->addressLineEdit->text();
+    QJsonObject updateDetails;
 
-    //check if any chages have been made
-    bool updated = false;
+    updateDetails["name"] = ui->nameLineEdit->text();
+    updateDetails["phone"] = ui->phoneLineEdit->text();
+    updateDetails["email"] = ui->emailLineEdit->text();
+    updateDetails["address"] = ui->addressLineEdit->text();
 
-    if(currentUser["name"].toString() != updatedName){
-        currentUser["name"] = updatedName;
-        updated = true;
-    }
-    if(currentUser["phone"].toString() != updatedPhone){
-        currentUser["phone"] = updatedPhone;
-        updated = true;
-    }
-    if(currentUser["email"].toString() != updatedEmail){
-        currentUser["email"] = updatedEmail;
-        updated = true;
-    }
-    if(currentUser["address"].toString() != updatedAddress){
-        currentUser["address"] = updatedAddress;
-        updated = true;
-    }
 
-    //if updated loop through current userdata to update values
-    if(updated){
-        QJsonArray usersArray = userManager->getFileData()["users"].toArray();
-        for(int i = 0; usersArray.size(); ++i){
-            QJsonObject user = usersArray[i].toObject();
-            if(user["username"].toString() == currentUser["username"].toString()){
-                usersArray[i] = currentUser;
-                break;
-            }
-        }
-
-        QJsonObject fileData = userManager -> getFileData();
-        fileData["users"] = usersArray;
-
-        if(userManager->saveData()){
-            qDebug()<<"UpdateUserView: User has been updated";
-            //signal memberView to refreash
-            emit requestRefreash();
-        } else {
-            qDebug()<<"UpdateUserView: could not be updated";
-        }
-
-        //close the window on save
-
-        this->accept();
-
+    if(userManager->updateUser(accountNumber,updateDetails)){
+        accept();
     } else {
-        qDebug()<<"UpdateUserView: No changes detected";
-        ui->errorLabel->setText("No Changes to Save");
+        qDebug()<<"UpdateUserView: Displaying Error Message";
+        ui->errorLabel->setText("No updates detected");
     }
-
-
 }

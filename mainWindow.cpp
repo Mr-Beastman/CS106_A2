@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget* parent) :
     adminPage = new AdminView(this);
     memberPage = new MemberView(this);
     bookInfoPage = new BookInfoView(this);
+    memberInfoPage = new MemberInfoView(this);
 
     //adding views to stackedWidget
     stackedWidget->addWidget(loginPage);
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget* parent) :
     stackedWidget->addWidget(adminPage);
     stackedWidget->addWidget(memberPage);
     stackedWidget->addWidget(bookInfoPage);
+    stackedWidget->addWidget(memberInfoPage);
 
 
     //connecting view signals
@@ -41,9 +43,12 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(registrationPage, &RegistrationView::loginRequest, this, &MainWindow::showLogin);
     connect(adminPage, &AdminView::logoutRequest, this, &::MainWindow::logOut);
     connect(adminPage, &AdminView::requestBookInfo, this, &MainWindow::showBookInfo);
+    connect(adminPage, &AdminView::requestMemberInfo, this, &MainWindow::showMemberInfo);
     connect(memberPage, &MemberView::logoutRequest, this, &MainWindow::logOut);
     connect(memberPage, &MemberView::requestBookInfo, this, &MainWindow::showBookInfo);
     connect(bookInfoPage, &BookInfoView::goBack, this, &MainWindow::goBack);
+    connect(memberInfoPage, &MemberInfoView::goBack, this, &MainWindow::goBack);
+    connect(memberInfoPage, &MemberInfoView::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
 
     stackedWidget->setCurrentIndex(0);
 
@@ -124,6 +129,16 @@ void MainWindow::showBookInfo(QJsonObject &bookDetails) {
     bookInfoPage->setBookDetails(bookDetails);
     bookInfoPage->setOptions();
     stackedWidget->setCurrentIndex(4);
+}
+
+void MainWindow::showMemberInfo(QJsonObject &userToView){
+    memberInfoPage->setMemberDetails(userToView);
+    stackedWidget->setCurrentIndex(5);
+}
+
+void MainWindow::updateAdminDisplays()
+{
+    adminPage->updateDisplays();
 }
 
 void MainWindow::goBack(){

@@ -19,6 +19,7 @@ SOURCES += \
     loginView.cpp \
     main.cpp \
     mainWindow.cpp \
+    memberInfoView.cpp \
     memberView.cpp \
     modifyBookview.cpp \
     registrationView.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     dataManagement.h \
     loginView.h \
     mainWindow.h \
+    memberInfoView.h \
     memberView.h \
     modifyBookview.h \
     registrationView.h \
@@ -51,6 +53,7 @@ FORMS += \
     bookListView.ui \
     loginView.ui \
     mainWindow.ui \
+    memberInfoView.ui \
     memberView.ui \
     modifyBookView.ui \
     registrationView.ui \

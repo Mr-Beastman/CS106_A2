@@ -9,6 +9,11 @@
                     "holdDate": "28-mm-2024",
                     "holdStatus": "active",
                     "username": "frostborn_isolde"
+                },
+                {
+                    "holdDate": "30-mm-2024",
+                    "holdStatus": "active",
+                    "username": "windrunner"
                 }
             ],
             "isAvailable": false,
@@ -106,7 +111,7 @@
             "isAdmin": false,
             "name": "Isolde Frostborn",
             "password": "WinterBlood@777",
-            "phone": "+64 21 456 9821",
+            "phone": "+64 21 456 982122",
             "username": "frostborn_isolde"
         },
         {
@@ -122,25 +127,18 @@
         },
         {
             "account": "10160",
-            "address": "Kaladin StormBlessed",
-            "email": "Storms@archive.com",
-            "isActive": false,
+            "activeLoans": [
+            ],
+            "address": "Urithiruu",
+            "email": "storms@Archive.com",
+            "holdRequests": [
+            ],
+            "isActive": true,
             "isAdmin": false,
             "name": "Kaladin StormBlessed",
             "password": "SylBlade",
-            "phone": "022020",
+            "phone": "02020202020",
             "username": "windrunner"
-        },
-        {
-            "account": "26146",
-            "address": "The Intern",
-            "email": "Intern@CityLibrary.com",
-            "isActive": true,
-            "isAdmin": true,
-            "name": "The Intern",
-            "password": "password",
-            "phone": "2222",
-            "username": "intern"
         }
     ]
 }

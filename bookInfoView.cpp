@@ -9,7 +9,7 @@ BookInfoView::BookInfoView(QWidget* parent) : QDialog(parent), ui(new Ui::BookIn
     ui->setupUi(this);
 
     //connect buttons
-    connect(ui->backButton, &QPushButton::clicked, this, &BookInfoView::goBack);
+    connect(ui->backButton, &QPushButton::clicked, this, &BookInfoView::backButtonClicked);
 }
 
 BookInfoView::~BookInfoView() {

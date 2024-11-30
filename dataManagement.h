@@ -40,7 +40,7 @@ public:
 
     //getters
     QString getFilePath();
-    const QJsonObject& getFileData();
+    QJsonObject& getFileData();
 
     //methods
     bool readData();

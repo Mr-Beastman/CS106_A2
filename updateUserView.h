@@ -13,15 +13,24 @@ class UpdateUserView : public QDialog {
     Q_OBJECT
 
 private:
+    QString accountNumber;
     Ui::UpdateUserView *ui;
 
 private slots:
-    void preloadUser();
     void saveButtonClicked();
 
 public:
     explicit UpdateUserView(QWidget *parent = nullptr);
     ~UpdateUserView();
+
+    //setter
+    void setAccountNumber(const QString& account);
+
+    //getter
+    QString getAccountNumber();
+
+    //methods
+    void preloadUser(const QString& account);
 
 signals:
     void requestRefreash();

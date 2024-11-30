@@ -50,7 +50,7 @@ QString DataManagement::findPath() {
 //setters
 
 //getters
-const QJsonObject& DataManagement::getFileData() {
+QJsonObject& DataManagement::getFileData() {
     if(libraryDatabase.isEmpty()){
         readData();
     }

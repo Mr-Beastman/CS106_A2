@@ -5,6 +5,7 @@
 #include "userManagement.h"
 #include "bookManagement.h"
 #include "transactionManagement.h"
+#include "memberInfoView.h"
 #include "bookListView.h"
 
 AdminView::AdminView(QWidget *parent) : QWidget(parent), ui(new Ui::AdminView) {
@@ -15,10 +16,8 @@ AdminView::AdminView(QWidget *parent) : QWidget(parent), ui(new Ui::AdminView) {
     connect(ui->addMemberButton, &QPushButton::clicked, this, &AdminView::addMemberButtonClicked);
     connect(ui->logoutButton, &QPushButton::clicked, this, &AdminView::logoutButtonClicked);
 
-
-    //connect signals
-    // ModifyBookView* modifyBookPage = new ModifyBookView(this);
-    // connect(modifyBookPage, &ModifyBookView::requestRefreash, this, &AdminView::updateDisplays);
+    //connect list items clicked
+    connect(ui->membersList, &QListWidget::itemClicked, this, &AdminView::onMemberClicked);
 }
 
 void AdminView::displayUsers() {
@@ -77,7 +76,7 @@ void AdminView::displayUsers() {
         ui->membersList->addItem(entry);
 
         //assigning account# to entry
-        entry->setData(Qt::UserRole, user["account"].toString());
+        entry->setData(Qt::UserRole, user["username"].toString());
 
         ui->membersList->setItemWidget(entry, userWidget);
     }
@@ -87,6 +86,7 @@ void AdminView::displayUsers() {
 
 void AdminView::updateDisplays(){
     qDebug()<<"AdminView: Refreashing Displays";
+
     displayUsers();
     loadAdminCatalogue();
 }
@@ -146,6 +146,19 @@ void AdminView::loadAdminCatalogue(){
 
         connect(bookListView, &BookListView::refreashView, this, &AdminView::updateDisplays);
     }
+}
+
+void AdminView::onMemberClicked(QListWidgetItem *user){
+    QString userAccount = user->data(Qt::UserRole).toString();
+
+    //getMemberDetails
+    UserManagement* userManager = UserManagement::getUserManager();
+
+    qDebug()<<"AdminView: Populating Member Info View";
+    QJsonObject toView = userManager->getUserObj(userAccount);
+
+    qDebug()<<"AdminView: Requesting to display member info view";
+    emit requestMemberInfo(toView);
 }
 
 void AdminView::onBookClicked(QListWidgetItem *book) {

@@ -32,17 +32,20 @@ public:
     QJsonObject& getCurrentUser();
     QJsonArray& getUserArray();
     QJsonObject getUserObj(const QString &username);
+    QJsonObject getUserObjAccount(const QString &account);
     //get the bookmanager instance
     static UserManagement* getUserManager();
 
     //methods
     bool usernameExists(QJsonObject& user);
     bool addUser(QJsonObject &newUser);
+    bool updateUser(const QString& account, QJsonObject& updatedDetails);
     QString createUserID();
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     bool isAdmin(const QString& usernameInput);
     bool isActive(const QString &usernameInput);
-
+    bool activateUser(const QString& usernameInput);
+    bool deleteMember(const QString& accountNumber);
 };
 
 #endif // USERMANAGEMENT_H

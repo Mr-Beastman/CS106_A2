@@ -14,6 +14,7 @@
 #include "adminView.h"
 #include "memberView.h"
 #include "bookInfoView.h"
+#include "memberInfoView.h"
 
 
 namespace Ui {
@@ -40,12 +41,15 @@ private:
     AdminView* adminPage;
     MemberView* memberPage;
     BookInfoView* bookInfoPage;
+    MemberInfoView* memberInfoPage;
 
 private slots:
     void showLogin();
     void userLogin(const QString& username, QString password);
     void showRegister();
     void showBookInfo(QJsonObject& bookDetails);
+    void showMemberInfo(QJsonObject& userToView);
+    void updateAdminDisplays();
     void goBack();
     void logOut();
 
@@ -53,7 +57,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void loadData();
-
 
 signals:
     void loginFail();
