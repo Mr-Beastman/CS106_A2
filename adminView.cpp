@@ -31,7 +31,7 @@ void AdminView::displayUsers() {
 
     ui->membersList->clear();
 
-    QJsonArray& toDisplay = userManager->getUserArray();
+    QJsonArray toDisplay = userManager->getUserArray();
 
     for(int i = 0; i<toDisplay.size(); ++i){
         QJsonObject user = toDisplay[i].toObject();
@@ -109,7 +109,7 @@ void AdminView::loadAdminCatalogue(){
     BookManagement *bookManager = BookManagement::getBookManager();
     TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
 
-    QJsonArray& bookData = bookManager->getBookArray();
+    QJsonArray bookData = bookManager->getBookArray();
 
     //clear list
     ui->catalogueList->clear();
@@ -135,8 +135,24 @@ void AdminView::loadAdminCatalogue(){
         int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("adminPage"));
         stackedWidget->setCurrentIndex(index);
 
-        QLabel* checkedOut =  bookListView->findChild<QLabel*>("CheckedOutputLabel");
-        checkedOut->setText(transactionManager->checkedOutTo(book["isbn"].toString()));
+        //getting current book activity.
+        QLabel* activeLoan  =  bookListView->findChild<QLabel*>("CheckedOutputLabel");
+        activeLoan->setText(transactionManager->checkedOutTo(book["isbn"].toString()));
+
+        QLabel* holdArray =  bookListView->findChild<QLabel*>("QueueOutputLabel");
+        if(!book["inQueue"].toArray().isEmpty()){
+            holdArray->setText(QString::number(book["inQueue"].toArray().size()));
+        } else {
+            holdArray->setText(QString::number(0));
+        }
+
+        //enabling/disabling return button depending on status
+        QPushButton* returnButton = bookListView->findChild<QPushButton*>("returnButton");
+        if(book["isAvailble"].toBool()){
+            returnButton->hide();
+        } else {
+            returnButton->show();
+        }
 
         item->setSizeHint(bookListView->sizeHint());
 

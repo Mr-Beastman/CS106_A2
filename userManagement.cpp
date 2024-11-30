@@ -21,13 +21,6 @@ void UserManagement::setCurrentUser(const QJsonObject userObj) {
     currentUser = userObj;
 }
 
-void UserManagement::setUserArray(){
-    if(libraryDatabase.isEmpty()){
-        readData();
-    }
-    userArray = libraryDatabase["users"].toArray();
-}
-
 void UserManagement::clearCurrentUser(){
     currentUser = QJsonObject();
 }
@@ -37,8 +30,9 @@ QJsonObject &UserManagement::getCurrentUser(){
     return currentUser;
 }
 
-QJsonArray& UserManagement::getUserArray(){
-    return userArray;
+QJsonArray UserManagement::getUserArray(){
+        readData();
+        return libraryDatabase["users"].toArray();
 }
 
 //get user obj which contains all user details
@@ -52,7 +46,8 @@ QJsonObject UserManagement::getUserObj(const QString& username) {
         return QJsonObject();
     }
 
-    for (int i = 0; userArray.size(); ++i){
+    QJsonArray userArray = getUserArray();
+    for (int i = 0; i<userArray.size(); ++i){
         //convert user to object
         QJsonObject user = userArray[i].toObject();
 
@@ -74,7 +69,8 @@ QJsonObject UserManagement::getUserObjAccount(const QString &account){
         return QJsonObject();
     }
 
-    for (int i = 0; userArray.size(); ++i){
+    QJsonArray userArray = getUserArray();
+    for (int i = 0; i<userArray.size(); ++i){
         //convert user to object
         QJsonObject user = userArray[i].toObject();
 
@@ -89,6 +85,22 @@ QJsonObject UserManagement::getUserObjAccount(const QString &account){
     return QJsonObject();
 }
 
+QString UserManagement::getAccount(const QString &username){
+
+    QJsonArray userArray = getUserArray();
+    for(int i = 0; i<userArray.size(); i++){
+        QJsonObject user = userArray[i].toObject();
+
+        if(user["username"].toString() == username){
+            qDebug()<<"UserManagement: Account Number identified";
+            return user["account"].toString();
+        }
+    }
+
+    qDebug()<<"UserManagement: Account Number could not be found";
+    return QString();
+}
+
 //getter for bookManager singleton
 UserManagement *UserManagement::getUserManager() {
     if(userManager == nullptr) {
@@ -100,12 +112,20 @@ UserManagement *UserManagement::getUserManager() {
     return userManager;
 }
 
+void UserManagement::updateCurrentUser(){
+
+    QString userAccount = currentUser["account"].toString();
+    QJsonObject userObject = userManager->getUserObjAccount(userAccount);
+    userManager->setCurrentUser(userObject);
+}
+
 // --- methods ---
 
 //check if username exists in system
 //paramters: QJsonObject of user details
 //returns: true exists, false does not
 bool UserManagement::usernameExists(QJsonObject &user){
+    QJsonArray userArray = getUserArray();
     for(int i = 0; i < userArray.size(); i++){
         QJsonObject existingUser = userArray[i].toObject();
         if(existingUser["username"].toString() == user["username"].toString()){
@@ -124,9 +144,10 @@ bool UserManagement::usernameExists(QJsonObject &user){
 bool UserManagement::addUser(QJsonObject& newUser){
 
     //checking user array is populated
+    QJsonArray userArray = getUserArray();
     if(userArray.isEmpty()){
         qDebug()<<"UserManagment: User array empty";
-        setUserArray();
+        //setUserArray();
     }
 
     //ensure username has been set to lowercase
@@ -162,9 +183,10 @@ bool UserManagement::addUser(QJsonObject& newUser){
 
 bool UserManagement::updateUser(const QString& account, QJsonObject& updatedDetails){
     //check data is laoded
+    QJsonArray userArray = getUserArray();
     if (userArray.isEmpty()) {
         qDebug() << "UserManagement: User array is empty";
-        setUserArray(); // If array is empty, reload it
+        //setUserArray();
     }
 
     //search for match
@@ -232,8 +254,8 @@ QString UserManagement::createUserID() {
     while(idExists){
         userId = (std::rand() % (99999));
         idExists=false;
-
-        for (int i = 0; userArray.size(); i++){
+        QJsonArray userArray = getUserArray();
+        for (int i = 0; i<userArray.size(); i++){
             //convert user to object
             QJsonObject user = userArray[i].toObject();
 
@@ -257,7 +279,7 @@ bool UserManagement::verifyLogin(const QString& usernameInput, const QString& pa
     qDebug()<<"UserManagment: Begining Verfication process";
 
     //checking data has loaded correctly, if missing load the data
-
+    QJsonArray userArray = getUserArray();
     if(userArray.isEmpty()){
         qDebug()<<"UserManagment: Users not loaded";
         return false;
@@ -295,7 +317,7 @@ bool UserManagement::isAdmin(const QString& usernameInput){
         qDebug()<< "UserManagment: No user data present";
         return false;
     }
-
+    QJsonArray userArray = getUserArray();
     //loop through users checking for match
     for (int i = 0; i < userArray.size(); i++){
         //convert user to object
@@ -317,7 +339,7 @@ bool UserManagement::isAdmin(const QString& usernameInput){
 //parameters : QString of username to check
 //returns : true if active, false if not
 bool UserManagement::isActive(const QString& usernameInput){
-    QJsonArray& users = getUserArray();
+    QJsonArray users = getUserArray();
 
     //loop through users checking for match
     for (int i = 0; i < users.size(); i++){
@@ -337,7 +359,8 @@ bool UserManagement::isActive(const QString& usernameInput){
 }
 
 bool UserManagement::activateUser(const QString &accountInput) {
-
+    QJsonArray userArray = getUserArray();
+    qDebug()<<"login"<<userArray;
     for (int i = 0; i < userArray.size(); i++) {
         QJsonObject user = userArray[i].toObject();
 
@@ -374,9 +397,10 @@ bool UserManagement::activateUser(const QString &accountInput) {
 
 bool UserManagement::deleteMember(const QString &accountNumber){
     //checking if the user data exists
+    QJsonArray userArray = getUserArray();
     if (userArray.isEmpty()) {
         qDebug() << "UserManagement: User array is empty";
-        setUserArray();
+        //setUserArray();
     }
 
     //finding user to delete
@@ -407,3 +431,13 @@ bool UserManagement::deleteMember(const QString &accountNumber){
     return false;  // User not found
 
 }
+
+// void UserManagement::updateUserArray(QJsonArray array)
+// {
+//     QJsonArray userArray = getUserArray();
+//     userArray = array;
+// }
+
+// void UserManagement::clearUserArray(){
+//     userArray= QJsonArray();
+// }

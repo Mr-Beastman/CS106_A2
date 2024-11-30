@@ -14,21 +14,15 @@ BookManagement::BookManagement() : DataManagement() {}
 
 // --------------- public ---------------
 
-//setters
-void BookManagement::setBookArray(){
-    if(libraryDatabase.isEmpty()){
-        readData();
-    }
-    bookArray = libraryDatabase["books"].toArray();
-}
-
 //getters
-QJsonArray& BookManagement::getBookArray() {
-    return bookArray;
+QJsonArray BookManagement::getBookArray() {
+    readData();
+    return libraryDatabase["books"].toArray();
 }
 
 QJsonObject BookManagement::getBookDetails(const QString &isbn){
-    for(int i = 0; bookArray.size(); i++){
+    QJsonArray bookArray = getBookArray();
+    for(int i = 0; i<bookArray.size(); i++){
         QJsonObject book = bookArray[i].toObject();
         if(book["isbn"].toString() == isbn){
             return book;
@@ -111,6 +105,7 @@ bool BookManagement::addBook(const QString& titleInput,
     newBook["isAvailable"] = true;
 
     //add the new book to the existing array
+    QJsonArray bookArray = getBookArray();
     bookArray.append(newBook);
     libraryDatabase["books"] = bookArray;
 
@@ -153,6 +148,7 @@ bool BookManagement::updateBook(const QString &isbn, const QJsonObject &updatedB
     //if update loop through curent data to update in array
     if(updated){
         qDebug()<<"BookManagement: Begining book Update";
+        QJsonArray bookArray = getBookArray();
         for(int i = 0; i < bookArray.size(); i++){
             QJsonObject book = bookArray[i].toObject();
 
@@ -193,8 +189,8 @@ bool BookManagement::updateBook(const QString &isbn, const QJsonObject &updatedB
 //parameters : isbn of book to check.
 //returns : true available/false not available
 bool BookManagement::isAvailable(const QString& isbn) {
-
-    for(int i = 0; bookArray.size(); i++){
+    QJsonArray bookArray = getBookArray();
+    for(int i = 0; i<bookArray.size(); i++){
         QJsonObject book = bookArray[i].toObject();
         if(book["isbn"].toString() == isbn){
             return book["isAvailable"].toBool();

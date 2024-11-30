@@ -27,7 +27,6 @@ private:
 
 protected:
     BookManagement();
-    QJsonArray bookArray;
 
 public:
     //enforcing singleton
@@ -40,7 +39,7 @@ public:
     void setBookArray();
 
     //getters
-    QJsonArray &getBookArray();
+    QJsonArray getBookArray();
     QJsonObject getBookDetails(const QString& isbn);
     //get the bookmanager instance
     static BookManagement* getBookManager();
@@ -59,6 +58,7 @@ public:
     bool isAvailable(const QString& isbn);
     QString findCoverPath();
     QString findCoverImage(QString& isbn);
+    void clearBookArray();
 
 signals:
     void noUpdates();

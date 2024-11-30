@@ -64,8 +64,6 @@ MainWindow::~MainWindow(){
 
 void MainWindow::loadData(){
     dataManager->readData();
-    userManager->setUserArray();
-    bookManager->setBookArray();
 }
 
 //functions to change view display
@@ -80,7 +78,10 @@ void MainWindow::showLogin(){
 
 void MainWindow::userLogin(const QString& username, QString password){
 
-    loadData();
+    qDebug()<<dataManager->getFileData();
+    qDebug()<<"--------------------------";
+    QJsonArray test = userManager->getUserArray();
+    qDebug()<<test;
 
     if(userManager->verifyLogin(username,password)){
         //set current user
@@ -102,6 +103,7 @@ void MainWindow::userLogin(const QString& username, QString password){
         } else if(userManager->isActive(username)) {
             qDebug()<<"MainWindow: Member Login Succesful. Loading Member View";
 
+            memberPage->setAccountNumber(userManager->getAccount(username));
             //populate member views
             memberPage->displayCurrentMember();
             memberPage->displayCheckedOut();
@@ -121,6 +123,9 @@ void MainWindow::userLogin(const QString& username, QString password){
 }
 
 void MainWindow::showRegister(){
+    //ensure latest data
+    loadData();
+    //change views
     qDebug()<<"MainWindow: Displaying Registration Page";
     stackedWidget->setCurrentIndex(1);
 }
@@ -133,6 +138,7 @@ void MainWindow::showBookInfo(QJsonObject &bookDetails) {
 
 void MainWindow::showMemberInfo(QJsonObject &userToView){
     memberInfoPage->setMemberDetails(userToView);
+    memberInfoPage->generateCheckedout(userToView["account"].toString());
     stackedWidget->setCurrentIndex(5);
 }
 
@@ -156,10 +162,17 @@ void MainWindow::logOut() {
     userManager->clearCurrentUser();
     stackedWidget->setCurrentIndex(0);
 
-    //reload data for next user
+    //making sure to clear all stored data
+    dataManager->clearData();
+
+    //reload for next user
     loadData();
 
     //clear previous inputs
     loginPage->clearInputs();
+    loginPage->clearError();
+
+    memberPage->clearDisplay();
     qDebug()<<"MainWindow: User Logged out succesfully";
+
 }

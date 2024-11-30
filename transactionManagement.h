@@ -24,7 +24,9 @@ public:
 
     //transaction methods
     bool placeHold(const QString& isbn);
+    bool removeHold(const QString& isbn, const QString &account);
     bool checkoutBook(const QString& isbn);
+    bool returnBook(const QString& isbn);
     QString checkedOutTo(const QString& isbn);
     bool renewBook(const QString& username, const QString& isbn);
     bool returnBook(const QString&username, const QString& isbn);

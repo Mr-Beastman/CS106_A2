@@ -45,6 +45,7 @@ public:
     //methods
     bool readData();
     bool saveData();
+    void clearData();
 };
 
 #endif // DATAMANAGEMENT_H

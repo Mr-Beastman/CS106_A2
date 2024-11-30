@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
+#include <QProcess>
 
 #include "dataManagement.h"
 #include "userManagement.h"

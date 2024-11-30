@@ -14,7 +14,10 @@ BookListView::BookListView(QWidget *parent)
     //connect buttons
     connect(ui->editButton, &QPushButton::clicked, this, &BookListView::editBook);
     connect(ui->checkoutButton, &QPushButton::clicked, this, &BookListView::checkoutBook);
+    connect(ui->confirmButton, &QPushButton::clicked, this, &BookListView::checkoutBook);
     connect(ui->holdButton, &QPushButton::clicked, this, &BookListView::placeHold);
+    connect(ui->removeHold02Button, &QPushButton::clicked, this, &BookListView::removeHoldButtonClicked);
+    connect(ui->returnButton, &QPushButton::clicked, this, &BookListView::returnButtonClicked);
 
 }
 
@@ -23,8 +26,8 @@ BookListView::~BookListView() {
 }
 
 void BookListView::checkoutBook() {
-    TransactionManagement* manager = TransactionManagement::getTransactionManager();
-    manager->checkoutBook(ui->isbnOutputLabel->text());
+    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
+    transactionManager->checkoutBook(ui->isbnOutputLabel->text());
     qDebug()<<"BookListView: Emiting refreash Signal";
     emit refreashMemberView();
 }
@@ -37,6 +40,18 @@ void BookListView::placeHold(){
 
     manager->placeHold(ui->isbnOutputLabel->text());
     qDebug()<<"BookListView: Emiting refreash Signal";
+    emit refreashView();
+}
+
+void BookListView::returnButtonClicked(){
+    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
+    transactionManager->returnBook(ui->isbnOutputLabel->text());
+    emit refreashView();
+}
+
+void BookListView::removeHoldButtonClicked(){
+    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
+    transactionManager->removeHold(ui->isbnOutputLabel->text());
     emit refreashView();
 }
 

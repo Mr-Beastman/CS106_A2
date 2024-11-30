@@ -7,7 +7,7 @@
             "inQueue": [
                 {
                     "holdDate": "28-mm-2024",
-                    "holdStatus": "active",
+                    "holdStatus": "ready",
                     "username": "frostborn_isolde"
                 },
                 {
@@ -49,7 +49,7 @@
             "genre": "Fantasy",
             "inQueue": [
             ],
-            "isAvailable": false,
+            "isAvailable": true,
             "isbn": "054792822X",
             "sect": "",
             "title": "The Hobbit"
@@ -60,21 +60,27 @@
             "genre": "Romantasy",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "1526605392",
             "sect": "",
             "title": "A Court of Thorns and Roses"
+        },
+        {
+            "author": "Rebecca Yarros",
+            "desc": "“The first year is when some of us lose our lives. The second year is when the rest of us lose our humanity.” —Xaden Riorson\n\nEveryone expected Violet Sorrengail to die during her first year at Basgiath War College—Violet included. But Threshing was only the first impossible test meant to weed out the weak-willed, the unworthy, and the unlucky.\n\nNow the real training begins, and Violet’s already wondering how she’ll get through. It’s not just that it’s grueling and maliciously brutal, or even that it’s designed to stretch the riders’ capacity for pain beyond endurance. It’s the new vice commandant, who’s made it his personal mission to teach Violet exactly how powerless she is–unless she betrays the man she loves.\n\nAlthough Violet’s body might be weaker and frailer than everyone else’s, she still has her wits—and a will of iron. And leadership is forgetting the most important lesson Basgiath has taught her: Dragon riders make their own rules.\n\nBut a determination to survive won’t be enough this year.\n\nBecause Violet knows the real secret hidden for centuries at Basgiath War College—and nothing, not even dragon fire, may be enough to save them in the end.",
+            "genre": "Fantasy",
+            "inQueue": [
+            ],
+            "isAvailable": true,
+            "isbn": "B0C4JMJBNX",
+            "sect": "",
+            "title": "Iron Flame (The Empyrean Book 2)"
         }
     ],
     "users": [
         {
             "account": "20607",
             "activeLoans": [
-                {
-                    "checkoutDate": "Thu Nov 28 21:25:32 2024",
-                    "dueDate": "Sat Dec 28 21:25:32 2024",
-                    "isbn": "B0CVD8D7H6"
-                },
                 {
                     "checkoutDate": "Thu Nov 28 21:25:41 2024",
                     "dueDate": "Sat Dec 28 21:25:41 2024",
@@ -86,7 +92,7 @@
             "holdRequests": null,
             "isActive": true,
             "isAdmin": false,
-            "name": "Varek Bloodbane",
+            "name": "Varek Bloodbaner",
             "password": "DarkMagic@8745",
             "phone": "+64 27 234 8765",
             "username": "bloodbane_varek"
@@ -94,11 +100,6 @@
         {
             "account": "23867",
             "activeLoans": [
-                {
-                    "checkoutDate": "Fri Nov 29 00:28:37 2024",
-                    "dueDate": "Sun Dec 29 00:28:37 2024",
-                    "isbn": "054792822X"
-                }
             ],
             "address": "34 Icefang Castle, The Frostlands",
             "email": "isolde.f@frostvale.com",
@@ -128,8 +129,13 @@
         {
             "account": "10160",
             "activeLoans": [
+                {
+                    "checkoutDate": "Sun Dec 1 00:13:56 2024",
+                    "dueDate": "Tue Dec 31 00:13:56 2024",
+                    "isbn": "1526605392"
+                }
             ],
-            "address": "Urithiruu",
+            "address": "Urithiru",
             "email": "storms@Archive.com",
             "holdRequests": [
             ],
@@ -139,6 +145,17 @@
             "password": "SylBlade",
             "phone": "02020202020",
             "username": "windrunner"
+        },
+        {
+            "account": "18421",
+            "address": "Bagend",
+            "email": "Baggins@theShire.com",
+            "isActive": true,
+            "isAdmin": false,
+            "name": "Bilbo Baggins",
+            "password": "shire",
+            "phone": "02020",
+            "username": "ringhunter"
         }
     ]
 }

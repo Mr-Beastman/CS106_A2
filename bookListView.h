@@ -18,6 +18,8 @@ private:
 private slots:
     void checkoutBook();
     void placeHold();
+    void returnButtonClicked();
+    void removeHoldButtonClicked();
 
 
 public:

@@ -22,9 +22,20 @@ MemberView::~MemberView() {
     delete ui;
 }
 
+void MemberView::setAccountNumber(const QString &account){
+    accountNumber = account;
+}
+
+
+
+QString &MemberView::getAccountNumber(){
+    return accountNumber;
+}
+
 //view related functions
 
 void MemberView::refreashMemberView(){
+    qDebug()<<"MemberView: Refreashing Displays";
     displayCurrentMember();
     displayCheckedOut();
     displayHoldRequests();
@@ -36,6 +47,7 @@ void MemberView::displayCurrentMember() {
     QJsonObject& currentUser = userManager->getCurrentUser();
 
     if(!currentUser.isEmpty()){
+        qDebug()<<"MemberView: Populating Member Details";
         ui->nameOutputLabel->setText(currentUser["name"].toString());
         ui->accountOutputLabel->setText(currentUser["account"].toString());
         ui->phoneOutputLabel->setText(currentUser["phone"].toString());
@@ -55,6 +67,9 @@ void MemberView::updateButtonClicked() {
 
     qDebug()<<"MemberView: Loading edit window";
     updateUserView->exec();
+
+    UserManagement* userManager = UserManagement::getUserManager();
+    userManager->updateCurrentUser();
     displayCurrentMember();
 }
 
@@ -62,17 +77,33 @@ void MemberView::logoutButtonClicked() {
     emit logoutRequest();
 }
 
+void MemberView::clearDisplay(){
+    ui->issuedList->clear();
+    ui->holdList->clear();
+}
+
 //populates ui with books currently checked out to the current user
 //parameters: QjsonObject containing user to display
 //returns : none
 void MemberView::displayCheckedOut() {
     //getting mangers
+
     UserManagement* userManager = UserManagement::getUserManager();
     BookManagement* bookManager = BookManagement::getBookManager();
+
+    //userManager->setUserArray();
     //getting user details
     QJsonObject& currentUser = userManager->getCurrentUser();
+    qDebug()<<currentUser;
     QJsonArray checkedOut = currentUser["activeLoans"].toArray();
 
+    qDebug()<<"MemberView: checked out array "<<checkedOut;
+    qDebug()<<"-------------------Test------------------";
+    QJsonObject user = userManager->getUserObjAccount(accountNumber);
+    qDebug()<<user;
+    QJsonArray test = user["activeLoans"].toArray();
+    qDebug()<<test;
+    qDebug()<<"-----------------------------------------";
 
     //if array is empty setting to no display
     if(checkedOut.isEmpty()){
@@ -192,7 +223,7 @@ void MemberView::loadCatalogue(){
     UserManagement *userManager = UserManagement::getUserManager();
 
     //getting userDetails
-    QJsonArray& bookData = bookManager->getBookArray();
+    QJsonArray bookData = bookManager->getBookArray();
     QJsonObject& currentUser = userManager->getCurrentUser();
     QJsonArray checkedOut = currentUser["activeLoans"].toArray();
 
@@ -205,6 +236,7 @@ void MemberView::loadCatalogue(){
 
         bool userCheckedout = false;
 
+        //checking if checked out to current user
         for(int j = 0; j<checkedOut.size(); j++){
             QJsonObject loaned = checkedOut[j].toObject();
             if(loaned["isbn"].toString() == book["isbn"].toString()){
@@ -214,6 +246,7 @@ void MemberView::loadCatalogue(){
         }
 
         QJsonObject entry;
+
         BookListView* bookListView = bookManager->createBookList(book, entry);
 
         //connect refrash signal

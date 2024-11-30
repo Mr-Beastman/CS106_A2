@@ -21,6 +21,60 @@ void MemberInfoView::updateDisplay(const QJsonObject& updatedMember){
     setMemberDetails(updatedMember);
 }
 
+void MemberInfoView::generateCheckedout(const QString account){
+    qDebug()<<"MemberInfoView: Checking for active loans";
+
+    UserManagement* userManager = UserManagement::getUserManager();
+    BookManagement* bookManager = BookManagement::getBookManager();
+
+    QJsonObject user = userManager->getUserObjAccount(account);
+    QJsonArray activeLoans = user["activeLoans"].toArray();
+
+    //if no checked out books, set display to reflect this
+    if(activeLoans.isEmpty()){
+        qDebug()<<"MemberInfoView: No Active loans found. Setting to empty";
+        ui->issuedStackedWidget->setCurrentWidget(ui->noIssuedPage);
+        return;
+    }
+
+    qDebug()<<"MemberInfoView: Active loans found, generating list";
+    ui->issuedStackedWidget->setCurrentWidget(ui->issuedPage);
+
+    ui->issuedList->clear();
+
+    for(int i = 0; i<activeLoans.size(); i++){
+        QJsonObject loan = activeLoans[i].toObject();
+        QJsonObject book = bookManager->getBookDetails(loan["isbn"].toString());
+
+        BookListView* listItem = bookManager->createBookList(book, loan);
+
+        //setting display
+        QStackedWidget* stackedWidget = listItem->findChild<QStackedWidget*>("optionsStackedWidget");
+        int index = stackedWidget->indexOf(listItem->findChild<QWidget*>("userCheckedoutPage"));
+        stackedWidget->setCurrentIndex(index);
+        QLabel* dueLabel = listItem->findChild<QLabel*>("dueOutputLabel");
+        dueLabel->setText(loan["dueDate"].toString());
+
+        //adding loan entry to list
+        QListWidgetItem* entry = new QListWidgetItem(ui->issuedList);
+
+        //assigning isbn to item
+        entry->setData(Qt::UserRole, book["isbn"].toString());
+
+        //entry display settings
+        entry->setSizeHint(listItem->sizeHint());
+
+        if(i % 2 == 0){
+            entry->setBackground(QBrush(QColor(158,206,104)));
+        } else {
+            entry->setBackground(QBrush(QColor(187,211,180)));
+        }
+
+        ui->issuedList->setItemWidget(entry, listItem);
+    }
+
+}
+
 void MemberInfoView::backButtonClicked(){
     emit goBack();
 }

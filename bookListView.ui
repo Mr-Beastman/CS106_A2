@@ -183,7 +183,7 @@
    <item>
     <widget class="QStackedWidget" name="optionsStackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="userNotAvailablePage">
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -251,6 +251,13 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="returnButton">
+         <property name="text">
+          <string>Return</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="userAvailablePage">
@@ -288,6 +295,24 @@
         <widget class="QPushButton" name="renewButton">
          <property name="text">
           <string>Renew</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="userReadyPage">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QPushButton" name="confirmButton">
+         <property name="text">
+          <string>Confirm Pickup</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="removeHold02Button">
+         <property name="text">
+          <string>Remove Hold</string>
          </property>
         </widget>
        </item>

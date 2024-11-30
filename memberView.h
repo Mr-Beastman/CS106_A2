@@ -20,8 +20,7 @@ class MemberView : public QWidget {
 
 private:
     Ui::MemberView* ui;
-
-
+    QString accountNumber;
 
 private slots:
     //accountTab related
@@ -33,7 +32,11 @@ public:
     explicit MemberView(QWidget* parent = nullptr);
     ~MemberView();
 
+    //setters
+    void setAccountNumber(const QString& account);
 
+    //getters
+    QString& getAccountNumber();
 
     //accountTab Related
     void displayCurrentMember();
@@ -43,6 +46,7 @@ public:
 
     //catalogueTab related
     void loadCatalogue();
+    void clearDisplay();
 
 public slots:
     void onBookClicked(QListWidgetItem* book);
@@ -51,7 +55,8 @@ public slots:
 signals:
     void logoutRequest();
     void requestBookInfo(QJsonObject& bookDetails);
-
 };
+
+
 
 #endif // MEMBERVIEW_H

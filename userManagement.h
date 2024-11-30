@@ -13,7 +13,6 @@ private:
 
 protected:
     UserManagement();
-    QJsonArray userArray;
     QJsonObject currentUser;
 
 public:
@@ -30,13 +29,15 @@ public:
 
     //getters
     QJsonObject& getCurrentUser();
-    QJsonArray& getUserArray();
+    QJsonArray getUserArray();
     QJsonObject getUserObj(const QString &username);
     QJsonObject getUserObjAccount(const QString &account);
+    QString getAccount(const QString& username);
     //get the bookmanager instance
     static UserManagement* getUserManager();
 
     //methods
+    void updateCurrentUser();
     bool usernameExists(QJsonObject& user);
     bool addUser(QJsonObject &newUser);
     bool updateUser(const QString& account, QJsonObject& updatedDetails);
@@ -46,6 +47,8 @@ public:
     bool isActive(const QString &usernameInput);
     bool activateUser(const QString& usernameInput);
     bool deleteMember(const QString& accountNumber);
+    void updateUserArray(QJsonArray array);
+    void clearUserArray();
 };
 
 #endif // USERMANAGEMENT_H

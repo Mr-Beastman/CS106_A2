@@ -74,11 +74,13 @@ bool DataManagement::readData(){
 
     if(!file.exists()){
         qDebug()<<"DataManagement: Database file does not exist.";
+        libraryDatabase=QJsonObject();
         return false;
     }
 
     if(!file.open(QIODevice::ReadOnly)){
         qDebug()<<"DataManagement: Failed to open database file to read";
+        libraryDatabase=QJsonObject();
         return false;
     }
 
@@ -92,6 +94,7 @@ bool DataManagement::readData(){
     }
 
     qDebug()<<"DataManagement: Json file uses an invalid format";
+    libraryDatabase=QJsonObject();
     file.close();
     return false;
 }
@@ -111,5 +114,9 @@ bool DataManagement::saveData(){
     file.write(doc.toJson());
     file.close();
     return true;
+}
+
+void DataManagement::clearData(){
+    libraryDatabase=QJsonObject();
 }
 

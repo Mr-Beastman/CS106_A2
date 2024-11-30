@@ -18,6 +18,7 @@ class MemberInfoView : public QDialog {
 private:
     Ui::MemberInfoView* ui;
 
+
 private slots:
     void backButtonClicked();
     void activateButtonClicked();
@@ -29,6 +30,7 @@ public:
     ~MemberInfoView();
     bool setMemberDetails(const QJsonObject& userToView);
     void updateDisplay(const QJsonObject& updatedMember);
+    void generateCheckedout(const QString account);
 
 signals:
     void goBack();
