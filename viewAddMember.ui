@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ViewAddMember</class>
+ <widget class="QWidget" name="ViewAddMember">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>364</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(227, 238, 219);</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="viewBackground" stretch="0">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
+      <number>9</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="layout" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QVBoxLayout" name="memberInfoLayout" stretch="1,0,0">
+        <item>
+         <layout class="QGridLayout" name="inputsLayout">
+          <property name="verticalSpacing">
+           <number>12</number>
+          </property>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="passwordLineEdit">
+            <property name="styleSheet">
+             <string notr="true">#passwordLineEdit{
+    border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+	
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="emailLabel">
+            <property name="styleSheet">
+             <string notr="true">#emailLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+            </property>
+            <property name="text">
+             <string>Email</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="passwordLabel">
+            <property name="styleSheet">
+             <string notr="true">#passwordLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+            </property>
+            <property name="text">
+             <string>Password</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QCheckBox" name="adminCheckBox">
+            <property name="styleSheet">
+             <string notr="true">#adminCheckBox{
+	font: 700 9pt &quot;Segoe UI&quot;;
+	color: rgb(0, 0, 0);
+	
+}
+#adminCheckBox::indicator{
+	background-color: rgb(255, 255, 255);
+	border: 1px solid;
+}</string>
+            </property>
+            <property name="text">
+             <string>Make this an Admin Account</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="emailLineEdit">
+            <property name="styleSheet">
+             <string notr="true">#emailLineEdit{
+    border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+	
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="nameLabel">
+            <property name="styleSheet">
+             <string notr="true">#nameLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+            </property>
+            <property name="text">
+             <string>Name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="nameLineEdit">
+            <property name="styleSheet">
+             <string notr="true">#nameLineEdit{
+    border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+	
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="addressLabel">
+            <property name="styleSheet">
+             <string notr="true">#addressLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+            </property>
+            <property name="text">
+             <string>Address</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="phoneLineEdit">
+            <property name="styleSheet">
+             <string notr="true">#phoneLineEdit{
+    border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+	
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="usernameLabel">
+            <property name="styleSheet">
+             <string notr="true">#usernameLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+            </property>
+            <property name="text">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="usernameLineEdit">
+            <property name="styleSheet">
+             <string notr="true">#usernameLineEdit{
+    border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+	
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="phoneLabel">
+            <property name="styleSheet">
+             <string notr="true">#phoneLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+            </property>
+            <property name="text">
+             <string>Phone</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="addressLineEdit">
+            <property name="styleSheet">
+             <string notr="true">#addressLineEdit{
+    border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+	
+}</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QCheckBox" name="activeCheckBox">
+            <property name="styleSheet">
+             <string notr="true">#activeCheckBox{
+	font: 700 9pt &quot;Segoe UI&quot;;
+	color: rgb(0, 0, 0);
+	
+}
+#activeCheckBox::indicator{
+	background-color: rgb(255, 255, 255);
+	border: 1px solid;
+}</string>
+            </property>
+            <property name="text">
+             <string>Activate Member Now</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="errorOutputLabel">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="buttonLayout">
+          <item>
+           <widget class="QPushButton" name="saveButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">#saveButton{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	border: 1px solid;
+	background-color: rgb(192, 220, 161);
+}</string>
+            </property>
+            <property name="text">
+             <string>Add Member</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

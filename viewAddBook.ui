@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ViewAddBook</class>
+ <widget class="QWidget" name="ViewAddBook">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(227, 238, 219);
+
+QLabel {
+	
+	font: 700 9pt &quot;Segoe UI&quot;;
+	color: rgb(0, 0, 0);
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="viewBackground" stretch="2">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
+      <number>9</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="bookInfoLayout">
+       <item>
+        <layout class="QGridLayout" name="inputsLayout">
+         <property name="verticalSpacing">
+          <number>10</number>
+         </property>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="isbnLineEdit">
+           <property name="styleSheet">
+            <string notr="true">#isbnLineEdit{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="descriptionLabel">
+           <property name="styleSheet">
+            <string notr="true">#descriptionLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
+           <property name="text">
+            <string>Description</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="genreLineEdit">
+           <property name="styleSheet">
+            <string notr="true">#genreLineEdit{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="titleLabel">
+           <property name="styleSheet">
+            <string notr="true">#titleLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
+           <property name="text">
+            <string>Title</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="authorLabel">
+           <property name="styleSheet">
+            <string notr="true">#authorLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
+           <property name="text">
+            <string>Author</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="isbnLabel">
+           <property name="styleSheet">
+            <string notr="true">#isbnLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
+           <property name="text">
+            <string>ISBN</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QTextEdit" name="descriptionTextEdit">
+           <property name="styleSheet">
+            <string notr="true">#descriptionTextEdit{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="titleLineEdit">
+           <property name="styleSheet">
+            <string notr="true">#titleLineEdit{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="authorLineEdit">
+           <property name="styleSheet">
+            <string notr="true">#authorLineEdit{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="sectionLabel">
+           <property name="styleSheet">
+            <string notr="true">#sectionLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
+           <property name="text">
+            <string>Section</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="genreLabel">
+           <property name="styleSheet">
+            <string notr="true">#genreLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
+           <property name="text">
+            <string>Genre</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="sectionLineEdit">
+           <property name="styleSheet">
+            <string notr="true">#sectionLineEdit{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
+}</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="coverPreviewLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#coverPreviewLabel{
+	
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Plain</enum>
+         </property>
+         <property name="text">
+          <string>Drag Cover Image Here</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="buttonLayout">
+         <item>
+          <widget class="QPushButton" name="saveButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>250</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#saveButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+           </property>
+           <property name="text">
+            <string>Add Book</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

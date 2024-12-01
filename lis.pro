@@ -9,55 +9,55 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    addBookview.cpp \
-    addMemberView.cpp \
-    adminView.cpp \
-    bookInfoView.cpp \
-    bookListView.cpp \
-    bookManagement.cpp \
-    dataManagement.cpp \
-    loginView.cpp \
     main.cpp \
     mainWindow.cpp \
-    memberInfoView.cpp \
-    memberView.cpp \
-    modifyBookview.cpp \
-    registrationView.cpp \
-    transactionManagement.cpp \
-    updateUserView.cpp \
-    userManagement.cpp
+    managementBook.cpp \
+    managementData.cpp \
+    managementTransaction.cpp \
+    managementUser.cpp \
+    viewAddBook.cpp \
+    viewAddMember.cpp \
+    viewAdminDashboard.cpp \
+    viewBookInfo.cpp \
+    viewBookItem.cpp \
+    viewLogin.cpp \
+    viewMemberDashboard.cpp \
+    viewMemberInfo.cpp \
+    viewRegistration.cpp \
+    viewUpdateBook.cpp \
+    viewUpdateUser.cpp
 
 HEADERS += \
-    addBookview.h \
-    addMemberView.h \
-    adminView.h \
-    bookInfoView.h \
-    bookListView.h \
-    bookManagement.h \
-    dataManagement.h \
-    loginView.h \
     mainWindow.h \
-    memberInfoView.h \
-    memberView.h \
-    modifyBookview.h \
-    registrationView.h \
-    transactionManagement.h \
-    updateUserView.h \
-    userManagement.h
+    managementBook.h \
+    managementData.h \
+    managementTransaction.h \
+    managementUser.h \
+    viewAddBook.h \
+    viewAddMember.h \
+    viewAdminDashboard.h \
+    viewBookInfo.h \
+    viewBookItem.h \
+    viewLogin.h \
+    viewMemberDashboard.h \
+    viewMemberInfo.h \
+    viewRegistration.h \
+    viewUpdateBook.h \
+    viewUpdateUser.h
 
 FORMS += \
-    addBookView.ui \
-    addMemberView.ui \
-    adminView.ui \
-    bookInfoView.ui \
-    bookListView.ui \
-    loginView.ui \
     mainWindow.ui \
-    memberInfoView.ui \
-    memberView.ui \
-    modifyBookView.ui \
-    registrationView.ui \
-    updateUserView.ui
+    viewAddBook.ui \
+    viewAddMember.ui \
+    viewAdminDashboard.ui \
+    viewBookInfo.ui \
+    viewBookItem.ui \
+    viewLogin.ui \
+    viewMemberDashboard.ui \
+    viewMemberInfo.ui \
+    viewRegistration.ui \
+    viewUpdateBook.ui \
+    viewUpdateUser.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

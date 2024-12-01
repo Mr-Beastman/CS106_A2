@@ -1,7 +1,7 @@
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
 
-#include "loginView.h"
+#include "viewLogin.h"
 
 //constructor
 MainWindow::MainWindow(QWidget* parent) :
@@ -15,12 +15,12 @@ MainWindow::MainWindow(QWidget* parent) :
     setCentralWidget(stackedWidget);
 
     //creating views to be added into stackedWidget
-    loginPage = new LoginView(this);
-    registrationPage = new RegistrationView(this);
-    adminPage = new AdminView(this);
-    memberPage = new MemberView(this);
-    bookInfoPage = new BookInfoView(this);
-    memberInfoPage = new MemberInfoView(this);
+    loginPage = new ViewLogin(this);
+    registrationPage = new ViewRegistration(this);
+    adminPage = new ViewAdminDashboard(this);
+    memberPage = new ViewMemberDashboard(this);
+    bookInfoPage = new ViewBookInfo(this);
+    memberInfoPage = new ViewMemberInfo(this);
 
     //adding views to stackedWidget
     stackedWidget->addWidget(loginPage);
@@ -32,18 +32,18 @@ MainWindow::MainWindow(QWidget* parent) :
 
 
     //connecting view signals
-    connect(loginPage, &LoginView::loginAttempt, this, &MainWindow::userLogin);
-    connect(loginPage, &LoginView::callRegisterView, this, &MainWindow::showRegister);
-    connect(registrationPage, &RegistrationView::loginRequest, this, &MainWindow::showLogin);
-    connect(adminPage, &AdminView::logoutRequest, this, &::MainWindow::logOut);
-    connect(adminPage, &AdminView::requestBookInfo, this, &MainWindow::showBookInfo);
-    connect(adminPage, &AdminView::requestMemberInfo, this, &MainWindow::showMemberInfo);
-    connect(memberPage, &MemberView::logoutRequest, this, &MainWindow::logOut);
-    connect(memberPage, &MemberView::requestBookInfo, this, &MainWindow::showBookInfo);
-    connect(memberPage, &MemberView::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
-    connect(bookInfoPage, &BookInfoView::goBack, this, &MainWindow::goBack);
-    connect(memberInfoPage, &MemberInfoView::goBack, this, &MainWindow::goBack);
-    connect(memberInfoPage, &MemberInfoView::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
+    connect(loginPage, &ViewLogin::loginAttempt, this, &MainWindow::userLogin);
+    connect(loginPage, &ViewLogin::callRegisterView, this, &MainWindow::showRegister);
+    connect(registrationPage, &ViewRegistration::loginRequest, this, &MainWindow::showLogin);
+    connect(adminPage, &ViewAdminDashboard::logoutRequest, this, &::MainWindow::logOut);
+    connect(adminPage, &ViewAdminDashboard::requestBookInfo, this, &MainWindow::showBookInfo);
+    connect(adminPage, &ViewAdminDashboard::requestMemberInfo, this, &MainWindow::showMemberInfo);
+    connect(memberPage, &ViewMemberDashboard::logoutRequest, this, &MainWindow::logOut);
+    connect(memberPage, &ViewMemberDashboard::requestBookInfo, this, &MainWindow::showBookInfo);
+    connect(memberPage, &ViewMemberDashboard::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
+    connect(bookInfoPage, &ViewBookInfo::goBack, this, &MainWindow::goBack);
+    connect(memberInfoPage, &ViewMemberInfo::goBack, this, &MainWindow::goBack);
+    connect(memberInfoPage, &ViewMemberInfo::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
 
     stackedWidget->setCurrentIndex(0);
 
@@ -58,7 +58,7 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::loadData(){
-    DataManagement dataManager;
+    ManagementData dataManager;
     dataManager.readData();
 }
 
@@ -73,7 +73,7 @@ void MainWindow::showLogin(){
 }
 
 void MainWindow::userLogin(const QString& username, QString password){
-    UserManagement userManager;
+    managementUser userManager;
 
     if(userManager.verifyLogin(username,password)){
         //set current user
@@ -151,7 +151,7 @@ void MainWindow::updateMemberDisplays(){
 }
 
 void MainWindow::goBack(){
-    UserManagement userManager;
+    managementUser userManager;
 
     QJsonObject currentUser = userManager.getUserObj(userManager.getCurrentUser());
 
@@ -164,8 +164,8 @@ void MainWindow::goBack(){
 
 void MainWindow::logOut() {
     //clearing current user and switch back to login page
-    UserManagement userManager;
-    DataManagement dataManager;
+    managementUser userManager;
+    ManagementData dataManager;
     userManager.clearCurrentUser();
     stackedWidget->setCurrentIndex(0);
 

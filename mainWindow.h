@@ -5,17 +5,17 @@
 #include <QStackedWidget>
 #include <QProcess>
 
-#include "dataManagement.h"
-#include "userManagement.h"
-#include "bookManagement.h"
-#include "transactionManagement.h"
+#include "managementData.h"
+#include "managementUser.h"
+#include "managementBook.h"
+#include "managementTransaction.h"
 
-#include "loginView.h"
-#include "registrationView.h"
-#include "adminView.h"
-#include "memberView.h"
-#include "bookInfoView.h"
-#include "memberInfoView.h"
+#include "viewLogin.h"
+#include "viewRegistration.h"
+#include "viewAdminDashboard.h"
+#include "viewMemberDashboard.h"
+#include "viewBookInfo.h"
+#include "viewMemberInfo.h"
 
 
 namespace Ui {
@@ -31,12 +31,12 @@ private:
     QStackedWidget *stackedWidget;
 
     //page members
-    LoginView* loginPage;
-    RegistrationView* registrationPage;
-    AdminView* adminPage;
-    MemberView* memberPage;
-    BookInfoView* bookInfoPage;
-    MemberInfoView* memberInfoPage;
+    ViewLogin* loginPage;
+    ViewRegistration* registrationPage;
+    ViewAdminDashboard* adminPage;
+    ViewMemberDashboard* memberPage;
+    ViewBookInfo* bookInfoPage;
+    ViewMemberInfo* memberInfoPage;
 
 private slots:
     void showLogin();
