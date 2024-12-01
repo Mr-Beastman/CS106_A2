@@ -7,15 +7,9 @@
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    stackedWidget(new QStackedWidget(this)),
-    dataManager(DataManagement::getDataManager())
+    stackedWidget(new QStackedWidget(this))
 {
     ui->setupUi(this);
-
-    //intialize original managers & set arrays
-    userManager = UserManagement::getUserManager();
-    bookManager = BookManagement::getBookManager();
-    transactionManager = TransactionManagement::getTransactionManager();
 
     // Set the stacked widget as the central widget of the main window
     setCentralWidget(stackedWidget);
@@ -64,7 +58,8 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::loadData(){
-    dataManager->readData();
+    DataManagement dataManager;
+    dataManager.readData();
 }
 
 //functions to change view display
@@ -78,15 +73,17 @@ void MainWindow::showLogin(){
 }
 
 void MainWindow::userLogin(const QString& username, QString password){
-    if(userManager->verifyLogin(username,password)){
+    UserManagement userManager;
+
+    if(userManager.verifyLogin(username,password)){
         //set current user
-        userManager->setCurrentUser(userManager->getUserObj(username));
+        userManager.setCurrentUser(username);
 
         //clearing error messgaes
         loginPage->clearError();
 
         //checking userType
-        if(userManager->isAdmin(username)){
+        if(userManager.isAdmin(username)){
             qDebug()<<"MainWindow: Admin Login Succesful. Loading Admin View";
 
             //populate admin dashboards
@@ -95,10 +92,11 @@ void MainWindow::userLogin(const QString& username, QString password){
 
             //directing to admin page
             stackedWidget->setCurrentIndex(2);
-        } else if(userManager->isActive(username)) {
+        } else if(userManager.isActive(username)) {
             qDebug()<<"MainWindow: Member Login Succesful. Loading Member View";
 
-            memberPage->setAccountNumber(userManager->getAccount(username));
+            memberPage->setAccountNumber(userManager.getAccount(username));
+            memberPage->setUsername(username);
             //populate member views
             qDebug()<<"MainWindow: Populating members detials";
             memberPage->displayCurrentMember();
@@ -148,12 +146,16 @@ void MainWindow::updateAdminDisplays(){
 
 void MainWindow::updateMemberDisplays(){
     memberPage->loadCatalogue();
+    memberPage->displayCheckedOut();
+    memberPage->displayHoldRequests();
 }
 
 void MainWindow::goBack(){
-    QJsonObject& currentUser = userManager->getCurrentUser();
+    UserManagement userManager;
 
-    if(userManager->isAdmin(currentUser["username"].toString())){
+    QJsonObject currentUser = userManager.getUserObj(userManager.getCurrentUser());
+
+    if(userManager.isAdmin(currentUser["username"].toString())){
         stackedWidget->setCurrentIndex(2);
     } else {
         stackedWidget->setCurrentIndex(3);
@@ -162,11 +164,13 @@ void MainWindow::goBack(){
 
 void MainWindow::logOut() {
     //clearing current user and switch back to login page
-    userManager->clearCurrentUser();
+    UserManagement userManager;
+    DataManagement dataManager;
+    userManager.clearCurrentUser();
     stackedWidget->setCurrentIndex(0);
 
     //making sure to clear all stored data
-    dataManager->clearData();
+    dataManager.clearData();
 
     //reload for next user
     loadData();

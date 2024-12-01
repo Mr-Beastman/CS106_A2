@@ -64,7 +64,7 @@ void AddBookView::dropEvent(QDropEvent *event){
 
 void AddBookView::saveButtonClicked() {
 
-    BookManagement* bookManager = BookManagement::getBookManager();
+    BookManagement bookManager;
 
     QString title = ui->titleLineEdit->text();
     QString author = ui->authorLineEdit->text();
@@ -74,12 +74,12 @@ void AddBookView::saveButtonClicked() {
     QString description = ui->descriptionTextEdit->toPlainText();
 
     //saving the book details
-    if(bookManager->addBook(title, author, isbn, description, genre, section)){
+    if(bookManager.addBook(title, author, isbn, description, genre, section)){
         qDebug()<<"AddBookView: Book Added Succesfully";
 
         //save image if one provided
         if(!imageLocation.isEmpty()){
-            QString saveLocation = bookManager->findCoverPath()+isbn+".png";
+            QString saveLocation = bookManager.findCoverPath()+isbn+".png";
             if(QFile::copy(imageLocation,saveLocation)){
                 qDebug()<<"AddBookView: Image saved Successfully";
             } else {

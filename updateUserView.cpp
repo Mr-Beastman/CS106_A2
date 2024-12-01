@@ -26,9 +26,9 @@ QString UpdateUserView::getAccountNumber(){
 
 void UpdateUserView::preloadUser(const QString& account) {
 
-    UserManagement* userManager = UserManagement::getUserManager();
+    UserManagement userManager;
 
-    QJsonObject user = userManager->getUserObjAccount(account);
+    QJsonObject user = userManager.getUserObj(account);
 
     //preload lineEdits
     ui->nameLineEdit->setText(user["name"].toString());
@@ -40,7 +40,7 @@ void UpdateUserView::preloadUser(const QString& account) {
 
 void UpdateUserView::saveButtonClicked() {
 
-    UserManagement* userManager = UserManagement::getUserManager();
+    UserManagement userManager;
 
     QJsonObject updateDetails;
 
@@ -50,7 +50,7 @@ void UpdateUserView::saveButtonClicked() {
     updateDetails["address"] = ui->addressLineEdit->text();
 
 
-    if(userManager->updateUser(accountNumber,updateDetails)){
+    if(userManager.updateUser(accountNumber,updateDetails)){
         accept();
     } else {
         qDebug()<<"UpdateUserView: Displaying Error Message";

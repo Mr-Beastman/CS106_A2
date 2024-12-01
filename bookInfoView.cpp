@@ -28,10 +28,10 @@ void BookInfoView::setBookDetails(const QJsonObject &bookDetails){
     ui->bookDescription->setPlainText(bookDetails["desc"].toString());
 
     // adding cover image
-    BookManagement* bookManager = BookManagement::getBookManager();
-    QString coverImagePath = bookManager->findCoverPath() + bookDetails["isbn"].toString() + ".png";
+    BookManagement bookManager;
+    QString coverImagePath = bookManager.findCoverPath() + bookDetails["isbn"].toString() + ".png";
     QPixmap cover(coverImagePath);
-    QString noCoverImagePath = bookManager->findCoverPath() + "noCover.png";
+    QString noCoverImagePath = bookManager.findCoverPath() + "noCover.png";
     QPixmap noCover(noCoverImagePath);
 
     if (!cover.isNull()) {

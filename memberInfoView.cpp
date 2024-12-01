@@ -24,12 +24,12 @@ void MemberInfoView::updateDisplay(const QJsonObject& updatedMember){
 void MemberInfoView::generateCheckedout(const QString account){
     qDebug()<<"MemberInfoView: Checking for active loans";
 
-    UserManagement* userManager = UserManagement::getUserManager();
-    BookManagement* bookManager = BookManagement::getBookManager();
+    UserManagement userManager;
+    BookManagement bookManager;
 
 
 
-    QJsonObject user = userManager->getUserObjAccount(account);
+    QJsonObject user = userManager.getUserObjAccount(account);
     QJsonArray activeLoans = user["activeLoans"].toArray();
 
     //if no checked out books, set display to reflect this
@@ -46,9 +46,9 @@ void MemberInfoView::generateCheckedout(const QString account){
 
     for(int i = 0; i<activeLoans.size(); i++){
         QJsonObject loan = activeLoans[i].toObject();
-        QJsonObject book = bookManager->getBookDetails(loan["isbn"].toString());
+        QJsonObject book = bookManager.getBookDetails(loan["isbn"].toString());
 
-        BookListView* listItem = bookManager->createBookList(book, loan);
+        BookListView* listItem = bookManager.createBookList(book, loan);
 
         //setting display
         QStackedWidget* stackedWidget = listItem->findChild<QStackedWidget*>("optionsStackedWidget");
@@ -82,16 +82,16 @@ void MemberInfoView::backButtonClicked(){
 }
 
 void MemberInfoView::activateButtonClicked(){
-    UserManagement* userManager = UserManagement::getUserManager();
-    userManager->activateUser(ui->accountOutputLabel->text());
-    updateDisplay(userManager->getUserObjAccount(ui->accountOutputLabel->text()));
+    UserManagement userManager;
+    userManager.activateUser(ui->accountOutputLabel->text());
+    updateDisplay(userManager.getUserObjAccount(ui->accountOutputLabel->text()));
     emit requestUpdateDisplay();
 }
 
 void MemberInfoView::deleteButtonClicked(){
-    UserManagement* userManager = UserManagement::getUserManager();
+    UserManagement userManager;
 
-    userManager->deleteMember(ui->accountOutputLabel->text());
+    userManager.deleteMember(ui->accountOutputLabel->text());
 
     emit requestUpdateDisplay();
     emit goBack();
@@ -103,9 +103,9 @@ void MemberInfoView::updateButtonClicked(){
     updateUserView->preloadUser(ui->accountOutputLabel->text());
     updateUserView->exec();
 
-    UserManagement* userManager = UserManagement::getUserManager();
+    UserManagement userManager;
 
-    QJsonObject user = userManager->getUserObjAccount(ui->accountOutputLabel->text());
+    QJsonObject user = userManager.getUserObjAccount(ui->accountOutputLabel->text());
     updateDisplay(user);
     emit requestUpdateDisplay();
 }

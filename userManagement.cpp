@@ -4,9 +4,6 @@
 
 // --------------- private ---------------
 
-//intializing static memebers
-UserManagement * UserManagement::userManager = nullptr;
-QMutex UserManagement::userMtx;
 
 
 // --------------- protected ---------------
@@ -17,16 +14,16 @@ UserManagement::UserManagement() : DataManagement(){}
 // --------------- public ---------------
 
 // --- setters ---
-void UserManagement::setCurrentUser(const QJsonObject userObj) {
-    currentUser = userObj;
+void UserManagement::setCurrentUser(const QString username) {
+    currentUser = username;
 }
 
 void UserManagement::clearCurrentUser(){
-    currentUser = QJsonObject();
+    currentUser = QString();
 }
 
 // --- getters ---
-QJsonObject &UserManagement::getCurrentUser(){
+QString &UserManagement::getCurrentUser(){
     return currentUser;
 }
 
@@ -40,13 +37,9 @@ QJsonArray UserManagement::getUserArray(){
 //returns: QJsonObject of requested user
 QJsonObject UserManagement::getUserObj(const QString& username) {
 
-    //checking user data exists
-    if(!libraryDatabase.contains("users") || !libraryDatabase["users"].isArray()){
-        qDebug()<< "No user data present";
-        return QJsonObject();
-    }
+    QJsonObject& database = getFileData();
+    QJsonArray userArray = database["users"].toArray();
 
-    QJsonArray userArray = getUserArray();
     for (int i = 0; i<userArray.size(); ++i){
         //convert user to object
         QJsonObject user = userArray[i].toObject();
@@ -64,12 +57,10 @@ QJsonObject UserManagement::getUserObj(const QString& username) {
 
 QJsonObject UserManagement::getUserObjAccount(const QString &account){
     //checking user data exists
-    if(!libraryDatabase.contains("users") || !libraryDatabase["users"].isArray()){
-        qDebug()<< "No user data present";
-        return QJsonObject();
-    }
 
-    QJsonArray userArray = getUserArray();
+    QJsonObject& database = getFileData();
+    QJsonArray userArray = database["user"].toArray();
+
     for (int i = 0; i<userArray.size(); ++i){
         //convert user to object
         QJsonObject user = userArray[i].toObject();
@@ -99,24 +90,6 @@ QString UserManagement::getAccount(const QString &username){
 
     qDebug()<<"UserManagement: Account Number could not be found";
     return QString();
-}
-
-//getter for bookManager singleton
-UserManagement *UserManagement::getUserManager() {
-    if(userManager == nullptr) {
-        QMutexLocker locker(&userMtx);
-        if(userManager == nullptr){
-            userManager = new UserManagement();
-        }
-    }
-    return userManager;
-}
-
-void UserManagement::updateCurrentUser(){
-
-    QString userAccount = currentUser["account"].toString();
-    QJsonObject userObject = userManager->getUserObjAccount(userAccount);
-    userManager->setCurrentUser(userObject);
 }
 
 // --- methods ---
@@ -279,13 +252,17 @@ bool UserManagement::verifyLogin(const QString& usernameInput, const QString& pa
     qDebug()<<"UserManagment: Begining Verfication process";
 
     //checking data has loaded correctly, if missing load the data
-    QJsonArray userArray = getUserArray();
+
+    QJsonObject& data = getFileData();
+
+
+    QJsonArray userArray = data["users"].toArray();
+
     if(userArray.isEmpty()){
         qDebug()<<"UserManagment: Users not loaded";
         return false;
     }
 
-    qDebug()<<"UserManagment: Checking member Database";
     //loop through the user array
     for (int i = 0; i < userArray.size(); i++){
         //convert user to object
@@ -377,10 +354,11 @@ bool UserManagement::activateUser(const QString &accountInput) {
                 user["isActive"] = true;
                 userArray[i] = user;
 
-                QJsonObject& fileData = userManager->getFileData();
+
+                QJsonObject& fileData = getFileData();
                 fileData["users"] = userArray;
 
-                if (userManager->saveData()) {
+                if (saveData()) {
                     qDebug() << "UserManagement: User has been activated and saved";
                     return true;
                 } else {
@@ -413,10 +391,10 @@ bool UserManagement::deleteMember(const QString &accountNumber){
             userArray.removeAt(i);
 
             //update database
-            QJsonObject& fileData = userManager->getFileData();
+            QJsonObject& fileData = getFileData();
             fileData["users"] = userArray;
 
-            if (userManager->saveData()) {
+            if (saveData()) {
                 qDebug() << "UserManagement: User has been deleted";
                 return true;
             } else {

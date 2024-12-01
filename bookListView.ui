@@ -196,7 +196,7 @@
       <item>
        <widget class="QStackedWidget" name="availabilityWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="availablePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -257,7 +257,7 @@
    <item>
     <widget class="QStackedWidget" name="optionsStackedWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="userNotAvailablePage">
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -326,7 +326,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLabel" name="CheckedOutputLabel">
+        <widget class="QLabel" name="checkedOutputLabel">
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -371,6 +371,17 @@
          </property>
          <property name="text">
           <string>Return</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="userDataPage">
+      <layout class="QVBoxLayout" name="verticalLayout_12">
+       <item>
+        <widget class="QLabel" name="usernameStoredLabel">
+         <property name="text">
+          <string>TextLabel</string>
          </property>
         </widget>
        </item>

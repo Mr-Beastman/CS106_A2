@@ -27,6 +27,10 @@ void MemberView::setAccountNumber(const QString &account){
     accountNumber = account;
 }
 
+void MemberView::setUsername(const QString &account){
+    username = account;
+}
+
 
 
 QString &MemberView::getAccountNumber(){
@@ -37,16 +41,12 @@ QString &MemberView::getAccountNumber(){
 
 void MemberView::updateDisplays(){
     qDebug()<<"MemberView: Refreashing Displays";
-    // displayCurrentMember();
-    // displayCheckedOut();
-    // displayHoldRequests();
-    // loadCatalogue();
     emit refreashMemberDisplay();
 }
 
 void MemberView::displayCurrentMember() {
-    UserManagement* userManager  = UserManagement::getUserManager();
-    QJsonObject& currentUser = userManager->getCurrentUser();
+    UserManagement userManager;
+    QJsonObject currentUser = userManager.getUserObj(username);
 
     if(!currentUser.isEmpty()){
         qDebug()<<"MemberView: Populating Member Details";
@@ -65,13 +65,13 @@ void MemberView::updateButtonClicked() {
     qDebug()<<"MemberView: Setting up edit window";
     UpdateUserView* updateUserView = new UpdateUserView(this);
     updateUserView->setAccountNumber(ui->accountOutputLabel->text());
-    updateUserView->preloadUser(ui->accountOutputLabel->text());
+    updateUserView->preloadUser(username);
 
     qDebug()<<"MemberView: Loading edit window";
     updateUserView->exec();
 
-    UserManagement* userManager = UserManagement::getUserManager();
-    userManager->updateCurrentUser();
+    UserManagement userManager;
+    //userManager.updateCurrentUser();
     displayCurrentMember();
 }
 
@@ -90,17 +90,18 @@ void MemberView::clearDisplay(){
 void MemberView::displayCheckedOut() {
     //getting mangers
 
-    UserManagement* userManager = UserManagement::getUserManager();
-    BookManagement* bookManager = BookManagement::getBookManager();
+    UserManagement userManager;
+    BookManagement bookManager;
 
-    //userManager->setUserArray();
+    //userManager.setUserArray();
     //getting user details
-    QJsonObject& currentUser = userManager->getCurrentUser();
-    qDebug()<<currentUser;
-    QJsonArray checkedOut = currentUser["activeLoans"].toArray();
+    //get data
+
+    QJsonObject currentUser = userManager.getUserObj(username);
+    QJsonArray activeLoans = currentUser["activeLoans"].toArray();
 
     //if array is empty setting to no display
-    if(checkedOut.isEmpty()){
+    if(activeLoans.isEmpty()){
         qDebug()<<"MemberView: Setting Checkedout display to empty";
         stackedWidgetDisplay(ui->issuedStackedWidget, ui->noIssuedPage);
         return;
@@ -115,12 +116,12 @@ void MemberView::displayCheckedOut() {
 
     //building list to display
     qDebug()<<"MemberView: Generating users checkedout items";
-    for(int i = 0; i<checkedOut.size(); ++i){
-        QJsonObject entry = checkedOut[i].toObject();
-        QJsonObject book = bookManager->getBookDetails(entry["isbn"].toString());
+    for(int i = 0; i<activeLoans.size(); ++i){
+        QJsonObject entry = activeLoans[i].toObject();
+        QJsonObject book = bookManager.getBookDetails(entry["isbn"].toString());
 
         //creating item
-        BookListView* bookListItem = bookManager->createBookList(book, entry);
+        BookListView* bookListItem = bookManager.createBookList(book, entry);
 
         // //connect refreash signal doing in book list view
         connect(bookListItem, &BookListView::refreashMemberView, this, &MemberView::updateDisplays);
@@ -152,11 +153,11 @@ void MemberView::displayCheckedOut() {
 
 void MemberView::displayHoldRequests() {
     //get managers
-    BookManagement* bookManager = BookManagement::getBookManager();
-    UserManagement* userManager = UserManagement::getUserManager();
+    BookManagement bookManager;
+    UserManagement userManager;
 
     //get current user details
-    QJsonObject& currentUser = userManager->getCurrentUser();
+    QJsonObject currentUser = userManager.getUserObj(username);
     QJsonArray holdRequests = currentUser["holdRequests"].toArray();
 
     //setting to display "no holds" if array empty
@@ -176,9 +177,9 @@ void MemberView::displayHoldRequests() {
     //build items for list to display
     for(int i = 0; i<holdRequests.size(); ++i){
         QJsonObject entry = holdRequests[i].toObject();
-        QJsonObject book = bookManager->getBookDetails(entry["isbn"].toString());
+        QJsonObject book = bookManager.getBookDetails(entry["isbn"].toString());
 
-        BookListView* bookListView = bookManager->createBookList(book, entry);
+        BookListView* bookListView = bookManager.createBookList(book, entry);
 
         //adding entry to list
         QListWidgetItem* item = new QListWidgetItem(ui->holdList);
@@ -204,9 +205,9 @@ void MemberView::displayHoldRequests() {
 
         qDebug()<<idLabel->text();
 
-        TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
+        TransactionManagement transactionManager;
 
-        if(transactionManager->checkHoldstatus(holdId) == "ready"){
+        if(transactionManager.checkHoldstatus(holdId) == "ready"){
             QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
             int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userReadyPage"));
             stackedWidget->setCurrentIndex(index);
@@ -232,13 +233,15 @@ void MemberView::stackedWidgetDisplay(QStackedWidget *toSet, QWidget *page) {
 //catalogueTab functions
 void MemberView::loadCatalogue() {
     //set managers
-    BookManagement* bookManager = BookManagement::getBookManager();
-    UserManagement* userManager = UserManagement::getUserManager();
-    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
+    BookManagement bookManager;
+    UserManagement userManager;
+    TransactionManagement transactionManager;
 
     //get data
-    QJsonArray bookData = bookManager->getBookArray();
-    QJsonObject currentUser = userManager->getUserObjAccount(accountNumber);
+    QJsonObject& database = userManager.getFileData();
+
+    QJsonArray bookData = database["books"].toArray();
+    QJsonObject currentUser = userManager.getUserObj(username);
     QJsonArray activeLoans = currentUser["activeLoans"].toArray();
 
     //clear list to ensure clean build
@@ -255,25 +258,36 @@ void MemberView::loadCatalogue() {
         }
 
         QString isbn = book["isbn"].toString();
-        qDebug() << "Processing book with ISBN:" << isbn;
 
         QJsonObject entry;
-        BookListView* bookListView = bookManager->createBookList(book, entry);
+        BookListView* bookListView = bookManager.createBookList(book, entry);
         if (!bookListView) {
             qDebug() << "Failed to create BookListView for ISBN:" << isbn;
             continue;
         }
 
-        //add alternating colors
         QListWidgetItem* item = new QListWidgetItem(ui->catalogueList);
-        item->setBackground(QBrush((i % 2 == 0) ? QColor(158, 206, 104) : QColor(187, 211, 180)));
+
+        //adding alternating colors
+        if(i % 2 == 0){
+            item->setBackground(QBrush(QColor(158,206,104)));
+        } else {
+            item->setBackground(QBrush(QColor(187,211,180)));
+        }
+
         item->setSizeHint(bookListView->sizeHint());
         item->setData(Qt::UserRole, isbn);
+
+        //store hidden data for transactions
+        QLabel* userLabel = bookListView->findChild<QLabel*>("usernameStoredLabel");
+        if(userLabel){
+            userLabel->setText(username);
+        }
 
         //adding info to display
         QLabel* activeLoanLabel = bookListView->findChild<QLabel*>("CheckedOutputLabel");
         if (activeLoanLabel) {
-            activeLoanLabel->setText(transactionManager->checkedOutTo(isbn));
+            activeLoanLabel->setText(transactionManager.checkedOutTo(isbn));
         }
 
         QLabel* holdArrayLabel = bookListView->findChild<QLabel*>("QueueOutputLabel");
@@ -311,9 +325,10 @@ void MemberView::loadCatalogue() {
             } else if (isLoanedByUser) {
                 // current user has active loan for book
                 QWidget* checkedOutPage = bookListView->findChild<QWidget*>("userCheckedoutPage");
+                QWidget* checkedoutPage = bookListView->findChild<QWidget*>("checkedoutPage");
 
                 if (checkedOutPage) {
-                    int index = availabilityWidget->indexOf(checkedOutPage);
+                    int index = availabilityWidget->indexOf(checkedoutPage);
                     availabilityWidget->setCurrentIndex(index);
 
                     index = optionsWidget->indexOf(checkedOutPage);
@@ -336,6 +351,7 @@ void MemberView::loadCatalogue() {
                     }
                 }
             } else {
+
                 //not available and not checked out to current user
                 QWidget* notAvailablePage = bookListView->findChild<QWidget*>("notAvailablePage");
                 QWidget* userNotAvailablePage = bookListView->findChild<QWidget*>("userNotAvailablePage");
@@ -362,15 +378,13 @@ void MemberView::loadCatalogue() {
 }
 
 
-
-
 void MemberView::onBookClicked(QListWidgetItem *book) {
 
     QString isbn = book->data(Qt::UserRole).toString();
 
     //getting book details
-    BookManagement* bookManger = BookManagement::getBookManager();
-    QJsonObject bookDetails = bookManger->getBookDetails(isbn);
+    BookManagement bookManager;
+    QJsonObject bookDetails = bookManager.getBookDetails(isbn);
 
     qDebug()<<"MemberView: Generating Book Info View";
 

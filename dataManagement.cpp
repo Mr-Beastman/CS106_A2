@@ -6,25 +6,6 @@
 //constuctor
 DataManagement::DataManagement() {}
 
-DataManagement *DataManagement::getDataManager(){
-    if(dataManager == nullptr) {
-        QMutexLocker locker(&dataMtx);
-        if(dataManager == nullptr){
-            dataManager = new DataManagement();
-        }
-    }
-    return dataManager;
-}
-
-void DataManagement::setUserDatabase()
-{
-
-}
-
-
-//intializing static memebers
-DataManagement * DataManagement::dataManager = nullptr;
-QMutex DataManagement::dataMtx;
 
 void DataManagement::setDatabasePath() {
     filePath = (findPath()+"/database/libraryDatabase.json");

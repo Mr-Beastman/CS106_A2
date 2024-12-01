@@ -30,12 +30,6 @@ private:
     Ui::MainWindow *ui;
     QStackedWidget *stackedWidget;
 
-    //manager members to store intial instance.
-    DataManagement* dataManager;
-    UserManagement* userManager;
-    BookManagement* bookManager;
-    TransactionManagement* transactionManager;
-
     //page members
     LoginView* loginPage;
     RegistrationView* registrationPage;

@@ -3,9 +3,6 @@
 
 // --------------- private ---------------
 
-//intializing static memebers
-BookManagement * BookManagement::bookManager = nullptr;
-QMutex BookManagement::bookMtx;
 
 // --------------- protected ---------------
 
@@ -31,17 +28,6 @@ QJsonObject BookManagement::getBookDetails(const QString &isbn){
     }
     qDebug()<<"BookManagement: Book Information not found.";
     return QJsonObject();
-}
-
-//getter for bookManager singleton
-BookManagement *BookManagement::getBookManager() {
-    if(bookManager == nullptr) {
-        QMutexLocker locker(&bookMtx);
-        if(bookManager == nullptr){
-            bookManager = new BookManagement();
-        }
-    }
-    return bookManager;
 }
 
 BookListView *BookManagement::createBookList(const QJsonObject &book, const QJsonObject &entry){

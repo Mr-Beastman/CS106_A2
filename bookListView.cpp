@@ -27,33 +27,33 @@ BookListView::~BookListView() {
 }
 
 void BookListView::checkoutBook() {
-    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
-    transactionManager->checkoutBook(ui->isbnOutputLabel->text());
+    TransactionManagement transactionManager;
+    transactionManager.checkoutBook(ui->isbnOutputLabel->text(),ui->usernameStoredLabel->text());
     qDebug()<<"BookListView: Emiting refreash Signal";
     emit refreashMemberView();
 }
 
 void BookListView::placeHold(){
-    TransactionManagement* manager = TransactionManagement::getTransactionManager();
-    UserManagement* userManager = UserManagement::getUserManager();
+    TransactionManagement transactionManager;
+    UserManagement userManager;
 
-    QJsonObject user = userManager->getCurrentUser();
-
-    manager->placeHold(ui->isbnOutputLabel->text());
+    transactionManager.placeHold(ui->isbnOutputLabel->text(),ui->usernameStoredLabel->text());
     qDebug()<<"BookListView: Emiting refreash Signal";
     emit refreashView();
 }
 
 void BookListView::returnButtonClicked(){
-    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
-    transactionManager->returnBook(ui->isbnOutputLabel->text());
+    qDebug()<<"BookListView: Returning book ISBN:"<<ui->isbnOutputLabel->text();
+    TransactionManagement transactionManager;
+
+    transactionManager.returnBook(ui->isbnOutputLabel->text(),ui->checkedOutputLabel->text());
     emit refreashView();
 }
 
 void BookListView::removeHoldButtonClicked(){
-    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
+    TransactionManagement transactionManager;
 
-    if(transactionManager->removeHold(ui->holdIdOutputLabel->text())){
+    if(transactionManager.removeHold(ui->holdIdOutputLabel->text())){
        emit refreashView();
     }
 }

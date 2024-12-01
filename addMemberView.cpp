@@ -19,7 +19,7 @@ AddMemberView::~AddMemberView() {
 
 void AddMemberView::addMemberButtonClicked(){
     QJsonObject newUser;
-    UserManagement* userManager = UserManagement::getUserManager();
+    UserManagement userManager;
 
     newUser["name"]=ui->nameLineEdit->text();
     newUser["username"]=ui->usernameLineEdit->text();
@@ -40,8 +40,8 @@ void AddMemberView::addMemberButtonClicked(){
         newUser["isAdmin"] = true;
     }
 
-    if(!userManager->usernameExists(newUser)){
-        userManager->addUser(newUser);
+    if(!userManager.usernameExists(newUser)){
+        userManager.addUser(newUser);
         accept();
     } else {
         qDebug()<<"AddMemberView: Setting username error message";

@@ -26,8 +26,8 @@ ModifyBookView::~ModifyBookView() {
 void ModifyBookView::populateDetails(const QString &isbn){
 
     qDebug()<<"Pop:"<<isbn;
-    BookManagement* bookManager = BookManagement::getBookManager();
-    QJsonObject bookDetails = bookManager->getBookDetails(isbn);
+    BookManagement bookManager;
+    QJsonObject bookDetails = bookManager.getBookDetails(isbn);
 
     if(bookDetails.isEmpty()){
         qDebug()<<"ModifyBookView: Cannot find book detials for "<<isbn;
@@ -56,10 +56,10 @@ void ModifyBookView::updateButtonClicked(){
     updatedBook["sect"] = ui->sectionLineEdit->text();
     updatedBook["desc"] = ui->descriptionTextEdit->toPlainText();
 
-    BookManagement* bookManager = BookManagement::getBookManager();
+    BookManagement bookManager;
 
     qDebug()<<"ModifyBookView: Starting update process";
-    if(bookManager->updateBook(ui->isbnLineEdit->text(), updatedBook)){
+    if(bookManager.updateBook(ui->isbnLineEdit->text(), updatedBook)){
         qDebug()<<"ModifyBookView: Requesting display refreash";
         emit requestRefreash();
         accept();

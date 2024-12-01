@@ -21,6 +21,7 @@ class MemberView : public QWidget {
 private:
     Ui::MemberView* ui;
     QString accountNumber;
+    QString username;
 
 private slots:
     //accountTab related
@@ -34,6 +35,7 @@ public:
 
     //setters
     void setAccountNumber(const QString& account);
+    void setUsername(const QString& account);
 
     //getters
     QString& getAccountNumber();

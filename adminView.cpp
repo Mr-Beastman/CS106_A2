@@ -22,16 +22,11 @@ AdminView::AdminView(QWidget *parent) : QWidget(parent), ui(new Ui::AdminView) {
 
 void AdminView::displayUsers() {
 
-    UserManagement* userManager = UserManagement::getUserManager();
-
-    if(userManager == nullptr){
-        qDebug()<<"AdminView: UserManager is Null";
-        return;
-    }
+    UserManagement userManager;
 
     ui->membersList->clear();
 
-    QJsonArray toDisplay = userManager->getUserArray();
+    QJsonArray toDisplay = userManager.getUserArray();
 
     for(int i = 0; i<toDisplay.size(); ++i){
         QJsonObject user = toDisplay[i].toObject();
@@ -105,11 +100,12 @@ void AdminView::addMemberButtonClicked(){
 }
 
 void AdminView::loadAdminCatalogue(){
+    DataManagement dataManager;
+    BookManagement bookManager;
+    TransactionManagement transactionManager;
 
-    BookManagement *bookManager = BookManagement::getBookManager();
-    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
-
-    QJsonArray bookData = bookManager->getBookArray();
+    QJsonObject& database = dataManager.getFileData();
+    QJsonArray bookData = database["books"].toArray();
 
     //clear list
     ui->catalogueList->clear();
@@ -118,11 +114,13 @@ void AdminView::loadAdminCatalogue(){
     for(int i = 0; i<bookData.size(); ++i){
         QJsonObject book = bookData[i].toObject();
 
+
         QJsonObject entry;
-        BookListView* bookListView = bookManager->createBookList(book, entry);
+        BookListView* bookListView = bookManager.createBookList(book, entry);
 
         //adding entry to list
         QListWidgetItem* item = new QListWidgetItem(ui->catalogueList);
+
 
         //adding alternating colors
         if(i % 2 == 0){
@@ -131,13 +129,15 @@ void AdminView::loadAdminCatalogue(){
             item->setBackground(QBrush(QColor(187,211,180)));
         }
 
+
         QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
         int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("adminPage"));
         stackedWidget->setCurrentIndex(index);
 
         //getting current book activity.
-        QLabel* activeLoan  =  bookListView->findChild<QLabel*>("CheckedOutputLabel");
-        activeLoan->setText(transactionManager->checkedOutTo(book["isbn"].toString()));
+        QLabel* activeLoan  =  bookListView->findChild<QLabel*>("checkedOutputLabel");
+        activeLoan->setText(transactionManager.checkedOutTo(book["isbn"].toString()));
+
 
         QLabel* holdArray =  bookListView->findChild<QLabel*>("QueueOutputLabel");
         if(!book["inQueue"].toArray().isEmpty()){
@@ -146,9 +146,11 @@ void AdminView::loadAdminCatalogue(){
             holdArray->setText(QString::number(0));
         }
 
+
         //enabling/disabling return button depending on status
         QPushButton* returnButton = bookListView->findChild<QPushButton*>("returnButton");
         stackedWidget = bookListView->findChild<QStackedWidget*>("availabilityWidget");
+
 
         if(book["isAvailable"].toBool()){
             returnButton->hide();
@@ -174,10 +176,10 @@ void AdminView::onMemberClicked(QListWidgetItem *user){
     QString userAccount = user->data(Qt::UserRole).toString();
 
     //getMemberDetails
-    UserManagement* userManager = UserManagement::getUserManager();
+    UserManagement userManager;
 
     qDebug()<<"AdminView: Populating Member Info View";
-    QJsonObject toView = userManager->getUserObj(userAccount);
+    QJsonObject toView = userManager.getUserObj(userAccount);
 
     qDebug()<<"AdminView: Requesting to display member info view";
     emit requestMemberInfo(toView);
@@ -188,8 +190,8 @@ void AdminView::onBookClicked(QListWidgetItem *book) {
     QString isbn = book->data(Qt::UserRole).toString();
 
     //getting book details
-    BookManagement* bookManger = BookManagement::getBookManager();
-    QJsonObject bookDetails = bookManger->getBookDetails(isbn);
+    BookManagement bookManger;
+    QJsonObject bookDetails = bookManger.getBookDetails(isbn);
 
     qDebug()<<"MemberView: Generating Book Info View";
 

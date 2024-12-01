@@ -18,7 +18,7 @@ RegistrationView::~RegistrationView() {
 
 void RegistrationView::submitButtonClicked() {
 
-    UserManagement* userManager = UserManagement::getUserManager();
+    UserManagement userManager;
 
     QJsonObject newUser;
 
@@ -30,8 +30,8 @@ void RegistrationView::submitButtonClicked() {
     newUser["address"] = ui->addressLineEdit->text();
 
     //direct calling as signals could not connect
-    if(!userManager->usernameExists(newUser)){
-        bool memberAdded = userManager->addUser(newUser);
+    if(!userManager.usernameExists(newUser)){
+        bool memberAdded = userManager.addUser(newUser);
 
         if(memberAdded){
             qDebug()<<"RegistrationView: Member added Succesfully";

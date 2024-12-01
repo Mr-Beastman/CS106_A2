@@ -19,22 +19,12 @@
 
 class BookManagement : virtual public DataManagement {
 
-private:
-    //setting up singtleton
-    //static ptr to bookmanager instance
-    static BookManagement* bookManager;
-    static QMutex bookMtx;
-
 protected:
-    BookManagement();
+
 
 public:
-    //enforcing singleton
-    //removing copy contructor to prevent copies
-    BookManagement(const BookManagement& obj) = delete;
-    //removing assigment operator to prevent assignment
-    BookManagement& operator=(const BookManagement& obj) = delete;
 
+    BookManagement();
     //setters
     void setBookArray();
 

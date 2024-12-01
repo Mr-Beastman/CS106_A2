@@ -109,9 +109,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-796</y>
+        <y>0</y>
         <width>1067</width>
-        <height>1356</height>
+        <height>1037</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -761,99 +761,6 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QLabel" name="historyLabel">
-            <property name="styleSheet">
-             <string notr="true">#historyLabel {
-	font: 700 12pt &quot;Segoe UI&quot;;
-	border: 3px solid;
-	border-color: rgb(158, 206, 104);
-}</string>
-            </property>
-            <property name="text">
-             <string>Past Books</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="widget" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QStackedWidget" name="historyStackedWidget">
-               <property name="styleSheet">
-                <string notr="true">QStackedWidget {
-    
-	background-color: rgb(227, 238, 219);
-}
-#historyListPage{
-    background-color: rgb(227, 238, 219);
-}
-#noHistoryListPage{
-    background-color: rgb(227, 238, 219);
-}
-</string>
-               </property>
-               <property name="currentIndex">
-                <number>1</number>
-               </property>
-               <widget class="QWidget" name="historyListPage">
-                <layout class="QVBoxLayout" name="verticalLayout_13">
-                 <item>
-                  <widget class="QListWidget" name="historyList">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">#historyList{
-	background-color: rgb(255, 255, 255);
-}
-
-#historyList::item::hover{
-	background-color: rgb(102, 177, 43);
-}
-
-#historyList::item::selected {
-	background-color: rgb(102, 177, 43);
-}</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-               <widget class="QWidget" name="noHistoryListPage">
-                <layout class="QVBoxLayout" name="verticalLayout_14">
-                 <item>
-                  <widget class="QLabel" name="noHistoryLabel">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>250</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">#noHistoryLabel{
-	color: rgb(0, 0, 0);
-	font: 700 20pt &quot;Segoe UI&quot;;
-}</string>
-                   </property>
-                   <property name="text">
-                    <string>Books will appear here after they have been returned.</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>

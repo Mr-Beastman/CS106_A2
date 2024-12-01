@@ -6,34 +6,24 @@
 class UserManagement : virtual public DataManagement {
 
 private:
-    //setting up singtleton
-    //static ptr to bookmanager instance
-    static UserManagement* userManager;
-    static QMutex userMtx;
 
 protected:
-    UserManagement();
-    QJsonObject currentUser;
+    QString currentUser;
 
 public:
-    //enforcing singleton
-    //removing copy contructor to prevent copies
-    UserManagement(const UserManagement& obj) = delete;
-    //removing assigment operator to prevent assignment
-    UserManagement& operator=(const UserManagement& obj) = delete;
-
+    UserManagement();
     //setters
-    void setCurrentUser(const QJsonObject userObj);
+    void setCurrentUser(const QString username);
     void setUserArray();
     void clearCurrentUser();
 
     //getters
-    QJsonObject& getCurrentUser();
+    QString& getCurrentUser();
     QJsonArray getUserArray();
     QJsonObject getUserObj(const QString &username);
     QJsonObject getUserObjAccount(const QString &account);
     QString getAccount(const QString& username);
-    //get the bookmanager instance
+    //get the usermanager instance
     static UserManagement* getUserManager();
 
     //methods
