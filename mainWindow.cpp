@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(adminPage, &AdminView::requestMemberInfo, this, &MainWindow::showMemberInfo);
     connect(memberPage, &MemberView::logoutRequest, this, &MainWindow::logOut);
     connect(memberPage, &MemberView::requestBookInfo, this, &MainWindow::showBookInfo);
+    connect(memberPage, &MemberView::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
     connect(bookInfoPage, &BookInfoView::goBack, this, &MainWindow::goBack);
     connect(memberInfoPage, &MemberInfoView::goBack, this, &MainWindow::goBack);
     connect(memberInfoPage, &MemberInfoView::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
@@ -77,12 +78,6 @@ void MainWindow::showLogin(){
 }
 
 void MainWindow::userLogin(const QString& username, QString password){
-
-    qDebug()<<dataManager->getFileData();
-    qDebug()<<"--------------------------";
-    QJsonArray test = userManager->getUserArray();
-    qDebug()<<test;
-
     if(userManager->verifyLogin(username,password)){
         //set current user
         userManager->setCurrentUser(userManager->getUserObj(username));
@@ -105,11 +100,16 @@ void MainWindow::userLogin(const QString& username, QString password){
 
             memberPage->setAccountNumber(userManager->getAccount(username));
             //populate member views
+            qDebug()<<"MainWindow: Populating members detials";
             memberPage->displayCurrentMember();
+            qDebug()<<"MainWindow: Populating members checked out items";
             memberPage->displayCheckedOut();
+            qDebug()<<"MainWindow: Populating members hold requests";
             memberPage->displayHoldRequests();
+            qDebug()<<"MainWindow: Displaying Catalogue";
             memberPage->loadCatalogue();
 
+            qDebug()<<"MainWindow: Member setup and redirecting";
             //directing to user page
             stackedWidget->setCurrentIndex(3);
         } else {
@@ -132,7 +132,6 @@ void MainWindow::showRegister(){
 
 void MainWindow::showBookInfo(QJsonObject &bookDetails) {
     bookInfoPage->setBookDetails(bookDetails);
-    bookInfoPage->setOptions();
     stackedWidget->setCurrentIndex(4);
 }
 
@@ -142,9 +141,13 @@ void MainWindow::showMemberInfo(QJsonObject &userToView){
     stackedWidget->setCurrentIndex(5);
 }
 
-void MainWindow::updateAdminDisplays()
-{
+void MainWindow::updateAdminDisplays(){
+    qDebug()<<"MainWindow: Refreashing Member Displays";
     adminPage->updateDisplays();
+}
+
+void MainWindow::updateMemberDisplays(){
+    memberPage->loadCatalogue();
 }
 
 void MainWindow::goBack(){

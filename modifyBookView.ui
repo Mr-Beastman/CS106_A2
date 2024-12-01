@@ -13,18 +13,49 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#ModifyBookView{
+background-color: rgb(227, 238, 219);
+}
+
+QLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}
+
+QLineEdit{
+	font: 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}
+
+QTextEdit{
+	font: 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <item>
     <layout class="QVBoxLayout" name="viewBackground" stretch="2">
@@ -126,6 +157,12 @@
         <layout class="QHBoxLayout" name="buttonLayout">
          <item>
           <widget class="QPushButton" name="updateButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
            <property name="text">
             <string>Update Book</string>
            </property>
@@ -133,8 +170,14 @@
          </item>
          <item>
           <widget class="QPushButton" name="deleteButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
            <property name="text">
-            <string>deleteButton</string>
+            <string>Delete Book</string>
            </property>
           </widget>
          </item>

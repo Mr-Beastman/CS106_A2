@@ -1,5 +1,6 @@
 #include "memberView.h"
 #include "qstackedwidget.h"
+#include "transactionManagement.h"
 #include "updateUserView.h"
 #include "bookManagement.h"
 #include "userManagement.h"
@@ -34,12 +35,13 @@ QString &MemberView::getAccountNumber(){
 
 //view related functions
 
-void MemberView::refreashMemberView(){
+void MemberView::updateDisplays(){
     qDebug()<<"MemberView: Refreashing Displays";
-    displayCurrentMember();
-    displayCheckedOut();
-    displayHoldRequests();
-    loadCatalogue();
+    // displayCurrentMember();
+    // displayCheckedOut();
+    // displayHoldRequests();
+    // loadCatalogue();
+    emit refreashMemberDisplay();
 }
 
 void MemberView::displayCurrentMember() {
@@ -97,14 +99,6 @@ void MemberView::displayCheckedOut() {
     qDebug()<<currentUser;
     QJsonArray checkedOut = currentUser["activeLoans"].toArray();
 
-    qDebug()<<"MemberView: checked out array "<<checkedOut;
-    qDebug()<<"-------------------Test------------------";
-    QJsonObject user = userManager->getUserObjAccount(accountNumber);
-    qDebug()<<user;
-    QJsonArray test = user["activeLoans"].toArray();
-    qDebug()<<test;
-    qDebug()<<"-----------------------------------------";
-
     //if array is empty setting to no display
     if(checkedOut.isEmpty()){
         qDebug()<<"MemberView: Setting Checkedout display to empty";
@@ -128,8 +122,8 @@ void MemberView::displayCheckedOut() {
         //creating item
         BookListView* bookListItem = bookManager->createBookList(book, entry);
 
-        //connect refrash signal
-        connect(bookListItem, &BookListView::refreashMemberView, this, &MemberView::refreashMemberView);
+        // //connect refreash signal doing in book list view
+        connect(bookListItem, &BookListView::refreashMemberView, this, &MemberView::updateDisplays);
 
         //display due date and renew options
         QStackedWidget* stackedWidget = bookListItem->findChild<QStackedWidget*>("optionsStackedWidget");
@@ -196,12 +190,31 @@ void MemberView::displayHoldRequests() {
             item->setBackground(QBrush(QColor(187,211,180)));
         }
 
-        connect(bookListView, &BookListView::refreashMemberView, this, &MemberView::refreashMemberView);
+        connect(bookListView, &BookListView::refreashMemberView, this, &MemberView::updateDisplays);
 
         item->setSizeHint(bookListView->sizeHint());
 
         //assigning isbn with item
-        item->setData(Qt::UserRole, book["isbn"].toString());
+        item->setData(Qt::UserRole, book["holdId"].toString());
+
+        QString holdId = entry["holdId"].toString();
+
+        QLabel* idLabel = bookListView->findChild<QLabel*>("holdIdOutputLabel");
+        idLabel->setText(holdId);
+
+        qDebug()<<idLabel->text();
+
+        TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
+
+        if(transactionManager->checkHoldstatus(holdId) == "ready"){
+            QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
+            int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userReadyPage"));
+            stackedWidget->setCurrentIndex(index);
+        } else {
+            QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
+            int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("holdActivePage"));
+            stackedWidget->setCurrentIndex(index);
+        }
 
         ui->holdList->setItemWidget(item, bookListView);
     }
@@ -217,83 +230,142 @@ void MemberView::stackedWidgetDisplay(QStackedWidget *toSet, QWidget *page) {
 
 
 //catalogueTab functions
-void MemberView::loadCatalogue(){
-    //getting managers
-    BookManagement *bookManager = BookManagement::getBookManager();
-    UserManagement *userManager = UserManagement::getUserManager();
+void MemberView::loadCatalogue() {
+    //set managers
+    BookManagement* bookManager = BookManagement::getBookManager();
+    UserManagement* userManager = UserManagement::getUserManager();
+    TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
 
-    //getting userDetails
+    //get data
     QJsonArray bookData = bookManager->getBookArray();
-    QJsonObject& currentUser = userManager->getCurrentUser();
-    QJsonArray checkedOut = currentUser["activeLoans"].toArray();
+    QJsonObject currentUser = userManager->getUserObjAccount(accountNumber);
+    QJsonArray activeLoans = currentUser["activeLoans"].toArray();
 
-    //clear list
+    //clear list to ensure clean build
     ui->catalogueList->clear();
 
-    //looping throigh books to create a entry for it
-    for(int i = 0; i<bookData.size(); ++i){
+    //setting up books
+    for (int i = 0; i < bookData.size(); ++i) {
         QJsonObject book = bookData[i].toObject();
 
-        bool userCheckedout = false;
-
-        //checking if checked out to current user
-        for(int j = 0; j<checkedOut.size(); j++){
-            QJsonObject loaned = checkedOut[j].toObject();
-            if(loaned["isbn"].toString() == book["isbn"].toString()){
-                userCheckedout = true;
-                break;
-            }
+        //checking book is valid
+        if (!book.contains("isbn") || !book["isbn"].isString()) {
+            qDebug() << "Skipping invalid book entry at index" << i;
+            continue;
         }
+
+        QString isbn = book["isbn"].toString();
+        qDebug() << "Processing book with ISBN:" << isbn;
 
         QJsonObject entry;
-
         BookListView* bookListView = bookManager->createBookList(book, entry);
+        if (!bookListView) {
+            qDebug() << "Failed to create BookListView for ISBN:" << isbn;
+            continue;
+        }
 
-        //connect refrash signal
-        connect(bookListView, &BookListView::refreashMemberView, this, &MemberView::refreashMemberView);
+        //add alternating colors
+        QListWidgetItem* item = new QListWidgetItem(ui->catalogueList);
+        item->setBackground(QBrush((i % 2 == 0) ? QColor(158, 206, 104) : QColor(187, 211, 180)));
+        item->setSizeHint(bookListView->sizeHint());
+        item->setData(Qt::UserRole, isbn);
 
-        //setting availability and member options
-        if(!userCheckedout){
-            if(bookManager->isAvailable(book["isbn"].toString())){
-                QLabel* availabilityTextLabel = bookListView->findChild<QLabel*>("availabilityTextLabel");
-                availabilityTextLabel->setText("Available");
-                QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
-                int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userAvailablePage"));
-                stackedWidget->setCurrentIndex(index);
+        //adding info to display
+        QLabel* activeLoanLabel = bookListView->findChild<QLabel*>("CheckedOutputLabel");
+        if (activeLoanLabel) {
+            activeLoanLabel->setText(transactionManager->checkedOutTo(isbn));
+        }
+
+        QLabel* holdArrayLabel = bookListView->findChild<QLabel*>("QueueOutputLabel");
+        if (holdArrayLabel) {
+            QJsonArray inQueue = book["inQueue"].toArray();
+            holdArrayLabel->setText(QString::number(inQueue.size()));
+        }
+
+        //set availabilty display and user options
+        QStackedWidget* availabilityWidget = bookListView->findChild<QStackedWidget*>("availabilityWidget");
+        QStackedWidget* optionsWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
+
+        if (availabilityWidget && optionsWidget) {
+            //checking if another user has the book
+            bool isLoanedByUser = false;
+            for (const auto& loan : activeLoans) {
+                if (loan.toObject()["isbn"].toString() == isbn) {
+                    isLoanedByUser = true;
+                    break;
+                }
+            }
+
+            if (book["isAvailable"].toBool()) {
+                QWidget* availablePage = bookListView->findChild<QWidget*>("availablePage");
+                QWidget* userAvailablePage = bookListView->findChild<QWidget*>("userAvailablePage");
+
+                if (availablePage) {
+                    int index = availabilityWidget->indexOf(availablePage);
+                    availabilityWidget->setCurrentIndex(index);
+                }
+                if (userAvailablePage) {
+                    int index = optionsWidget->indexOf(userAvailablePage);
+                    optionsWidget->setCurrentIndex(index);
+                }
+            } else if (isLoanedByUser) {
+                // current user has active loan for book
+                QWidget* checkedOutPage = bookListView->findChild<QWidget*>("userCheckedoutPage");
+
+                if (checkedOutPage) {
+                    int index = availabilityWidget->indexOf(checkedOutPage);
+                    availabilityWidget->setCurrentIndex(index);
+
+                    index = optionsWidget->indexOf(checkedOutPage);
+                    optionsWidget->setCurrentIndex(index);
+
+                    // Populate due date
+                    QLabel* dueDateLabel = bookListView->findChild<QLabel*>("dueOutputLabel");
+                    if (dueDateLabel) {
+                        QString dueDateText = "N/A";
+                        for (const auto& loan : activeLoans) {
+                            QJsonObject loanObj = loan.toObject();
+                            if (loanObj["isbn"].toString() == isbn && loanObj.contains("dueDate")) {
+                                dueDateText = loanObj["dueDate"].toString();
+                                break;
+                            }
+                        }
+                        dueDateLabel->setText(dueDateText);
+                    } else {
+                        qDebug() << "Error: Due date label not found for ISBN:" << isbn;
+                    }
+                }
             } else {
-                QLabel* availabilityTextLabel = bookListView->findChild<QLabel*>("availabilityTextLabel");
-                availabilityTextLabel->setText("Not Available");
-                QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
-                int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userNotAvailablePage"));
-                stackedWidget->setCurrentIndex(index);
+                //not available and not checked out to current user
+                QWidget* notAvailablePage = bookListView->findChild<QWidget*>("notAvailablePage");
+                QWidget* userNotAvailablePage = bookListView->findChild<QWidget*>("userNotAvailablePage");
+
+                if (notAvailablePage) {
+                    int index = availabilityWidget->indexOf(notAvailablePage);
+                    availabilityWidget->setCurrentIndex(index);
+                }
+                if (userNotAvailablePage) {
+                    int index = optionsWidget->indexOf(userNotAvailablePage);
+                    optionsWidget->setCurrentIndex(index);
+                }
             }
         } else {
-            QStackedWidget* stackedWidget = bookListView->findChild<QStackedWidget*>("optionsStackedWidget");
-            int index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("userCheckedoutPage"));
-            stackedWidget->setCurrentIndex(index);
+            qDebug() << "Error: Missing availabilityWidget or optionsWidget for ISBN:" << isbn;
         }
-
-        //adding entry to list
-        QListWidgetItem* item = new QListWidgetItem(ui->catalogueList);
-
-        //adding alternating colors
-        if(i % 2 == 0){
-            item->setBackground(QBrush(QColor(158,206,104)));
-        } else {
-            item->setBackground(QBrush(QColor(187,211,180)));
-        }
-
-        item->setSizeHint(bookListView->sizeHint());
-
-        //assigning isbn with item
-        item->setData(Qt::UserRole, book["isbn"].toString());
 
         ui->catalogueList->setItemWidget(item, bookListView);
+
+        connect(bookListView, &BookListView::refreashMemberView, this, &MemberView::updateDisplays);
     }
+
+    qDebug() << "Catalogue loaded successfully.";
 }
 
+
+
+
 void MemberView::onBookClicked(QListWidgetItem *book) {
-    //getting the assigned isbn from clicked item
+
     QString isbn = book->data(Qt::UserRole).toString();
 
     //getting book details

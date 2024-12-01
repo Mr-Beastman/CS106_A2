@@ -13,6 +13,30 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#UpdateUserView{
+background-color: rgb(227, 238, 219);
+}
+
+QLabel{
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}
+
+QLineEdit{
+	font: 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+}
+
+QPushButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
    <item>
     <layout class="QGridLayout" name="editUserLayout">
@@ -79,6 +103,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="saveButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="text">
          <string>Save</string>
         </property>

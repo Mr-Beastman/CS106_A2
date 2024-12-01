@@ -16,6 +16,11 @@ DataManagement *DataManagement::getDataManager(){
     return dataManager;
 }
 
+void DataManagement::setUserDatabase()
+{
+
+}
+
 
 //intializing static memebers
 DataManagement * DataManagement::dataManager = nullptr;

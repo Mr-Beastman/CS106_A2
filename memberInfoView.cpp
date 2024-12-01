@@ -27,6 +27,8 @@ void MemberInfoView::generateCheckedout(const QString account){
     UserManagement* userManager = UserManagement::getUserManager();
     BookManagement* bookManager = BookManagement::getBookManager();
 
+
+
     QJsonObject user = userManager->getUserObjAccount(account);
     QJsonArray activeLoans = user["activeLoans"].toArray();
 

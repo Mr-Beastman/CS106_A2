@@ -42,19 +42,3 @@ void BookInfoView::setBookDetails(const QJsonObject &bookDetails){
 
     qDebug()<<"BookInfoView: Book Info View Generated";
 }
-
-void BookInfoView::setOptions(){
-    UserManagement* userManger = UserManagement::getUserManager();
-
-    QJsonObject& currentUser = userManger->getCurrentUser();
-
-    if(userManger->isAdmin(currentUser["username"].toString())){
-        QStackedWidget* stackedWidget = ui->bookOptionStackedWidget;
-        int index = stackedWidget->indexOf(ui->adminPage);
-        stackedWidget->setCurrentIndex(index);
-    } else {
-        QStackedWidget* stackedWidget = ui->bookOptionStackedWidget;
-        int index = stackedWidget->indexOf(ui->memberPage);
-        stackedWidget->setCurrentIndex(index);
-    }
-}

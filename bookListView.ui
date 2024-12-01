@@ -115,6 +115,12 @@
        <layout class="QGridLayout" name="infoGridLayout" columnstretch="0,1" columnminimumwidth="0,0">
         <item row="1" column="0">
          <widget class="QLabel" name="authorLabel">
+          <property name="styleSheet">
+           <string notr="true">#authorLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+          </property>
           <property name="text">
            <string>Author:</string>
           </property>
@@ -122,6 +128,12 @@
         </item>
         <item row="1" column="1">
          <widget class="QLabel" name="authorOutputLabel">
+          <property name="styleSheet">
+           <string notr="true">#authorOutputLabel{
+	color: rgb(0, 0, 0);
+	font: 9pt &quot;Segoe UI&quot;;
+}</string>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -129,6 +141,12 @@
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="titleLabel">
+          <property name="styleSheet">
+           <string notr="true">#titleLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+          </property>
           <property name="text">
            <string>Title:</string>
           </property>
@@ -136,6 +154,12 @@
         </item>
         <item row="0" column="1">
          <widget class="QLabel" name="titleOutputLabel">
+          <property name="styleSheet">
+           <string notr="true">#titleOutputLabel{
+	color: rgb(0, 0, 0);
+	font: 9pt &quot;Segoe UI&quot;;
+}</string>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -143,6 +167,12 @@
         </item>
         <item row="2" column="1">
          <widget class="QLabel" name="isbnOutputLabel">
+          <property name="styleSheet">
+           <string notr="true">#isbnOutputLabel{
+	color: rgb(0, 0, 0);
+	font: 9pt &quot;Segoe UI&quot;;
+}</string>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -150,6 +180,12 @@
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="isbnLabel">
+          <property name="styleSheet">
+           <string notr="true">#isbnLabel {
+    font: 700 9pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+          </property>
           <property name="text">
            <string>ISBN:</string>
           </property>
@@ -158,23 +194,61 @@
        </layout>
       </item>
       <item>
-       <widget class="QWidget" name="availabilityLayout" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="availabilityIconLayout">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="availabilityTextLabel">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <widget class="QStackedWidget" name="availabilityWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="availablePage">
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QLabel" name="availableLabel">
+            <property name="styleSheet">
+             <string notr="true">#availableLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(0, 170, 0);
+}</string>
+            </property>
+            <property name="text">
+             <string>Available</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="checkedoutPage">
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item>
+           <widget class="QLabel" name="checkedOutLabel">
+            <property name="styleSheet">
+             <string notr="true">#checkedOutLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(0, 170, 0);
+}</string>
+            </property>
+            <property name="text">
+             <string>Checked out to you</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="notAvailablePage">
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <widget class="QLabel" name="notAvailableLabel">
+            <property name="styleSheet">
+             <string notr="true">#notAvailableLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(255, 0, 0);
+}</string>
+            </property>
+            <property name="text">
+             <string>Not Available</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -183,7 +257,7 @@
    <item>
     <widget class="QStackedWidget" name="optionsStackedWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="userNotAvailablePage">
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -207,8 +281,22 @@
        </item>
        <item>
         <widget class="QPushButton" name="holdButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#holdButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+         </property>
          <property name="text">
-          <string>place hold</string>
+          <string>Place Hold</string>
          </property>
         </widget>
        </item>
@@ -246,6 +334,20 @@
        </item>
        <item row="2" column="1">
         <widget class="QPushButton" name="editButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#editButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+         </property>
          <property name="text">
           <string>Edit Book</string>
          </property>
@@ -253,6 +355,20 @@
        </item>
        <item row="2" column="0">
         <widget class="QPushButton" name="returnButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#returnButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+         </property>
          <property name="text">
           <string>Return</string>
          </property>
@@ -264,8 +380,22 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QPushButton" name="checkoutButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#checkoutButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+         </property>
          <property name="text">
-          <string>checkout</string>
+          <string>Checkout</string>
          </property>
         </widget>
        </item>
@@ -291,19 +421,26 @@
          </item>
         </layout>
        </item>
-       <item>
-        <widget class="QPushButton" name="renewButton">
-         <property name="text">
-          <string>Renew</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="userReadyPage">
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <widget class="QPushButton" name="confirmButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#confirmButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+         </property>
          <property name="text">
           <string>Confirm Pickup</string>
          </property>
@@ -311,8 +448,76 @@
        </item>
        <item>
         <widget class="QPushButton" name="removeHold02Button">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#removeHold02Button{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+         </property>
          <property name="text">
           <string>Remove Hold</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="holdActivePage">
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <layout class="QHBoxLayout" name="holdActiveLabelLayout">
+         <item>
+          <widget class="QLabel" name="queuePlaceLabel">
+           <property name="text">
+            <string>Place in Queue:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="queuePlaceOutPutLabel">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="removeHoldButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#removeHoldButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+         </property>
+         <property name="text">
+          <string>Remove Hold</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="detailsPage">
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QLabel" name="holdIdOutputLabel">
+         <property name="text">
+          <string>TextLabel</string>
          </property>
         </widget>
        </item>

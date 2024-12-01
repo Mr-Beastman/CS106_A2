@@ -24,12 +24,13 @@ public:
 
     //transaction methods
     bool placeHold(const QString& isbn);
-    bool removeHold(const QString& isbn, const QString &account);
+    bool removeHold(const QString& holdId);
+    QString generateHoldId();
+    QString checkHoldstatus(const QString& holdId);
     bool checkoutBook(const QString& isbn);
     bool returnBook(const QString& isbn);
     QString checkedOutTo(const QString& isbn);
     bool renewBook(const QString& username, const QString& isbn);
-    bool returnBook(const QString&username, const QString& isbn);
     QJsonArray getLoanHistory(const QString& username);
     QJsonArray getActiveLoans(const QString& username);
 };

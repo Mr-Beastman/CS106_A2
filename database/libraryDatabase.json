@@ -5,16 +5,6 @@
             "desc": "A world abandoned by the gods, mystifying cosmic forces, unimaginable power for those willing to ascend, and a hero who would rather . . . go fishing???\n\nWhen summoned to a fantastical world and granted powers by a broken System, most freshly minted protagonists would strap on their big-boy boots and get ready for their stats to start climbing. But Fischer isn’tlike most MCs. In fact, he doesn’t want to be a hero at all.\n\nFame? Fortune? Power? He had enough of all that in his old life. Discovering forbidden fishing techniques and petting every cute animal that comes within scritching distance? Now that’s a good time.\n\nUnfortunately for Fischer, cosmic forces rarely care for mortal feelings. He’s hounded on all sides by inept cults, conspiring nobles, and more magical misunderstandings than those of a preteen relationship. Even his dutiful pet crab is firing energy blades like an anime antagonist.\n\nSo grab your fishing rod and a good snack, and pet your dog for me. The catch of a lifetime awaits!",
             "genre": "LitRpg",
             "inQueue": [
-                {
-                    "holdDate": "28-mm-2024",
-                    "holdStatus": "ready",
-                    "username": "frostborn_isolde"
-                },
-                {
-                    "holdDate": "30-mm-2024",
-                    "holdStatus": "active",
-                    "username": "windrunner"
-                }
             ],
             "isAvailable": false,
             "isbn": "B0CVD8D7H6",
@@ -60,61 +50,13 @@
             "genre": "Romantasy",
             "inQueue": [
             ],
-            "isAvailable": false,
+            "isAvailable": true,
             "isbn": "1526605392",
             "sect": "",
             "title": "A Court of Thorns and Roses"
-        },
-        {
-            "author": "Rebecca Yarros",
-            "desc": "“The first year is when some of us lose our lives. The second year is when the rest of us lose our humanity.” —Xaden Riorson\n\nEveryone expected Violet Sorrengail to die during her first year at Basgiath War College—Violet included. But Threshing was only the first impossible test meant to weed out the weak-willed, the unworthy, and the unlucky.\n\nNow the real training begins, and Violet’s already wondering how she’ll get through. It’s not just that it’s grueling and maliciously brutal, or even that it’s designed to stretch the riders’ capacity for pain beyond endurance. It’s the new vice commandant, who’s made it his personal mission to teach Violet exactly how powerless she is–unless she betrays the man she loves.\n\nAlthough Violet’s body might be weaker and frailer than everyone else’s, she still has her wits—and a will of iron. And leadership is forgetting the most important lesson Basgiath has taught her: Dragon riders make their own rules.\n\nBut a determination to survive won’t be enough this year.\n\nBecause Violet knows the real secret hidden for centuries at Basgiath War College—and nothing, not even dragon fire, may be enough to save them in the end.",
-            "genre": "Fantasy",
-            "inQueue": [
-            ],
-            "isAvailable": true,
-            "isbn": "B0C4JMJBNX",
-            "sect": "",
-            "title": "Iron Flame (The Empyrean Book 2)"
         }
     ],
     "users": [
-        {
-            "account": "20607",
-            "activeLoans": [
-                {
-                    "checkoutDate": "Thu Nov 28 21:25:41 2024",
-                    "dueDate": "Sat Dec 28 21:25:41 2024",
-                    "isbn": "B0BGDM197Q"
-                }
-            ],
-            "address": "22 Darkhold Castle, Forbidden Forest, Darklands",
-            "email": "varek.b@darkarts.com",
-            "holdRequests": null,
-            "isActive": true,
-            "isAdmin": false,
-            "name": "Varek Bloodbaner",
-            "password": "DarkMagic@8745",
-            "phone": "+64 27 234 8765",
-            "username": "bloodbane_varek"
-        },
-        {
-            "account": "23867",
-            "activeLoans": [
-            ],
-            "address": "34 Icefang Castle, The Frostlands",
-            "email": "isolde.f@frostvale.com",
-            "holdRequests": [
-                {
-                    "isbn": "B0CVD8D7H6"
-                }
-            ],
-            "isActive": true,
-            "isAdmin": false,
-            "name": "Isolde Frostborn",
-            "password": "WinterBlood@777",
-            "phone": "+64 21 456 982122",
-            "username": "frostborn_isolde"
-        },
         {
             "account": "100001",
             "address": "City Library",
@@ -127,35 +69,28 @@
             "username": "admin"
         },
         {
-            "account": "10160",
+            "account": "21620",
             "activeLoans": [
                 {
-                    "checkoutDate": "Sun Dec 1 00:13:56 2024",
-                    "dueDate": "Tue Dec 31 00:13:56 2024",
-                    "isbn": "1526605392"
+                    "checkoutDate": "Sun Dec 1 17:25:39 2024",
+                    "dueDate": "Tue Dec 31 17:25:39 2024",
+                    "isbn": "B0CVD8D7H6"
+                },
+                {
+                    "checkoutDate": "Sun Dec 1 17:27:06 2024",
+                    "dueDate": "Tue Dec 31 17:27:06 2024",
+                    "isbn": "B0BGDM197Q"
                 }
             ],
             "address": "Urithiru",
-            "email": "storms@Archive.com",
-            "holdRequests": [
-            ],
+            "email": "Storms@Archives.com",
+            "holdRequests": null,
             "isActive": true,
             "isAdmin": false,
-            "name": "Kaladin StormBlessed",
+            "name": "Kaladin Stromblessed",
             "password": "SylBlade",
-            "phone": "02020202020",
+            "phone": "0202020",
             "username": "windrunner"
-        },
-        {
-            "account": "18421",
-            "address": "Bagend",
-            "email": "Baggins@theShire.com",
-            "isActive": true,
-            "isAdmin": false,
-            "name": "Bilbo Baggins",
-            "password": "shire",
-            "phone": "02020",
-            "username": "ringhunter"
         }
     ]
 }

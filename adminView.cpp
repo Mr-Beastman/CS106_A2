@@ -148,10 +148,16 @@ void AdminView::loadAdminCatalogue(){
 
         //enabling/disabling return button depending on status
         QPushButton* returnButton = bookListView->findChild<QPushButton*>("returnButton");
-        if(book["isAvailble"].toBool()){
+        stackedWidget = bookListView->findChild<QStackedWidget*>("availabilityWidget");
+
+        if(book["isAvailable"].toBool()){
             returnButton->hide();
+            index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("availablePage"));
+            stackedWidget->setCurrentIndex(index);
         } else {
             returnButton->show();
+            index = stackedWidget->indexOf(bookListView->findChild<QWidget*>("notAvailablePage"));
+            stackedWidget->setCurrentIndex(index);
         }
 
         item->setSizeHint(bookListView->sizeHint());

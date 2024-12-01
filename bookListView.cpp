@@ -16,6 +16,7 @@ BookListView::BookListView(QWidget *parent)
     connect(ui->checkoutButton, &QPushButton::clicked, this, &BookListView::checkoutBook);
     connect(ui->confirmButton, &QPushButton::clicked, this, &BookListView::checkoutBook);
     connect(ui->holdButton, &QPushButton::clicked, this, &BookListView::placeHold);
+    connect(ui->removeHoldButton, &QPushButton::clicked, this, &BookListView::removeHoldButtonClicked);
     connect(ui->removeHold02Button, &QPushButton::clicked, this, &BookListView::removeHoldButtonClicked);
     connect(ui->returnButton, &QPushButton::clicked, this, &BookListView::returnButtonClicked);
 
@@ -51,8 +52,10 @@ void BookListView::returnButtonClicked(){
 
 void BookListView::removeHoldButtonClicked(){
     TransactionManagement* transactionManager = TransactionManagement::getTransactionManager();
-    transactionManager->removeHold(ui->isbnOutputLabel->text());
-    emit refreashView();
+
+    if(transactionManager->removeHold(ui->holdIdOutputLabel->text())){
+       emit refreashView();
+    }
 }
 
 void BookListView::editBook(){

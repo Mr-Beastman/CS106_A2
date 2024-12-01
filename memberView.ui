@@ -16,6 +16,13 @@
   <property name="styleSheet">
    <string notr="true">#MemberView{
 	background-color: rgb(255, 255, 255);
+}
+
+QPushButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -73,6 +80,18 @@
       </item>
       <item>
        <widget class="QPushButton" name="logoutButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>Log Out</string>
         </property>
@@ -90,9 +109,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-394</y>
         <width>1085</width>
-        <height>1120</height>
+        <height>1015</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -190,42 +209,6 @@ QTabWidget::indicator {
               <item>
                <layout class="QHBoxLayout" name="tabContents">
                 <item>
-                 <widget class="QWidget" name="filterBackground" native="true">
-                  <property name="styleSheet">
-                   <string notr="true">#filterBackground{
-	background-color: rgb(227, 238, 219);
-	border: 5px solid;
-	border-color: rgb(158, 206, 104);
-}</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="filterContents">
-                   <property name="leftMargin">
-                    <number>10</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="filterTitleLabel">
-                     <property name="minimumSize">
-                      <size>
-                       <width>250</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">color: rgb(0, 0, 0);
-font: 700 18pt &quot;Segoe UI&quot;;</string>
-                     </property>
-                     <property name="text">
-                      <string>Filter Search</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
                  <layout class="QVBoxLayout" name="searchContents">
                   <property name="leftMargin">
                    <number>25</number>
@@ -233,20 +216,6 @@ font: 700 18pt &quot;Segoe UI&quot;;</string>
                   <property name="rightMargin">
                    <number>25</number>
                   </property>
-                  <item>
-                   <layout class="QHBoxLayout" name="searchBarLayout">
-                    <item>
-                     <widget class="QLineEdit" name="searchLineEdit"/>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="searchButton">
-                      <property name="text">
-                       <string>Search</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
                   <item>
                    <widget class="QListWidget" name="catalogueList">
                     <property name="styleSheet">
@@ -375,6 +344,12 @@ border-color: rgb(158, 206, 104);
                     </item>
                     <item>
                      <widget class="QPushButton" name="updateButton">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>25</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>150</width>
@@ -631,7 +606,7 @@ border-color: rgb(158, 206, 104);
                           <property name="minimumSize">
                            <size>
                             <width>0</width>
-                            <height>100</height>
+                            <height>250</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -784,54 +759,6 @@ QListWidget::item::hover{
                      </widget>
                     </item>
                    </layout>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="historyContent" native="true">
-                <layout class="QVBoxLayout" name="verticalLayout_12">
-                 <item>
-                  <widget class="QLabel" name="historyLabel">
-                   <property name="text">
-                    <string>Past Books</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QStackedWidget" name="historyStackedWidget">
-                   <property name="currentIndex">
-                    <number>1</number>
-                   </property>
-                   <widget class="QWidget" name="historyListPage">
-                    <layout class="QVBoxLayout" name="verticalLayout_13">
-                     <item>
-                      <widget class="QListWidget" name="historyList">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                   <widget class="QWidget" name="noHistoryListPage">
-                    <layout class="QVBoxLayout" name="verticalLayout_14">
-                     <item>
-                      <widget class="QLabel" name="noHistoryLabel">
-                       <property name="text">
-                        <string>Books will appear here after they have been returned.</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
                   </widget>
                  </item>
                 </layout>

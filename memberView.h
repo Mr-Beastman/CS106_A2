@@ -50,11 +50,12 @@ public:
 
 public slots:
     void onBookClicked(QListWidgetItem* book);
-    void refreashMemberView();
+    void updateDisplays();
 
 signals:
     void logoutRequest();
     void requestBookInfo(QJsonObject& bookDetails);
+    void refreashMemberDisplay();
 };
 
 

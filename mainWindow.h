@@ -51,6 +51,7 @@ private slots:
     void showBookInfo(QJsonObject& bookDetails);
     void showMemberInfo(QJsonObject& userToView);
     void updateAdminDisplays();
+    void updateMemberDisplays();
     void goBack();
     void logOut();
 
