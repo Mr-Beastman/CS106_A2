@@ -212,8 +212,8 @@ void ViewAdminDashboard::onBookClicked(QListWidgetItem *book) {
     QJsonObject bookDetails = bookManger.getBookDetails(isbn);
 
     qDebug()<<"viewMemberDashboard: Generating Book Info View";
-
-    emit requestBookInfo(bookDetails);
+    QString username = "test";
+    emit requestBookInfo(bookDetails,username);
 }
 
 //view methods

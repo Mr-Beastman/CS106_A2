@@ -306,63 +306,64 @@ void ViewMemberDashboard::displayCatalogue() {
         if (holdArrayLabel) holdArrayLabel->setText(QString::number(bookQueue.size()));
 
         //set book availbity and the options aavialble
-        QStackedWidget* availabilityWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
-        QStackedWidget* optionsWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
-        QWidget* availabilityPage = nullptr;
-        QWidget* optionsPage = nullptr;
-        int index = 0;
+        transactionManager.setBookAvailibityOptions(viewBookItem, book, username);
+        // QStackedWidget* availabilityWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
+        // QStackedWidget* optionsWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
+        // QWidget* availabilityPage = nullptr;
+        // QWidget* optionsPage = nullptr;
+        // int index = 0;
 
-        if (book["isAvailable"].toBool()) {
-            //book is available
-            availabilityPage = viewBookItem->findChild<QWidget*>("availablePage");
-            optionsPage = viewBookItem->findChild<QWidget*>("userAvailablePage");
-        } else if (book["issuedTo"].toString() == username) {
-            //book is checked out by the current user
-            availabilityPage = viewBookItem->findChild<QWidget*>("checkedoutPage");
-            optionsPage = viewBookItem->findChild<QWidget*>("userCheckedoutPage");
-        } else {
-            //book is unavailable, checking if the user has a hold
-            bool userHold = false;
-            QString status;
-            QString holdId;
+        // if (book["isAvailable"].toBool()) {
+        //     //book is available
+        //     availabilityPage = viewBookItem->findChild<QWidget*>("availablePage");
+        //     optionsPage = viewBookItem->findChild<QWidget*>("userAvailablePage");
+        // } else if (book["issuedTo"].toString() == username) {
+        //     //book is checked out by the current user
+        //     availabilityPage = viewBookItem->findChild<QWidget*>("checkedoutPage");
+        //     optionsPage = viewBookItem->findChild<QWidget*>("userCheckedoutPage");
+        // } else {
+        //     //book is unavailable, checking if the user has a hold
+        //     bool userHold = false;
+        //     QString status;
+        //     QString holdId;
 
-            for (int j = 0; j < holdsArray.size(); ++j) {
-                QJsonObject hold = holdsArray[j].toObject();
-                if (hold["isbn"].toString() == isbn && hold["username"].toString() == username) {
-                    userHold = true;
-                    holdId = hold["holdId"].toString();
-                    status = hold["holdStatus"].toString();
-                    break;
-                }
-            }
+        //     for (int j = 0; j < holdsArray.size(); ++j) {
+        //         QJsonObject hold = holdsArray[j].toObject();
+        //         if (hold["isbn"].toString() == isbn && hold["username"].toString() == username) {
+        //             userHold = true;
+        //             holdId = hold["holdId"].toString();
+        //             status = hold["holdStatus"].toString();
+        //             break;
+        //         }
+        //     }
 
-            if (userHold) {
-                //storing hold ID
-                QLabel* holdIdLabel = viewBookItem->findChild<QLabel*>("holdStoredIdLabel");
-                holdIdLabel->setText(holdId);
+        //     if (userHold) {
+        //         //storing hold ID
+        //         QLabel* holdIdLabel = viewBookItem->findChild<QLabel*>("holdStoredIdLabel");
+        //         holdIdLabel->setText(holdId);
 
-                if (status == "ready") {
-                    availabilityPage = viewBookItem->findChild<QWidget*>("holdReadyDisplayPage");
-                    optionsPage = viewBookItem->findChild<QWidget*>("holdReadyPage");
-                } else {
-                    availabilityPage = viewBookItem->findChild<QWidget*>("holdPendingPage");
-                    optionsPage = viewBookItem->findChild<QWidget*>("holdActivePage");
-                }
-            } else {
-                //allow user to request hold
-                availabilityPage = viewBookItem->findChild<QWidget*>("notAvailablePage");
-                optionsPage = viewBookItem->findChild<QWidget*>("userNotAvailablePage");
-            }
-        }
+        //         if (status == "ready") {
+        //             availabilityPage = viewBookItem->findChild<QWidget*>("holdReadyDisplayPage");
+        //             optionsPage = viewBookItem->findChild<QWidget*>("holdReadyPage");
+        //         } else {
+        //             availabilityPage = viewBookItem->findChild<QWidget*>("holdPendingPage");
+        //             optionsPage = viewBookItem->findChild<QWidget*>("holdActivePage");
+        //         }
+        //     } else {
+        //         //allow user to request hold
+        //         availabilityPage = viewBookItem->findChild<QWidget*>("notAvailablePage");
+        //         optionsPage = viewBookItem->findChild<QWidget*>("userNotAvailablePage");
+        //     }
+        // }
 
-        if (availabilityPage) {
-            index = availabilityWidget->indexOf(availabilityPage);
-            availabilityWidget->setCurrentIndex(index);
-        }
-        if (optionsPage) {
-            index = optionsWidget->indexOf(optionsPage);
-            optionsWidget->setCurrentIndex(index);
-        }
+        // if (availabilityPage) {
+        //     index = availabilityWidget->indexOf(availabilityPage);
+        //     availabilityWidget->setCurrentIndex(index);
+        // }
+        // if (optionsPage) {
+        //     index = optionsWidget->indexOf(optionsPage);
+        //     optionsWidget->setCurrentIndex(index);
+        // }
 
         ui->catalogueList->setItemWidget(item, viewBookItem);
 
@@ -384,5 +385,5 @@ void ViewMemberDashboard::onBookClicked(QListWidgetItem *book) {
 
     qDebug()<<"viewMemberDashboard: Generating Book Info View";
 
-    emit requestBookInfo(bookDetails);
+    emit requestBookInfo(bookDetails,username);
 }

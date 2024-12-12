@@ -131,8 +131,9 @@ void MainWindow::showRegister(){
     stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::showBookInfo(QJsonObject &bookDetails) {
+void MainWindow::showBookInfo(QJsonObject &bookDetails, const QString& username) {
     bookInfoPage->setBookDetails(bookDetails);
+    bookInfoPage->setBookAvailibity(bookDetails,username);
     stackedWidget->setCurrentIndex(4);
 }
 

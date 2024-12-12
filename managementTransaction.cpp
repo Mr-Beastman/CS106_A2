@@ -322,7 +322,7 @@ bool ManagementTransaction::checkoutBook(const QString& isbn, const QString& use
     QJsonObject loanEntry;
     loanEntry["isbn"] = isbn;
     loanEntry["checkoutDate"] = QDateTime::currentDateTime().toString();
-    loanEntry["dueDate"] = QDateTime::currentDateTime().addDays(30).toString("dd/mm/yyyy");
+    loanEntry["dueDate"] = QDateTime::currentDateTime().addDays(30).toString("dd/MM/yyyy");
     loanEntry["status"] = "active";
 
     activeLoans.append(loanEntry);
@@ -446,4 +446,67 @@ QString ManagementTransaction::checkedOutTo(const QString &isbn){
 
     //if no match found return none
     return "Not Currently Checked Out";
+}
+
+void ManagementTransaction::setBookAvailibityOptions(ViewBookItem *viewBookItem, const QJsonObject &book, const QString& username){
+    QStackedWidget* availabilityWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
+    QStackedWidget* optionsWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
+    QWidget* availabilityPage = nullptr;
+    QWidget* optionsPage = nullptr;
+    int index = 0;
+
+    if (book["isAvailable"].toBool()) {
+        //book is available
+        availabilityPage = viewBookItem->findChild<QWidget*>("availablePage");
+        optionsPage = viewBookItem->findChild<QWidget*>("userAvailablePage");
+    } else if (book["issuedTo"].toString() == username) {
+        //book is checked out by the current user
+        availabilityPage = viewBookItem->findChild<QWidget*>("checkedoutPage");
+        optionsPage = viewBookItem->findChild<QWidget*>("userCheckedoutPage");
+        //setting due back date
+        QLabel* dueLabel = viewBookItem->findChild<QLabel*>("dueOutputLabel");
+        dueLabel->setText(getDueDate(username, book["isbn"].toString()));
+    } else {
+        //book is unavailable, checking if the user has a hold
+        bool userHold = false;
+        QString status;
+        QString holdId;
+
+        for (int j = 0; j < holdArray.size(); ++j) {
+            QJsonObject hold = holdArray[j].toObject();
+            if (hold["isbn"].toString() == book["isbn"].toString() && hold["username"].toString() == username) {
+                userHold = true;
+                holdId = hold["holdId"].toString();
+                status = hold["holdStatus"].toString();
+                break;
+            }
+        }
+
+        if (userHold) {
+            //storing hold ID
+            QLabel* holdIdLabel = viewBookItem->findChild<QLabel*>("holdStoredIdLabel");
+            holdIdLabel->setText(holdId);
+
+            if (status == "ready") {
+                availabilityPage = viewBookItem->findChild<QWidget*>("holdReadyDisplayPage");
+                optionsPage = viewBookItem->findChild<QWidget*>("holdReadyPage");
+            } else {
+                availabilityPage = viewBookItem->findChild<QWidget*>("holdPendingPage");
+                optionsPage = viewBookItem->findChild<QWidget*>("holdActivePage");
+            }
+        } else {
+            //allow user to request hold
+            availabilityPage = viewBookItem->findChild<QWidget*>("notAvailablePage");
+            optionsPage = viewBookItem->findChild<QWidget*>("userNotAvailablePage");
+        }
+    }
+
+    if (availabilityPage) {
+        index = availabilityWidget->indexOf(availabilityPage);
+        availabilityWidget->setCurrentIndex(index);
+    }
+    if (optionsPage) {
+        index = optionsWidget->indexOf(optionsPage);
+        optionsWidget->setCurrentIndex(index);
+    }
 }

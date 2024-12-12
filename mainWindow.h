@@ -37,7 +37,7 @@ private slots:
     void showLogin();
     void userLogin(const QString& username, QString password);
     void showRegister();
-    void showBookInfo(QJsonObject& bookDetails);
+    void showBookInfo(QJsonObject& bookDetails, const QString& username);
     void showMemberInfo(QJsonObject& userToView);
     void updateAdminDisplays();
     void updateMemberDisplays();

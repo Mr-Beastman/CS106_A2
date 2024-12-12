@@ -46,6 +46,7 @@ public:
     bool updateBook(const QString& isbn, const QJsonObject& updatedBook);
     bool isAvailable(const QString& isbn);
     bool isIssued(const QString& isbn);
+    QString getDueDate(const QString& username, const QString& isbn);
     QString findCoverPath();
     QString findCoverImage(QString& isbn);
     void clearBookArray();

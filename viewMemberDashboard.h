@@ -56,7 +56,7 @@ public slots:
 
 signals:
     void logoutRequest();
-    void requestBookInfo(QJsonObject& bookDetails);
+    void requestBookInfo(QJsonObject& book, const QString& username);
     void refreashMemberDisplay();
 };
 

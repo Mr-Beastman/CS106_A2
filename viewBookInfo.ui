@@ -117,7 +117,7 @@ QLabel{
         <x>0</x>
         <y>0</y>
         <width>1215</width>
-        <height>586</height>
+        <height>594</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -126,18 +126,6 @@ QLabel{
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
        <item>
         <widget class="QPushButton" name="backButton">
          <property name="minimumSize">
@@ -253,56 +241,18 @@ QLabel{
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout">
                   <item>
-                   <widget class="QStackedWidget" name="statusStackedWidget">
-                    <property name="styleSheet">
-                     <string notr="true">#statusStackedWidget{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                    </property>
+                   <widget class="QStackedWidget" name="availabilityWidget">
                     <property name="currentIndex">
-                     <number>1</number>
+                     <number>4</number>
                     </property>
-                    <widget class="QWidget" name="notAvailablePage">
-                     <property name="styleSheet">
-                      <string notr="true">#notAvailablePage{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_8">
-                      <item>
-                       <widget class="QLabel" name="notAvailableLabel">
-                        <property name="styleSheet">
-                         <string notr="true">#notAvailableLabel{
-	color: rgb(255, 0, 0);
-	font: 700 20pt &quot;Segoe UI&quot;;
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>Not Available</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
                     <widget class="QWidget" name="availablePage">
-                     <property name="styleSheet">
-                      <string notr="true">#availablePage{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_7">
+                     <layout class="QVBoxLayout" name="verticalLayout_10">
                       <item>
                        <widget class="QLabel" name="availableLabel">
                         <property name="styleSheet">
                          <string notr="true">#availableLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
 	color: rgb(0, 170, 0);
-	font: 700 20pt &quot;Segoe UI&quot;;
 }</string>
                         </property>
                         <property name="text">
@@ -313,24 +263,68 @@ QLabel{
                      </layout>
                     </widget>
                     <widget class="QWidget" name="checkedoutPage">
-                     <property name="styleSheet">
-                      <string notr="true">#checkedoutPage{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_9">
+                     <layout class="QVBoxLayout" name="verticalLayout_11">
                       <item>
-                       <widget class="QLabel" name="checkedoutLabel">
+                       <widget class="QLabel" name="checkedOutLabel">
                         <property name="styleSheet">
-                         <string notr="true">#checkedoutLabel{
+                         <string notr="true">#checkedOutLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
 	color: rgb(0, 170, 0);
-	font: 700 20pt &quot;Segoe UI&quot;;
 }</string>
                         </property>
                         <property name="text">
                          <string>Checked out to you</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="holdPendingPage">
+                     <layout class="QVBoxLayout" name="verticalLayout_13">
+                      <item>
+                       <widget class="QLabel" name="holdPendingLabel">
+                        <property name="styleSheet">
+                         <string notr="true">#holdPendingLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(255, 0, 0);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>On Hold</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="holdReadyDisplayPage">
+                     <layout class="QVBoxLayout" name="verticalLayout_14">
+                      <item>
+                       <widget class="QLabel" name="holdReadyDisplayLabel">
+                        <property name="styleSheet">
+                         <string notr="true">#holdReadyLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(0, 170, 0);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Ready for pick up</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="notAvailablePage">
+                     <layout class="QVBoxLayout" name="verticalLayout_12">
+                      <item>
+                       <widget class="QLabel" name="notAvailableLabel">
+                        <property name="styleSheet">
+                         <string notr="true">#notAvailableLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(255, 0, 0);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Not Available</string>
                         </property>
                        </widget>
                       </item>
@@ -341,97 +335,43 @@ QLabel{
                   <item>
                    <widget class="QStackedWidget" name="optionsStackedWidget">
                     <property name="currentIndex">
-                     <number>1</number>
+                     <number>4</number>
                     </property>
-                    <widget class="QWidget" name="dueDatePage">
-                     <property name="styleSheet">
-                      <string notr="true">#dueDatePage{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_4">
+                    <widget class="QWidget" name="userNotAvailablePage">
+                     <layout class="QVBoxLayout" name="verticalLayout_15">
                       <item>
-                       <widget class="QLabel" name="dueLabel">
-                        <property name="styleSheet">
-                         <string notr="true">#dueLabel{
-	color: rgb(0, 0, 0);
-	font: 700 20pt &quot;Segoe UI&quot;;
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>Due Date :</string>
-                        </property>
-                       </widget>
+                       <layout class="QHBoxLayout" name="holdDisplayLayout">
+                        <item>
+                         <widget class="QLabel" name="holdNumberLabel">
+                          <property name="text">
+                           <string>TextLabel</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="holdTextLabel">
+                          <property name="text">
+                           <string>in Queue</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </item>
                       <item>
-                       <widget class="QLabel" name="dueOutputLabel">
-                        <property name="styleSheet">
-                         <string notr="true">#dueOutputLabel{
-	color: rgb(0, 0, 0);
-	font: 700 20pt &quot;Segoe UI&quot;;
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>TextLabel</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="checkoutPage">
-                     <property name="styleSheet">
-                      <string notr="true">#checkoutPage{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_6">
-                      <item>
-                       <widget class="QPushButton" name="checkoutButton">
+                       <widget class="QPushButton" name="holdButton_2">
                         <property name="minimumSize">
                          <size>
                           <width>0</width>
                           <height>25</height>
                          </size>
                         </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>150</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string>Checkout</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="holdPage">
-                     <property name="styleSheet">
-                      <string notr="true">#holdPage{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_5">
-                      <item>
-                       <widget class="QPushButton" name="holdButton">
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>25</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>150</width>
-                          <height>16777215</height>
-                         </size>
+                        <property name="styleSheet">
+                         <string notr="true">#holdButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
                         </property>
                         <property name="text">
                          <string>Place Hold</string>
@@ -440,15 +380,147 @@ QLabel{
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="holdAvailablePage">
-                     <property name="styleSheet">
-                      <string notr="true">#holdAvailablePage{
-	
-	background-color: rgb(227, 238, 219);
-}
-</string>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_3">
+                    <widget class="QWidget" name="adminPage">
+                     <layout class="QGridLayout" name="gridLayout_2">
+                      <item row="1" column="1">
+                       <widget class="QLabel" name="QueueOutputLabel">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="QueueLabel">
+                        <property name="text">
+                         <string>Waiting in Queue</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="CheckedOutToLabel">
+                        <property name="text">
+                         <string>Checked Out To :</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLabel" name="checkedOutputLabel">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QPushButton" name="editButton">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>25</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">#editButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Edit Book</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QPushButton" name="returnButton">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>25</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">#returnButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Return</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="dataPage">
+                     <layout class="QVBoxLayout" name="verticalLayout_16">
+                      <item>
+                       <widget class="QLabel" name="usernameStoredLabel">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="holdStoredIdLabel">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="userAvailablePage">
+                     <layout class="QVBoxLayout" name="verticalLayout_17">
+                      <item>
+                       <widget class="QPushButton" name="checkoutButton">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>25</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">#checkoutButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Checkout</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="userCheckedoutPage">
+                     <layout class="QVBoxLayout" name="verticalLayout_18">
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_7">
+                        <item>
+                         <widget class="QLabel" name="dueLabel">
+                          <property name="text">
+                           <string>Due Back:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="dueOutputLabel">
+                          <property name="text">
+                           <string>TextLabel</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="holdReadyPage">
+                     <layout class="QVBoxLayout" name="verticalLayout_19">
                       <item>
                        <widget class="QPushButton" name="confirmButton">
                         <property name="minimumSize">
@@ -457,11 +529,13 @@ QLabel{
                           <height>25</height>
                          </size>
                         </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>150</width>
-                          <height>16777215</height>
-                         </size>
+                        <property name="styleSheet">
+                         <string notr="true">#confirmButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
                         </property>
                         <property name="text">
                          <string>Confirm Pickup</string>
@@ -469,21 +543,77 @@ QLabel{
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="removeButton">
+                       <widget class="QPushButton" name="removeHold02Button">
                         <property name="minimumSize">
                          <size>
                           <width>0</width>
                           <height>25</height>
                          </size>
                         </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>150</width>
-                          <height>16777215</height>
-                         </size>
+                        <property name="styleSheet">
+                         <string notr="true">#removeHold02Button{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
                         </property>
                         <property name="text">
                          <string>Remove Hold</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="holdActivePage">
+                     <layout class="QVBoxLayout" name="verticalLayout_20">
+                      <item>
+                       <layout class="QHBoxLayout" name="holdActiveLabelLayout">
+                        <item>
+                         <widget class="QLabel" name="queuePlaceLabel">
+                          <property name="text">
+                           <string>Place in Queue:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="queuePlaceOutPutLabel">
+                          <property name="text">
+                           <string>TextLabel</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="removeHoldButton">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>25</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">#removeHoldButton{
+	border: 1px solid;
+	color: rgb(0, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+	background-color: rgb(192, 220, 161);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Remove Hold</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="detailsPage">
+                     <layout class="QVBoxLayout" name="verticalLayout_21">
+                      <item>
+                       <widget class="QLabel" name="holdIdOutputLabel">
+                        <property name="text">
+                         <string>TextLabel</string>
                         </property>
                        </widget>
                       </item>
@@ -571,9 +701,6 @@ QLabel{
       </layout>
      </widget>
     </widget>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2"/>
    </item>
   </layout>
  </widget>

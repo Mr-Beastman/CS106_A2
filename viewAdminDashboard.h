@@ -37,7 +37,7 @@ public:
 
 signals:
     void logoutRequest();
-    void requestBookInfo(QJsonObject& bookDetails);
+    void requestBookInfo(QJsonObject& bookDetails, const QString& username);
     void requestMemberInfo(QJsonObject& bookDetails);
 };
 

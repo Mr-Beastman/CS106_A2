@@ -30,6 +30,7 @@ public:
     bool returnBook(const QString& isbn, const QString &username);
     QString checkedOutTo(const QString& isbn);
     QJsonArray getActiveLoans(const QString& username);
+    void setBookAvailibityOptions(ViewBookItem* viewBookItem, const QJsonObject& book, const QString& username);
 };
 
 #endif // ManagementTransaction_H

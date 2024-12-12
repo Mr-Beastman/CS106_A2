@@ -1,5 +1,5 @@
 #include "managementBook.h"
-#include "managementData.h"
+#include "managementUser.h"
 
 
 //constructor
@@ -205,6 +205,26 @@ bool ManagementBook::isIssued(const QString &isbn){
 
     qDebug()<<"ManagementBook: "<<isbn<<" not found";
     return false;
+}
+
+QString ManagementBook::getDueDate(const QString &username, const QString &isbn){
+    ManagementUser userManager;
+
+    QJsonObject user = userManager.getUserObj(username);
+
+    QJsonArray loans = user["activeLoans"].toArray();
+
+    for(int i = 0; i<loans.size(); i++){
+        QJsonObject loan = loans[i].toObject();
+
+        if(loan["isbn"].toString() == isbn){
+            return loan["dueDate"].toString();
+        }
+    }
+
+    qDebug()<<"ManagementBook: "<<isbn<<" due date could not be confirmed";
+    return QString();
+
 }
 
 //identify file path

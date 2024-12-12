@@ -25,6 +25,7 @@ public:
     ViewBookInfo(QWidget* parent = nullptr);
     ~ViewBookInfo();
     void setBookDetails(const QJsonObject& bookDetails);
+    void setBookAvailibity(const QJsonObject& book, const QString& username);
 
 signals:
     void goBack();
