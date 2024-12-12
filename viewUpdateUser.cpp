@@ -1,6 +1,6 @@
 #include "viewUpdateUser.h"
+#include "managementUser.h"
 #include "ui_viewUpdateUser.h"
-#include "mainWindow.h"
 
 ViewUpdateUser::ViewUpdateUser(QWidget *parent) : QDialog(parent), ui(new Ui::ViewUpdateUser) {
     ui->setupUi(this);
@@ -26,9 +26,9 @@ QString ViewUpdateUser::getAccountNumber(){
 
 void ViewUpdateUser::preloadUser(const QString& account) {
 
-    managementUser userManager;
+    ManagementUser userManager;
 
-    QJsonObject user = userManager.getUserObj(account);
+    QJsonObject user = userManager.getUserObjAccount(account);
 
     //preload lineEdits
     ui->nameLineEdit->setText(user["name"].toString());
@@ -40,7 +40,7 @@ void ViewUpdateUser::preloadUser(const QString& account) {
 
 void ViewUpdateUser::saveButtonClicked() {
 
-    managementUser userManager;
+    ManagementUser userManager;
 
     QJsonObject updateDetails;
 

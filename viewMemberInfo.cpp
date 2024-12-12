@@ -4,13 +4,16 @@
 #include "managementUser.h"
 #include "viewUpdateUser.h"
 
-ViewMemberInfo::ViewMemberInfo(QWidget* parent) : QDialog(parent), ui(new Ui::ViewMemberInfo) {
+ViewMemberInfo::ViewMemberInfo(QWidget* parent, const QJsonObject &user) : QDialog(parent), ui(new Ui::ViewMemberInfo) {
     ui->setupUi(this);
 
     connect(ui->backButton, &QPushButton::clicked, this, &ViewMemberInfo::backButtonClicked);
     connect(ui->activateButton, &QPushButton::clicked, this, &ViewMemberInfo::activateButtonClicked);
     connect(ui->updateButton, &QPushButton::clicked, this, &ViewMemberInfo::updateButtonClicked);
     connect(ui->deleteMember, &QPushButton::clicked, this, &ViewMemberInfo::deleteButtonClicked);
+
+    // generateCheckedout(user["account"].toString());
+    // displayHoldRequests(user["account"].toString());
 }
 
 ViewMemberInfo::~ViewMemberInfo(){
@@ -24,10 +27,8 @@ void ViewMemberInfo::updateDisplay(const QJsonObject& updatedMember){
 void ViewMemberInfo::generateCheckedout(const QString account){
     qDebug()<<"viewMemberInfo: Checking for active loans";
 
-    managementUser userManager;
-    managementBook bookManager;
-
-
+    ManagementUser userManager;
+    ManagementBook bookManager;
 
     QJsonObject user = userManager.getUserObjAccount(account);
     QJsonArray activeLoans = user["activeLoans"].toArray();
@@ -42,6 +43,7 @@ void ViewMemberInfo::generateCheckedout(const QString account){
     qDebug()<<"viewMemberInfo: Active loans found, generating list";
     ui->issuedStackedWidget->setCurrentWidget(ui->issuedPage);
 
+    //ensure clean list on updating
     ui->issuedList->clear();
 
     for(int i = 0; i<activeLoans.size(); i++){
@@ -77,24 +79,114 @@ void ViewMemberInfo::generateCheckedout(const QString account){
 
 }
 
+void ViewMemberInfo::displayHoldRequests(const QString accountNumber){
+    qDebug()<<"viewMemberInfo: Checking for active hold requests";
+
+    //set managers
+    ManagementUser userManager;
+    ManagementBook bookManager;
+
+    //get user and book data
+    QJsonObject user = userManager.getUserObjAccount(accountNumber);
+    QJsonArray activeHolds = user["holdRequests"].toArray();
+    QJsonArray bookArray = bookManager.getBookArray();
+
+    //end if user has no active holds
+    if(activeHolds.isEmpty()){
+        qDebug()<<"ViewMemberInfo: No hold requets to display";
+        ui->holdStackedWidget->setCurrentWidget(ui->noHoldPage);
+        return;
+    }
+
+    qDebug()<<"viewMemberInfo: Active holds found, generating list";
+    ui->holdStackedWidget->setCurrentWidget(ui->holdPage);
+
+    //ensure clean list on updating
+    ui->holdList->clear();
+
+    for(int i = 0; i<activeHolds.size(); i++){
+        QJsonObject hold = activeHolds[i].toObject();
+        QString holdIsbn  = hold["isbn"].toString();
+        QString holdId = hold["holdId"].toString();
+
+        for(int j = 0; j<bookArray.size(); j++){
+            QJsonObject book = bookArray[j].toObject();
+
+            if(book["isbn"].toString() == holdIsbn){
+
+                QJsonArray bookQueue = book["inQueue"].toArray();
+
+                for(int k = 0; k<bookQueue.size(); k++){
+                    QJsonObject userPlace = bookQueue[k].toObject();
+
+                    if(userPlace["holdId"] == holdId){
+                        QString holdStatus = userPlace["holdStatus"].toString();
+
+                        ViewBookItem* listItem = bookManager.createBookList(book, hold);
+
+                        //setting display
+                        QStackedWidget* availibiltyWidget = listItem->findChild<QStackedWidget*>("availabilityWidget");
+                        QStackedWidget* optionsWidget = listItem->findChild<QStackedWidget*>("optionsStackedWidget");
+                        int index;
+
+                        if(holdStatus == "active"){
+                            index = availibiltyWidget->indexOf(listItem->findChild<QWidget*>("holdPendingPage"));
+                            availibiltyWidget->setCurrentIndex(index);
+                            index = optionsWidget->indexOf(listItem->findChild<QWidget*>("holdActiveLabelLayout"));
+                            optionsWidget->setCurrentIndex(index);
+                            QLabel* placeInQueue = listItem->findChild<QLabel*>("queuePlaceOutPutLabel");
+                            placeInQueue->setText(QString::number(k+1));
+
+                        } else {
+                            index = availibiltyWidget->indexOf(listItem->findChild<QWidget*>("holdReadyPage"));
+                            availibiltyWidget->setCurrentIndex(index);
+                            optionsWidget->hide();
+                        }
+
+                        QLabel* holdIdWidget = listItem->findChild<QLabel*>("holdIdOutputLabel");
+                        holdIdWidget->setText(holdId);
+
+                        //adding loan entry to list
+                        QListWidgetItem* entry = new QListWidgetItem(ui->holdList);
+
+                        //assigning isbn to item
+                        entry->setData(Qt::UserRole, book["isbn"].toString());
+
+                        //entry display settings
+                        entry->setSizeHint(listItem->sizeHint());
+
+                        if(i % 2 == 0){
+                            entry->setBackground(QBrush(QColor(158,206,104)));
+                        } else {
+                            entry->setBackground(QBrush(QColor(187,211,180)));
+                        }
+
+                        ui->holdList->setItemWidget(entry, listItem);
+                    }
+                }
+            }
+        }
+    }
+}
+
 void ViewMemberInfo::backButtonClicked(){
-    emit goBack();
+    emit goBackAdmin();
 }
 
 void ViewMemberInfo::activateButtonClicked(){
-    managementUser userManager;
+    ManagementUser userManager;
     userManager.activateUser(ui->accountOutputLabel->text());
     updateDisplay(userManager.getUserObjAccount(ui->accountOutputLabel->text()));
     emit requestUpdateDisplay();
 }
 
 void ViewMemberInfo::deleteButtonClicked(){
-    managementUser userManager;
+    ManagementUser userManager;
 
     userManager.deleteMember(ui->accountOutputLabel->text());
 
     emit requestUpdateDisplay();
-    emit goBack();
+    emit goBackAdmin();
 }
 
 void ViewMemberInfo::updateButtonClicked(){
@@ -103,7 +195,7 @@ void ViewMemberInfo::updateButtonClicked(){
     viewUpdateUser->preloadUser(ui->accountOutputLabel->text());
     viewUpdateUser->exec();
 
-    managementUser userManager;
+    ManagementUser userManager;
 
     QJsonObject user = userManager.getUserObjAccount(ui->accountOutputLabel->text());
     updateDisplay(user);

@@ -18,7 +18,7 @@ ViewRegistration::~ViewRegistration() {
 
 void ViewRegistration::submitButtonClicked() {
 
-    managementUser userManager;
+    ManagementUser userManager;
 
     QJsonObject newUser;
 

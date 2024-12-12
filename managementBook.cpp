@@ -1,23 +1,24 @@
 #include "managementBook.h"
 #include "managementData.h"
 
-// --------------- private ---------------
-
-
-// --------------- protected ---------------
 
 //constructor
-managementBook::managementBook() : ManagementData() {}
-
-// --------------- public ---------------
-
-//getters
-QJsonArray managementBook::getBookArray() {
-    readData();
-    return libraryDatabase["books"].toArray();
+ManagementBook::ManagementBook() : ManagementData() {
+    setBookArray();
 }
 
-QJsonObject managementBook::getBookDetails(const QString &isbn){
+void ManagementBook::setBookArray(){
+    QJsonObject& database = getFileData();
+    bookArray = database["books"].toArray();
+}
+
+
+//getters
+QJsonArray ManagementBook::getBookArray() {
+    return bookArray;
+}
+
+QJsonObject ManagementBook::getBookDetails(const QString &isbn){
     QJsonArray bookArray = getBookArray();
     for(int i = 0; i<bookArray.size(); i++){
         QJsonObject book = bookArray[i].toObject();
@@ -26,11 +27,11 @@ QJsonObject managementBook::getBookDetails(const QString &isbn){
             break;
         }
     }
-    qDebug()<<"managementBook: Book Information not found.";
+    qDebug()<<"ManagementBook: Book Information not found.";
     return QJsonObject();
 }
 
-ViewBookItem *managementBook::createBookList(const QJsonObject &book, const QJsonObject &entry){
+ViewBookItem *ManagementBook::createBookList(const QJsonObject &book, const QJsonObject &entry){
     // Create the viewBookItem widget
     ViewBookItem* viewBookItem = new ViewBookItem(nullptr);
 
@@ -62,7 +63,7 @@ ViewBookItem *managementBook::createBookList(const QJsonObject &book, const QJso
         }
         coverLabel->setScaledContents(true);
     } else {
-        qDebug() << "managementBook: Cover label not found";
+        qDebug() << "ManagementBook: Cover label not found";
     }
     return viewBookItem;
 }
@@ -72,7 +73,7 @@ ViewBookItem *managementBook::createBookList(const QJsonObject &book, const QJso
 //add book to Json file database
 //parameters : book title, author, isbn, description, genre and section.
 //returns : true if ran successfully, false if errror encountered.
-bool managementBook::addBook(const QString& titleInput,
+bool ManagementBook::addBook(const QString& titleInput,
                              const QString& authorInput,
                              const QString& isbnInput,
                              const QString& descInput,
@@ -105,7 +106,7 @@ bool managementBook::addBook(const QString& titleInput,
     return false;
 }
 
-bool managementBook::updateBook(const QString &isbn, const QJsonObject &updatedBook){
+bool ManagementBook::updateBook(const QString &isbn, const QJsonObject &updatedBook){
 
     QJsonObject originalBook = getBookDetails(isbn);
 
@@ -133,7 +134,7 @@ bool managementBook::updateBook(const QString &isbn, const QJsonObject &updatedB
 
     //if update loop through curent data to update in array
     if(updated){
-        qDebug()<<"managementBook: Begining book Update";
+        qDebug()<<"ManagementBook: Begining book Update";
         QJsonArray bookArray = getBookArray();
         for(int i = 0; i < bookArray.size(); i++){
             QJsonObject book = bookArray[i].toObject();
@@ -161,10 +162,10 @@ bool managementBook::updateBook(const QString &isbn, const QJsonObject &updatedB
             }
         }
 
-        qDebug()<<"managementBook: Failed to find book to update";
+        qDebug()<<"ManagementBook: Failed to find book to update";
         return false;
     } else {
-        qDebug()<<"managementBook: No updates detected";
+        qDebug()<<"ManagementBook: No updates detected";
 //        emit noUpdates();
         return false;
     }
@@ -174,30 +175,49 @@ bool managementBook::updateBook(const QString &isbn, const QJsonObject &updatedB
 //confirm book is available by checking isAvailable flag
 //parameters : isbn of book to check.
 //returns : true available/false not available
-bool managementBook::isAvailable(const QString& isbn) {
+bool ManagementBook::isAvailable(const QString& isbn) {
     QJsonArray bookArray = getBookArray();
     for(int i = 0; i<bookArray.size(); i++){
         QJsonObject book = bookArray[i].toObject();
         if(book["isbn"].toString() == isbn){
+            qDebug()<<"ManagementBook: "<<isbn<<" is availble : "<<book["isAvailable"].toBool();
             return book["isAvailable"].toBool();
         }
     }
 
-    qDebug()<<"managementBook: "<<isbn<<" not found";
+    qDebug()<<"ManagementBook: "<<isbn<<" not found";
+    return false;
+}
+
+bool ManagementBook::isIssued(const QString &isbn){
+    for(int i = 0; i<bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
+        if(book["isbn"].toString() == isbn){
+            if(book["issuedTo"].toString().isEmpty()){
+                qDebug()<<"ManagementBook: "<<isbn<<" is not issued";
+                return false;
+            } else {
+                qDebug()<<"ManagementBook: "<<isbn<<" is issued to "<<book["issuedTo"];
+                return true;
+            }
+        }
+    }
+
+    qDebug()<<"ManagementBook: "<<isbn<<" not found";
     return false;
 }
 
 //identify file path
 //pareamters : none
 //returns : string containing folder path
-QString managementBook::findCoverPath(){
+QString ManagementBook::findCoverPath(){
     return findPath()+QDir::separator()+"/images/covers/";
 }
 
 //get path to requested cover image
 //parameters: the isbn number of the book requestes
 //returns: none
-QString managementBook::findCoverImage(QString& isbn){
+QString ManagementBook::findCoverImage(QString& isbn){
     return findCoverPath()+isbn+".png";
 }
 

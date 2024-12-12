@@ -196,7 +196,7 @@
       <item>
        <widget class="QStackedWidget" name="availabilityWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="availablePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -232,6 +232,40 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="holdPendingPage">
+         <layout class="QVBoxLayout" name="verticalLayout_13">
+          <item>
+           <widget class="QLabel" name="holdPendingLabel">
+            <property name="styleSheet">
+             <string notr="true">#holdPendingLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(255, 0, 0);
+}</string>
+            </property>
+            <property name="text">
+             <string>On Hold</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="holdReadyDisplayPage">
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <item>
+           <widget class="QLabel" name="holdReadyDisplayLabel">
+            <property name="styleSheet">
+             <string notr="true">#holdReadyLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(0, 170, 0);
+}</string>
+            </property>
+            <property name="text">
+             <string>Ready for pick up</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
         <widget class="QWidget" name="notAvailablePage">
          <layout class="QVBoxLayout" name="verticalLayout_10">
           <item>
@@ -257,7 +291,7 @@
    <item>
     <widget class="QStackedWidget" name="optionsStackedWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="userNotAvailablePage">
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -376,10 +410,17 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="userDataPage">
+     <widget class="QWidget" name="dataPage">
       <layout class="QVBoxLayout" name="verticalLayout_12">
        <item>
         <widget class="QLabel" name="usernameStoredLabel">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="holdStoredIdLabel">
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -434,7 +475,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="userReadyPage">
+     <widget class="QWidget" name="holdReadyPage">
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <widget class="QPushButton" name="confirmButton">

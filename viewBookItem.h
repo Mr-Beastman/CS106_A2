@@ -20,6 +20,7 @@ private slots:
     void placeHold();
     void returnButtonClicked();
     void removeHoldButtonClicked();
+    void confirmButtonClicked();
 
 
 public:

@@ -19,14 +19,14 @@ ViewAddMember::~ViewAddMember() {
 
 void ViewAddMember::addMemberButtonClicked(){
     QJsonObject newUser;
-    managementUser userManager;
+    ManagementUser userManager;
 
     newUser["name"]=ui->nameLineEdit->text();
     newUser["username"]=ui->usernameLineEdit->text();
     newUser["password"]=ui->passwordLineEdit->text();
     newUser["phone"]=ui->phoneLineEdit->text();
     newUser["email"]=ui->emailLineEdit->text();
-    newUser["address"]=ui->nameLineEdit->text();
+    newUser["address"]=ui->addressLineEdit->text();
 
     //checking if active box has been checked
     bool makeActive = ui->activeCheckBox->isChecked();

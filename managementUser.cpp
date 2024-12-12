@@ -1,4 +1,3 @@
-
 #include "managementUser.h"
 #include "managementData.h"
 
@@ -9,42 +8,41 @@
 // --------------- protected ---------------
 
 //constructor
-managementUser::managementUser() : ManagementData(){
+ManagementUser::ManagementUser() : ManagementData(){
     setUserArray();
 }
 
 // --------------- public ---------------
 
 // --- setters ---
-void managementUser::setCurrentUser(const QString username) {
+void ManagementUser::setCurrentUser(const QString username) {
     currentUser = username;
 }
 
-void managementUser::setUserArray(){
+void ManagementUser::setUserArray(){
     QJsonObject& database = getFileData();
     userArray = database["users"].toArray();
 }
 
-void managementUser::clearCurrentUser(){
+void ManagementUser::clearCurrentUser(){
     currentUser = QString();
 }
 
 // --- getters ---
-QString &managementUser::getCurrentUser(){
+QString &ManagementUser::getCurrentUser(){
     return currentUser;
 }
 
-QJsonArray managementUser::getUserArray(){
+QJsonArray ManagementUser::getUserArray(){
     return userArray;
 }
 
 //get user obj which contains all user details
 //parameters: QString of the username to get
 //returns: QJsonObject of requested user
-QJsonObject managementUser::getUserObj(const QString& username) {
+QJsonObject ManagementUser::getUserObj(const QString& username) {
 
-    QJsonObject& database = getFileData();
-    QJsonArray userArray = database["users"].toArray();
+    QJsonArray userArray = getUserArray();
 
     for (int i = 0; i<userArray.size(); ++i){
         //convert user to object
@@ -61,11 +59,10 @@ QJsonObject managementUser::getUserObj(const QString& username) {
     return QJsonObject();
 }
 
-QJsonObject managementUser::getUserObjAccount(const QString &account){
+QJsonObject ManagementUser::getUserObjAccount(const QString &account){
     //checking user data exists
 
-    QJsonObject& database = getFileData();
-    QJsonArray userArray = database["user"].toArray();
+    QJsonArray userArray = getUserArray();
 
     for (int i = 0; i<userArray.size(); ++i){
         //convert user to object
@@ -82,19 +79,19 @@ QJsonObject managementUser::getUserObjAccount(const QString &account){
     return QJsonObject();
 }
 
-QString managementUser::getAccount(const QString &username){
+QString ManagementUser::getAccount(const QString &username){
 
     QJsonArray userArray = getUserArray();
     for(int i = 0; i<userArray.size(); i++){
         QJsonObject user = userArray[i].toObject();
 
         if(user["username"].toString() == username){
-            qDebug()<<"managementUser: Account Number identified";
+            qDebug()<<"ManagementUser: Account Number identified";
             return user["account"].toString();
         }
     }
 
-    qDebug()<<"managementUser: Account Number could not be found";
+    qDebug()<<"ManagementUser: Account Number could not be found";
     return QString();
 }
 
@@ -103,7 +100,7 @@ QString managementUser::getAccount(const QString &username){
 //check if username exists in system
 //paramters: QJsonObject of user details
 //returns: true exists, false does not
-bool managementUser::usernameExists(QJsonObject &user){
+bool ManagementUser::usernameExists(QJsonObject &user){
     QJsonArray userArray = getUserArray();
     for(int i = 0; i < userArray.size(); i++){
         QJsonObject existingUser = userArray[i].toObject();
@@ -113,14 +110,14 @@ bool managementUser::usernameExists(QJsonObject &user){
         }
     }
 
-    qDebug()<<"managementUser: User name does not exist in database";
+    qDebug()<<"ManagementUser: User name does not exist in database";
     return false;
 }
 
 //add a new user to the existing database
 //parameters : QJsonObject containing user details (name,username etc)
 //returns : on success true, fail to add false.
-bool managementUser::addUser(QJsonObject& newUser){
+bool ManagementUser::addUser(QJsonObject& newUser){
 
     //checking user array is populated
     QJsonArray userArray = getUserArray();
@@ -160,11 +157,11 @@ bool managementUser::addUser(QJsonObject& newUser){
     return false;
 }
 
-bool managementUser::updateUser(const QString& account, QJsonObject& updatedDetails){
+bool ManagementUser::updateUser(const QString& account, QJsonObject& updatedDetails){
     //check data is laoded
     QJsonArray userArray = getUserArray();
     if (userArray.isEmpty()) {
-        qDebug() << "managementUser: User array is empty";
+        qDebug() << "ManagementUser: User array is empty";
         //setUserArray();
     }
 
@@ -205,27 +202,28 @@ bool managementUser::updateUser(const QString& account, QJsonObject& updatedDeta
 
                 //save
                 if (saveData()) {
-                    qDebug() << "managementUser: User has been updated";
+                    qDebug() << "ManagementUser: User has been updated";
                     return true;
                 } else {
-                    qDebug() << "managementUser: Failed to save updated user data";
+                    qDebug() << "ManagementUser: Failed to save updated user data";
                     return false;
                 }
             } else {
-                qDebug() << "managementUser: No changes detected";
+                qDebug() << "ManagementUser: No changes detected";
                 return false;
             }
         }
     }
 
-    qDebug() << "managementUser: User not found";
+    qDebug() << "ManagementUser: User not found";
     return false;  // User not found
 }
 
 //generate a unique user ID;
 //paramters: none
 //returns: QString containing unique ID.
-QString managementUser::createUserID() {
+//author camryn Hansen, Later modified by Benjamin Eastman
+QString ManagementUser::createUserID() {
 
     bool idExists=true;
     int userId=0;
@@ -245,15 +243,15 @@ QString managementUser::createUserID() {
         }
     }
 
-    qDebug()<<"managementUser: Generated user id "<<userId;
+    qDebug()<<"ManagementUser: Generated user id "<<userId;
     return QString::number(userId);
 }
 
 
-//check that username & password cobinatin exits in database
+//check that username & password combinatin exits in database
 //parameters : QString username & QString password to compare
 //returns : true for valid combo, false for invalid combo
-bool managementUser::verifyLogin(const QString& usernameInput, const QString& passwordInput){
+bool ManagementUser::verifyLogin(const QString& usernameInput, const QString& passwordInput){
 
     qDebug()<<"UserManagment: Begining Verfication process";
 
@@ -274,20 +272,20 @@ bool managementUser::verifyLogin(const QString& usernameInput, const QString& pa
         //compare inputs and stored values
         //if match found return true and debug
         if(usernameInput==storedUsername && passwordInput == storedPassword){
-            qDebug()<<"managementUser: Login Successful for user : " << usernameInput;
+            qDebug()<<"ManagementUser: Login Successful for user : " << usernameInput;
             return true;
         }
     }
 
     //if no match found return false and debug
-    qDebug()<<"managementUser: Login attempt failed for :" << usernameInput;
+    qDebug()<<"ManagementUser: Login attempt failed for :" << usernameInput;
     return false;
 }
 
 //check if user is admin
 //parameters: QString containing the username to check
 //returns: true (admin) false (member);
-bool managementUser::isAdmin(const QString& usernameInput){
+bool ManagementUser::isAdmin(const QString& usernameInput){
     //checking user data exists
     if(!libraryDatabase.contains("users") || !libraryDatabase["users"].isArray()){
         qDebug()<< "UserManagment: No user data present";
@@ -314,7 +312,7 @@ bool managementUser::isAdmin(const QString& usernameInput){
 //check user has been set to active in system
 //parameters : QString of username to check
 //returns : true if active, false if not
-bool managementUser::isActive(const QString& usernameInput){
+bool ManagementUser::isActive(const QString& usernameInput){
     QJsonArray users = getUserArray();
 
     //loop through users checking for match
@@ -334,7 +332,7 @@ bool managementUser::isActive(const QString& usernameInput){
     return false;
 }
 
-bool managementUser::activateUser(const QString &accountInput) {
+bool ManagementUser::activateUser(const QString &accountInput) {
     QJsonArray userArray = getUserArray();
     qDebug()<<"login"<<userArray;
     for (int i = 0; i < userArray.size(); i++) {
@@ -344,10 +342,10 @@ bool managementUser::activateUser(const QString &accountInput) {
 
             // Check if the user is already active
             if (isActive(accountInput)) {
-                qDebug() << "managementUser: User already active";
+                qDebug() << "ManagementUser: User already active";
                 return true;
             } else {
-                qDebug() << "managementUser: Activating User";
+                qDebug() << "ManagementUser: Activating User";
 
 
                 user["isActive"] = true;
@@ -358,25 +356,25 @@ bool managementUser::activateUser(const QString &accountInput) {
                 fileData["users"] = userArray;
 
                 if (saveData()) {
-                    qDebug() << "managementUser: User has been activated and saved";
+                    qDebug() << "ManagementUser: User has been activated and saved";
                     return true;
                 } else {
-                    qDebug() << "managementUser: Could not save updated user data";
+                    qDebug() << "ManagementUser: Could not save updated user data";
                     return false;
                 }
             }
         }
     }
 
-    qDebug() << "managementUser: User not found";
+    qDebug() << "ManagementUser: User not found";
     return false;
 }
 
-bool managementUser::deleteMember(const QString &accountNumber){
+bool ManagementUser::deleteMember(const QString &accountNumber){
     //checking if the user data exists
-    QJsonArray userArray = getUserArray();
+
     if (userArray.isEmpty()) {
-        qDebug() << "managementUser: User array is empty";
+        qDebug() << "ManagementUser: User array is empty";
         //setUserArray();
     }
 
@@ -394,27 +392,17 @@ bool managementUser::deleteMember(const QString &accountNumber){
             fileData["users"] = userArray;
 
             if (saveData()) {
-                qDebug() << "managementUser: User has been deleted";
+                qDebug() << "ManagementUser: User has been deleted";
                 return true;
             } else {
-                qDebug() << "managementUser: Could not save updated user data after deletion";
+                qDebug() << "ManagementUser: Could not save updated user data after deletion";
                 return false;
             }
         }
     }
 
     //if no user found
-    qDebug() << "managementUser: User not found";
+    qDebug() << "ManagementUser: User not found";
     return false;  // User not found
 
 }
-
-// void managementUser::updateUserArray(QJsonArray array)
-// {
-//     QJsonArray userArray = getUserArray();
-//     userArray = array;
-// }
-
-// void managementUser::clearUserArray(){
-//     userArray= QJsonArray();
-// }

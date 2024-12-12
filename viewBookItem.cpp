@@ -14,12 +14,11 @@ ViewBookItem::ViewBookItem(QWidget *parent)
     //connect buttons
     connect(ui->editButton, &QPushButton::clicked, this, &ViewBookItem::editBook);
     connect(ui->checkoutButton, &QPushButton::clicked, this, &ViewBookItem::checkoutBook);
-    connect(ui->confirmButton, &QPushButton::clicked, this, &ViewBookItem::checkoutBook);
+    connect(ui->confirmButton, &QPushButton::clicked, this, &ViewBookItem::confirmButtonClicked);
     connect(ui->holdButton, &QPushButton::clicked, this, &ViewBookItem::placeHold);
     connect(ui->removeHoldButton, &QPushButton::clicked, this, &ViewBookItem::removeHoldButtonClicked);
     connect(ui->removeHold02Button, &QPushButton::clicked, this, &ViewBookItem::removeHoldButtonClicked);
     connect(ui->returnButton, &QPushButton::clicked, this, &ViewBookItem::returnButtonClicked);
-
 }
 
 ViewBookItem::~ViewBookItem() {
@@ -27,35 +26,61 @@ ViewBookItem::~ViewBookItem() {
 }
 
 void ViewBookItem::checkoutBook() {
-    managementTransaction transactionManager;
+    ManagementTransaction transactionManager;
     transactionManager.checkoutBook(ui->isbnOutputLabel->text(),ui->usernameStoredLabel->text());
     qDebug()<<"viewBookItem: Emiting refreash Signal";
     emit refreashviewMemberDashboard();
 }
 
 void ViewBookItem::placeHold(){
-    managementTransaction transactionManager;
-    managementUser userManager;
+    ManagementTransaction transactionManager;
+    ManagementUser userManager;
 
     transactionManager.placeHold(ui->isbnOutputLabel->text(),ui->usernameStoredLabel->text());
     qDebug()<<"viewBookItem: Emiting refreash Signal";
-    emit refreashView();
+    emit refreashviewMemberDashboard();
 }
 
 void ViewBookItem::returnButtonClicked(){
     qDebug()<<"viewBookItem: Returning book ISBN:"<<ui->isbnOutputLabel->text();
-    managementTransaction transactionManager;
-
+    //return book
+    ManagementTransaction transactionManager;
     transactionManager.returnBook(ui->isbnOutputLabel->text(),ui->checkedOutputLabel->text());
+
+    //set next in queues hold status to ready
+    ManagementBook bookManager;
+    if(!bookManager.isAvailable(ui->isbnOutputLabel->text()) && !bookManager.isIssued(ui->isbnOutputLabel->text())) {
+        transactionManager.notifyNextInQueue(ui->isbnOutputLabel->text());
+        qDebug()<<"ViewBookItem: Next user in Queue has been notified";
+    }
     emit refreashView();
 }
 
-void ViewBookItem::removeHoldButtonClicked(){
-    managementTransaction transactionManager;
+void ViewBookItem::removeHoldButtonClicked(){\
+    //removing hold
+    ManagementTransaction transactionManager;
+    transactionManager.removeHold(ui->holdStoredIdLabel->text());
 
-    if(transactionManager.removeHold(ui->holdIdOutputLabel->text())){
-       emit refreashView();
+    //notifying next in que if current user declined to pick up
+    ManagementBook bookManager;
+    if(!bookManager.isAvailable(ui->isbnOutputLabel->text()) && !bookManager.isIssued(ui->isbnOutputLabel->text())) {
+        if(transactionManager.notifyNextInQueue(ui->isbnOutputLabel->text())){
+            qDebug()<<"ViewBookItem: Next user in Queue has been notified";
+        } else {
+            qDebug()<<"ViewBookItem: Failed to notify next in queue";
+        }
     }
+    qDebug()<<"ViewBookItem: Requesting view Refreash";
+    emit refreashviewMemberDashboard();
+}
+
+void ViewBookItem::confirmButtonClicked(){
+    ManagementTransaction transactionManager;
+    ManagementData dataManager;
+
+    transactionManager.checkoutBook(ui->isbnOutputLabel->text(),ui->usernameStoredLabel->text());
+    transactionManager.removeHold(ui->holdStoredIdLabel->text());
+    emit refreashviewMemberDashboard();
 }
 
 void ViewBookItem::editBook(){

@@ -5,7 +5,6 @@
 #include "managementUser.h"
 #include "managementBook.h"
 #include "managementTransaction.h"
-#include "viewMemberInfo.h"
 #include "viewBookItem.h"
 
 ViewAdminDashboard::ViewAdminDashboard(QWidget *parent) : QWidget(parent), ui(new Ui::ViewAdminDashboard) {
@@ -22,7 +21,7 @@ ViewAdminDashboard::ViewAdminDashboard(QWidget *parent) : QWidget(parent), ui(ne
 
 void ViewAdminDashboard::displayUsers() {
 
-    managementUser userManager;
+    ManagementUser userManager;
 
     ui->membersList->clear();
 
@@ -83,7 +82,7 @@ void ViewAdminDashboard::updateDisplays(){
     qDebug()<<"viewAdminDashboard: Refreashing Displays";
 
     displayUsers();
-    loadAdminCatalogue();
+    displayAdminCatalogue();
 }
 
 //manage catalogue functions
@@ -99,13 +98,14 @@ void ViewAdminDashboard::addMemberButtonClicked(){
     updateDisplays();
 }
 
-void ViewAdminDashboard::loadAdminCatalogue(){
+void ViewAdminDashboard::displayAdminCatalogue(){
+    //getting managers
     ManagementData dataManager;
-    managementBook bookManager;
-    managementTransaction transactionManager;
+    ManagementBook bookManager;
+    ManagementTransaction transactionManager;
 
-    QJsonObject& database = dataManager.getFileData();
-    QJsonArray bookData = database["books"].toArray();
+    //get data arrays
+    QJsonArray bookData = bookManager.getBookArray();
 
     //clear list
     ui->catalogueList->clear();
@@ -138,9 +138,10 @@ void ViewAdminDashboard::loadAdminCatalogue(){
         QLabel* activeLoan  =  viewBookItem->findChild<QLabel*>("checkedOutputLabel");
         activeLoan->setText(transactionManager.checkedOutTo(book["isbn"].toString()));
 
+        QJsonArray queue = book["inQueue"].toArray();
 
         QLabel* holdArray =  viewBookItem->findChild<QLabel*>("QueueOutputLabel");
-        if(!book["inQueue"].toArray().isEmpty()){
+        if(queue.isEmpty()){
             holdArray->setText(QString::number(book["inQueue"].toArray().size()));
         } else {
             holdArray->setText(QString::number(0));
@@ -151,16 +152,33 @@ void ViewAdminDashboard::loadAdminCatalogue(){
         QPushButton* returnButton = viewBookItem->findChild<QPushButton*>("returnButton");
         stackedWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
 
-
         if(book["isAvailable"].toBool()){
             returnButton->hide();
             index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("availablePage"));
             stackedWidget->setCurrentIndex(index);
         } else {
-            returnButton->show();
-            index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("notAvailablePage"));
-            stackedWidget->setCurrentIndex(index);
+            if(!queue.isEmpty()){
+                QJsonObject firstInQueue = queue[0].toObject();
+                QString holdStatus = firstInQueue["holdStatus"].toString();
+
+                if(holdStatus == "ready"){
+                    returnButton->hide();
+                    index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("holdReadyPage"));
+                    stackedWidget->setCurrentIndex(index);
+                } else if (holdStatus == "active"){
+                    returnButton->show();
+                    index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("notAvailablePage"));
+                    stackedWidget->setCurrentIndex(index);
+                }
+            } else {
+                returnButton->show();
+                index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("notAvailablePage"));
+                stackedWidget->setCurrentIndex(index);
+            }
         }
+
+        QLabel* queueLabel = viewBookItem->findChild<QLabel*>("QueueOutputLabel");
+        queueLabel->setText(QString::number(queue.size()));
 
         item->setSizeHint(viewBookItem->sizeHint());
 
@@ -176,7 +194,7 @@ void ViewAdminDashboard::onMemberClicked(QListWidgetItem *user){
     QString userAccount = user->data(Qt::UserRole).toString();
 
     //getMemberDetails
-    managementUser userManager;
+    ManagementUser userManager;
 
     qDebug()<<"viewAdminDashboard: Populating Member Info View";
     QJsonObject toView = userManager.getUserObj(userAccount);
@@ -190,7 +208,7 @@ void ViewAdminDashboard::onBookClicked(QListWidgetItem *book) {
     QString isbn = book->data(Qt::UserRole).toString();
 
     //getting book details
-    managementBook bookManger;
+    ManagementBook bookManger;
     QJsonObject bookDetails = bookManger.getBookDetails(isbn);
 
     qDebug()<<"viewMemberDashboard: Generating Book Info View";

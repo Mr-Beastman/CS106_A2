@@ -26,14 +26,15 @@ private slots:
     void updateButtonClicked();
 
 public:
-    ViewMemberInfo(QWidget* parent = nullptr);
+    ViewMemberInfo(QWidget* parent = nullptr, const QJsonObject& user=QJsonObject());
     ~ViewMemberInfo();
     bool setMemberDetails(const QJsonObject& userToView);
     void updateDisplay(const QJsonObject& updatedMember);
     void generateCheckedout(const QString account);
+    void displayHoldRequests(const QString accountNumber);
 
 signals:
-    void goBack();
+    void goBackAdmin();
     void requestUpdateDisplay();
 };
 

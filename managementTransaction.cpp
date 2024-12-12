@@ -4,18 +4,46 @@
 //parameters : username requesting hold and isbn of book to hold
 //returns : true on success false on fail
 
-managementTransaction::managementTransaction() : managementUser(), managementBook(){}
+ManagementTransaction::ManagementTransaction() : ManagementUser(), ManagementBook(){
+    setHoldArray();
+}
 
-bool managementTransaction::placeHold(const QString isbn, const QString& username){
+void ManagementTransaction::setHoldArray(){
+    QJsonObject& database = getFileData();
+    holdArray = database["holds"].toArray();
+}
+
+QJsonArray ManagementTransaction::getHoldArray(){
+    return holdArray;
+}
+
+QJsonObject ManagementTransaction::getHoldDetails(const QString &holdId){
+
+    for(int i = 0; i<holdArray.size(); i++){
+        QJsonObject hold = holdArray[i].toObject();
+
+        if(hold["holdId"].toString() == holdId){
+            return hold;
+        }
+    }
+
+    qDebug()<<"ManagementTransaction: Hold ID cannot be found";
+    return QJsonObject();
+}
+
+bool ManagementTransaction::placeHold(const QString isbn, const QString& username){
     //getting managers
-    managementUser userManager;
+    ManagementUser userManager;
 
     //getting current user
     QJsonObject& dataBase = getFileData();
 
+    //generate unique holdId
     QString holdId = generateHoldId();
 
-    //add user request to book data in json file
+
+
+    //add holdId to book
     QJsonArray bookArray = dataBase["books"].toArray();
     for(int i = 0; i<bookArray.size(); i++){
         QJsonObject book = bookArray[i].toObject();
@@ -24,14 +52,6 @@ bool managementTransaction::placeHold(const QString isbn, const QString& usernam
             QJsonArray bookQueue = book["inQueue"].toArray();
             QJsonObject holdEntry;
 
-            //creating hold entry
-            //storing username for queue
-            holdEntry["username"] = username;
-            //storing time of request to so oldest can be priortised
-            holdEntry["holdDate"] = QDateTime::currentDateTime().date().toString("dd-mm-yyyy");
-            //setting a status active/notified/expired for auto clearing
-            holdEntry["holdStatus"] =  "active";
-            //setting a hold id
             holdEntry["holdId"] = holdId;
 
             bookQueue.append(holdEntry);
@@ -43,6 +63,7 @@ bool managementTransaction::placeHold(const QString isbn, const QString& usernam
         }
     }
 
+    //add holdId to user
     QJsonArray userArray = dataBase["users"].toArray();
     //add book isbn to user account so we can check what books they have on hold
     for(int i = 0; i<userArray.size(); i++){
@@ -50,96 +71,169 @@ bool managementTransaction::placeHold(const QString isbn, const QString& usernam
         if(user["username"].toString() == username){
             QJsonArray holdRequests = user["holdRequests"].toArray();
             QJsonObject holdEntry;
-
-            holdEntry["isbn"] = isbn;
             holdEntry["holdId"] = holdId;
             holdRequests.append(holdEntry);
-
             user["holdRequests"] = holdRequests;
-
             userArray.replace(i,user);
             break;
         }
     }
+
+    //obj to store hold information
+    QJsonObject holdRequest;
+
+    //add hold record to array
+    holdRequest["holdId"] = holdId;
+    holdRequest["username"] = username;
+    holdRequest["isbn"] = isbn;
+    holdRequest["holdDate"] = QDateTime::currentDateTime().date().toString("dd-mm-yyyy");
+    holdRequest["holdStatus"] =  "active";
+    holdArray.append(holdRequest);
 
     QJsonObject& fileData = getFileData();
 
     //update and save database
     fileData["users"] = userArray;
     fileData["books"] = bookArray;
+    fileData["holds"] = holdArray;
 
 
     //save updated data to Json file
     if(saveData()){
-        qDebug()<<"managementTransaction: Hold Successfull";
+        qDebug()<<"ManagementTransaction: Hold Successfull";
         return true;
     }
 
-    qDebug()<<"managementTransaction: Hold Failed";
+    qDebug()<<"ManagementTransaction: Hold Failed";
     return false;
 }
 
-bool managementTransaction::removeHold(const QString& holdId){
+//remove hold request. removes hold Id from book, user and hold database;
+//paramaters: holdId for hold to be removed
+//returns: true on success. false on failure
+bool ManagementTransaction::removeHold(const QString& holdId){
 
-    QJsonArray books = getBookArray();
+    qDebug()<<"ManagementTransaction: Removind hold "<<holdId;
+    QJsonObject hold = getHoldDetails(holdId);
 
-    //check which book contains holdId
-    for(int i = 0; i<books.size(); i++){
-        QJsonObject book = books[i].toObject();
+    if(hold.isEmpty()){
+        qDebug()<<"ManagementTransaction: Failed to retrieve hold details";
+        return false;
+    }
+
+    //removing hold id from book
+    for(int i = 0; i<bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
         QJsonArray inQueue = book["inQueue"].toArray();
 
-        bool userFound = false;
-        bool nextInQueue = false;
-
-        for(int j = 0; j<inQueue.size(); j++){
-            QJsonObject queuedUser = inQueue[i].toObject();
-            if(queuedUser["holdId"].toString() == holdId){
-                if(j == 0){
-                    nextInQueue = true;
-                }
-
+        for(int j = 0; j<inQueue.count(); j++){
+            QJsonObject queueEntry = inQueue[j].toObject();
+            if(queueEntry["holdId"].toString() == holdId){
                 inQueue.removeAt(j);
-                userFound = true;
+                book["inQueue"] = inQueue;
+                bookArray.replace(i, book);
+                qDebug()<<"ManagementTransaction: Hold id removed from book";
                 break;
             }
         }
+    }
 
-        if(userFound){
-            if(nextInQueue && !inQueue.isEmpty()){
-                QJsonObject nextInQueue = inQueue.first().toObject();
-                nextInQueue["holdStatus"] = "ready";
-                inQueue.replace(0, nextInQueue);
+    //removing hold id from user
+    for(int i = 0; i<userArray.size(); i++){
+        QJsonObject user = userArray[i].toObject();
+        QJsonArray userHolds = user["holdRequests"].toArray();
+
+        for(int j = 0; j<userHolds.count(); j++){
+            QJsonObject queueEntry = userHolds[j].toObject();
+            if(queueEntry["holdId"].toString() == holdId){
+                userHolds.removeAt(j);
+                user["holdRequests"] = userHolds;
+                userArray.replace(i, user);
+                qDebug()<<"ManagementTransaction: Hold id removed from user";
+                break;
             }
+        }
+    }
 
-            book["inQueue"] = inQueue;
+     //removing hold id from holds
+    for(int i = 0; i<holdArray.size(); i++){
+        QJsonObject hold = holdArray[i].toObject();
+        if(hold["holdId"].toString() == holdId){
+            holdArray.removeAt(i);
+            qDebug()<<"ManagementTransaction: Hold id removed from holds";
+            break;
+        }
+    }
 
-            if(inQueue.isEmpty()){
-                book["isAvailable"] = true;
-            }
+    //update database for saving
+    QJsonObject& database = getFileData();
 
-            books.replace(i, book);
+    database["books"]=bookArray;
+    database["users"]=userArray;
+    database["holds"]=holdArray;
 
-            QJsonObject& database = getFileData();
+    //save updated data
+    if(saveData()){
+        qDebug()<<"ManagementTransaction: Hold removed successfully";
+        return true;
+    } else {
+        qDebug()<<"ManagementTransaction: Failed to save updated hold data";
+        return false;
+    }
+}
 
-            database["books"] = books;
+bool ManagementTransaction::notifyNextInQueue(const QString &isbn){
 
-            if(saveData()){
-                qDebug()<<"managementTransaction: Hold removed successfully";
-                return true;
+    QString holdId;
+
+    for(int i = 0; i<bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
+
+        if(book["isbn"].toString() == isbn){
+            QJsonArray inQueue = book["inQueue"].toArray();
+            if(!inQueue.isEmpty()){
+                QJsonObject hold = inQueue[0].toObject();
+                holdId = hold["holdId"].toString();
+                qDebug()<<"ManagementTransaction: Next in Queue Hold Id : "<<holdId;
+
             } else {
-                qDebug()<<"managementTransaction: Failed to remove hold";
+                qDebug()<<"ManagementTransaction: Book has no next in queue";
                 return false;
             }
         }
     }
 
-    qDebug()<<"managementTransaction: Hold Id not found";
-    return false;
+    for(int i = 0; i<holdArray.size(); i ++){
+        QJsonObject hold = holdArray[i].toObject();
+        if(hold["holdId"].toString() == holdId && hold["holdStatus"].toString() == "active"){
+            hold["holdStatus"] = "ready";
+            holdArray.replace(0, hold);
+            break;
+        } else {
+            qDebug()<<"ManagementTransaction: Hold Id not found or invalid status";
+            return false;
+        }
+    }
+
+    //update database for saving
+    QJsonObject& database = getFileData();
+
+    database["holds"]=holdArray;
+
+    //save updated data
+    if(saveData()){
+        qDebug()<<"ManagementTransaction: Hold successfully set to ready";
+        return true;
+    } else {
+        qDebug()<<"ManagementTransaction: Failed to save update hold data";
+        return false;
+    }
+
 }
 
 
-QString managementTransaction::generateHoldId() {
-    managementUser userManager;
+QString ManagementTransaction::generateHoldId() {
+    ManagementUser userManager;
 
     QJsonArray userArray = getUserArray();
 
@@ -171,7 +265,7 @@ QString managementTransaction::generateHoldId() {
     return newHoldId;
 }
 
-QString managementTransaction::checkHoldstatus(const QString &holdId){
+QString ManagementTransaction::checkHoldstatus(const QString &holdId){
     QJsonArray bookArray = getBookArray();
 
     for(int i = 0; i<bookArray.size(); i++){
@@ -183,74 +277,63 @@ QString managementTransaction::checkHoldstatus(const QString &holdId){
             QJsonObject entry = inQueue[i].toObject();
 
             if(entry["holdId"].toString() == holdId){
-                qDebug()<<"managementTransaction: Returning hold Status";
+                qDebug()<<"ManagementTransaction: Returning hold Status";
                 return entry["holdStatus"].toString();
             }
         }
     }
     //if not found display error and return empty string
-    qDebug()<<"managementTransaction: Hold ID not found";
+    qDebug()<<"ManagementTransaction: Hold ID not found";
     return QString();
 
 }
 
 
 
-bool managementTransaction::checkoutBook(const QString& isbn, const QString& username) {
+bool ManagementTransaction::checkoutBook(const QString& isbn, const QString& username) {
     // Getting managers
-    managementBook bookManager;
-    managementUser userManager;
 
     // Getting the current user
-    QJsonObject user = userManager.getUserObj(username);
+    QJsonObject user = getUserObj(username);
+
+    qDebug()<<"ManagementTransaction: Checking out "<<isbn<<" to "<<user["username"].toString();
 
     if (user.isEmpty()) {
-        qDebug() << "managementTransaction: Current user is empty";
+        qDebug() << "ManagementTransaction: Current user is empty";
         return false;
     }
 
+    qDebug()<<"ManagementTransaction: Setting book to issued details";
     // Update book to unavailable
-    QJsonArray books = bookManager.getBookArray();
-    bool bookFound = false;
-    for (int i = 0; i < books.size(); ++i) {
-        QJsonObject book = books[i].toObject();
+    for (int i = 0; i < bookArray.size(); ++i) {
+        QJsonObject book = bookArray[i].toObject();
         if (book["isbn"].toString() == isbn) {
-            book["isAvailable"] = false;  // Mark book as unavailable
-            books.replace(i, book);  // Replace the updated book in the array
-            bookFound = true;
+            book["isAvailable"] = false;
+            book["issuedTo"] = username;
+            bookArray.replace(i, book);
             break;
         }
     }
 
-    if (!bookFound) {
-        qDebug() << "managementTransaction: Book not found";
-        return false;
-    }
+    qDebug()<<"ManagementTransaction: Setting user to issued details";
 
     QJsonArray activeLoans = user["activeLoans"].toArray();
-
-    for (const auto& loan : activeLoans) {
-        if (loan.toObject()["isbn"].toString() == isbn) {
-            qDebug() << "managementTransaction: This book is already checked out by the user.";
-            return false;  // Prevent duplicate checkouts for the same book
-        }
-    }
 
     QJsonObject loanEntry;
     loanEntry["isbn"] = isbn;
     loanEntry["checkoutDate"] = QDateTime::currentDateTime().toString();
-    loanEntry["dueDate"] = QDateTime::currentDateTime().addDays(30).toString();
+    loanEntry["dueDate"] = QDateTime::currentDateTime().addDays(30).toString("dd/mm/yyyy");
+    loanEntry["status"] = "active";
 
     activeLoans.append(loanEntry);
 
     user["activeLoans"] = activeLoans;
 
     // Updating the user in the userArray
-    QJsonArray users = getUserArray();
-    for (int i = 0; i < users.size(); ++i) {
-        QJsonObject updatedUser = users[i].toObject();
+    for (int i = 0; i < userArray.size(); ++i) {
+        QJsonObject updatedUser = userArray[i].toObject();
         if (updatedUser["username"].toString() == user["username"].toString()) {
-            users.replace(i, user);
+            userArray.replace(i, user);
             break;
         }
     }
@@ -259,25 +342,22 @@ bool managementTransaction::checkoutBook(const QString& isbn, const QString& use
     QJsonObject& fileData = getFileData();
 
     // Update and save the database
-    fileData["users"] = users;
-    fileData["books"] = books;
-
-    // Updating the current user
-//    userManager.updateCurrentUser();
+    fileData["users"] = userArray;
+    fileData["books"] = bookArray;
 
     if (saveData()) {
-        qDebug() << "managementTransaction: Checkout Successful";
+        qDebug() << "ManagementTransaction: Checkout Successful";
         return true;
     }
 
-    qDebug() << "managementTransaction: Checkout Failed";
+    qDebug() << "ManagementTransaction: Checkout Failed";
     return false;
 }
 
-bool managementTransaction::returnBook(const QString &isbn, const QString& username) {
+bool ManagementTransaction::returnBook(const QString &isbn, const QString& username) {
     // Getting managers
-    managementBook bookManager;
-    managementUser userManager;
+    ManagementBook bookManager;
+    ManagementUser userManager;
 
     QJsonObject userObj = userManager.getUserObj(username);
 
@@ -295,63 +375,57 @@ bool managementTransaction::returnBook(const QString &isbn, const QString& usern
     }
 
     if (!foundBook) {
-        qDebug() << "managementTransaction: Book not in user's active loans";
+        qDebug() << "ManagementTransaction: Book not in user's active loans";
         return false;
     }
 
     // Changing book availability
-    QJsonObject& database = getFileData();
 
-    QJsonArray books = database["books"].toArray();
-    for (int i = 0; i < books.size(); i++) {
-        QJsonObject book = books[i].toObject();
+
+    for (int i = 0; i < bookArray.size(); i++) {
+        QJsonObject book = bookArray[i].toObject();
+
         if (book["isbn"].toString() == isbn) {
             QJsonArray inQueue = book["inQueue"].toArray();
 
-            if (!inQueue.isEmpty()) {
-                // get first person in queue
-                QJsonObject nextInQueue = inQueue.first().toObject();
+            book["issuedTo"] = QString();
 
-                // Update hold status
-                nextInQueue["holdStatus"] = "ready";
-                inQueue.replace(0, nextInQueue);
-
-                book["inQueue"] = inQueue;
-            } else {
+            if (inQueue.isEmpty()) {
                 // if no one in queue setting to available
                 book["isAvailable"] = true;
             }
 
             // Update the book in the array
-            books.replace(i, book);
+            bookArray.replace(i, book);
             break;
         }
     }
 
     // Save updated data to the database
 
-    QJsonArray users = database["users"].toArray();
-    for (int i = 0; i < users.size(); i++) {
-        QJsonObject user = users[i].toObject();
+    for (int i = 0; i < userArray.size(); i++) {
+        QJsonObject user = userArray[i].toObject();
         if (user["username"].toString() == username) {
-            users.replace(i, userObj);
+            userArray.replace(i, userObj);
             break;
         }
     }
 
-    database["users"] = users;
-    database["books"] = books;
+    QJsonObject& database = getFileData();
+
+    database["users"] = userArray;
+    database["books"] = bookArray;
 
     if (saveData()) {
-        qDebug() << "managementTransaction: Book returned";
+        qDebug() << "ManagementTransaction: Book returned";
         return true;
     } else {
-        qDebug() << "managementTransaction: Failed to return book";
+        qDebug() << "ManagementTransaction: Failed to return book";
         return false;
     }
 }
 
-QString managementTransaction::checkedOutTo(const QString &isbn){
+QString ManagementTransaction::checkedOutTo(const QString &isbn){
 
     QJsonObject& database = getFileData();
     QJsonArray users = database["users"].toArray();

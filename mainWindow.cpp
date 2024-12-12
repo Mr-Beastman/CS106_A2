@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
 
+    this->setWindowTitle("Library Information System");
+
     // Set the stacked widget as the central widget of the main window
     setCentralWidget(stackedWidget);
 
@@ -42,7 +44,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(memberPage, &ViewMemberDashboard::requestBookInfo, this, &MainWindow::showBookInfo);
     connect(memberPage, &ViewMemberDashboard::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
     connect(bookInfoPage, &ViewBookInfo::goBack, this, &MainWindow::goBack);
-    connect(memberInfoPage, &ViewMemberInfo::goBack, this, &MainWindow::goBack);
+    connect(memberInfoPage, &ViewMemberInfo::goBackAdmin, this, &MainWindow::goBackAdmin);
     connect(memberInfoPage, &ViewMemberInfo::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
 
     stackedWidget->setCurrentIndex(0);
@@ -73,7 +75,7 @@ void MainWindow::showLogin(){
 }
 
 void MainWindow::userLogin(const QString& username, QString password){
-    managementUser userManager;
+    ManagementUser userManager;
 
     if(userManager.verifyLogin(username,password)){
         //set current user
@@ -88,33 +90,34 @@ void MainWindow::userLogin(const QString& username, QString password){
 
             //populate admin dashboards
             adminPage->displayUsers();
-            adminPage->loadAdminCatalogue();
+            adminPage->displayAdminCatalogue();
 
             //directing to admin page
             stackedWidget->setCurrentIndex(2);
         } else if(userManager.isActive(username)) {
             qDebug()<<"MainWindow: Member Login Succesful. Loading Member View";
 
+            //setting variables used in memberpage
             memberPage->setAccountNumber(userManager.getAccount(username));
             memberPage->setUsername(username);
-            //populate member views
-            qDebug()<<"MainWindow: Populating members detials";
-            memberPage->displayCurrentMember();
-            qDebug()<<"MainWindow: Populating members checked out items";
-            memberPage->displayCheckedOut();
-            qDebug()<<"MainWindow: Populating members hold requests";
-            memberPage->displayHoldRequests();
-            qDebug()<<"MainWindow: Displaying Catalogue";
-            memberPage->loadCatalogue();
 
+            //populate member views
+            qDebug()<<"MainWindow: Populating Member Dashboard";
+            memberPage->displayCurrentMember();
+            memberPage->displayCheckedOut();
+            memberPage->displayHoldRequests();
+            memberPage->displayCatalogue();
             qDebug()<<"MainWindow: Member setup and redirecting";
+
             //directing to user page
             stackedWidget->setCurrentIndex(3);
         } else {
+            //signal to emit error to user that account not active
                 qDebug()<<"MainWindow: Member is not active";
                 emit notActiveAccount();
         }
     } else {
+        //signal to emit error to user that details are invalid
         qDebug()<<"MainWindow: loginFail signal sent";
         emit loginFail();
     }
@@ -136,6 +139,7 @@ void MainWindow::showBookInfo(QJsonObject &bookDetails) {
 void MainWindow::showMemberInfo(QJsonObject &userToView){
     memberInfoPage->setMemberDetails(userToView);
     memberInfoPage->generateCheckedout(userToView["account"].toString());
+    memberInfoPage->displayHoldRequests(userToView["account"].toString());
     stackedWidget->setCurrentIndex(5);
 }
 
@@ -145,26 +149,22 @@ void MainWindow::updateAdminDisplays(){
 }
 
 void MainWindow::updateMemberDisplays(){
-    memberPage->loadCatalogue();
     memberPage->displayCheckedOut();
     memberPage->displayHoldRequests();
+    memberPage->displayCatalogue();
 }
 
 void MainWindow::goBack(){
-    managementUser userManager;
-
-    QJsonObject currentUser = userManager.getUserObj(userManager.getCurrentUser());
-
-    if(userManager.isAdmin(currentUser["username"].toString())){
-        stackedWidget->setCurrentIndex(2);
-    } else {
         stackedWidget->setCurrentIndex(3);
-    }
+}
+
+void MainWindow::goBackAdmin(){
+    stackedWidget->setCurrentIndex(2);
 }
 
 void MainWindow::logOut() {
     //clearing current user and switch back to login page
-    managementUser userManager;
+    ManagementUser userManager;
     ManagementData dataManager;
     userManager.clearCurrentUser();
     stackedWidget->setCurrentIndex(0);

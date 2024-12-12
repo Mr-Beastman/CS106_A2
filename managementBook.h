@@ -1,7 +1,7 @@
-#ifndef MANAGEMENTBOOK_H
-#define MANAGEMENTBOOK_H
+#ifndef ManagementBook_H
+#define ManagementBook_H
 
-#include "managementData.h"
+#include "ManagementData.h"
 #include "viewBookItem.h"
 
 #include <QJsonArray>
@@ -17,22 +17,21 @@
 #include <QDir>
 
 
-class managementBook : virtual public ManagementData {
+class ManagementBook : virtual public ManagementData {
 
 protected:
+    QJsonArray bookArray;
 
 
 public:
 
-    managementBook();
+    ManagementBook();
     //setters
     void setBookArray();
 
     //getters
     QJsonArray getBookArray();
     QJsonObject getBookDetails(const QString& isbn);
-    //get the bookmanager instance
-    static managementBook* getBookManager();
 
     //methods
     //vertical format for ease of reading
@@ -46,6 +45,7 @@ public:
         const QString& sectInput);
     bool updateBook(const QString& isbn, const QJsonObject& updatedBook);
     bool isAvailable(const QString& isbn);
+    bool isIssued(const QString& isbn);
     QString findCoverPath();
     QString findCoverImage(QString& isbn);
     void clearBookArray();
@@ -57,4 +57,4 @@ signals:
 
 
 
-#endif // MANAGEMENTBOOK_H
+#endif // ManagementBook_H

@@ -64,7 +64,7 @@ void ViewAddBook::dropEvent(QDropEvent *event){
 
 void ViewAddBook::saveButtonClicked() {
 
-    managementBook bookManager;
+    ManagementBook bookManager;
 
     QString title = ui->titleLineEdit->text();
     QString author = ui->authorLineEdit->text();

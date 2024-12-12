@@ -1,9 +1,9 @@
-#ifndef MANAGEMENTUSER_H
-#define MANAGEMENTUSER_H
+#ifndef ManagementUser_H
+#define ManagementUser_H
 
 #include "managementData.h"
 
-class managementUser : virtual public ManagementData {
+class ManagementUser : virtual public ManagementData {
 
 private:
 
@@ -12,7 +12,7 @@ protected:
     QJsonArray userArray;
 
 public:
-    managementUser();
+    ManagementUser();
     //setters
     void setCurrentUser(const QString username);
     void setUserArray();
@@ -24,8 +24,6 @@ public:
     QJsonObject getUserObj(const QString &username);
     QJsonObject getUserObjAccount(const QString &account);
     QString getAccount(const QString& username);
-    //get the usermanager instance
-    static managementUser* getUserManager();
 
     //methods
     void updateCurrentUser();
@@ -42,4 +40,4 @@ public:
     void clearUserArray();
 };
 
-#endif // MANAGEMENTUSER_H
+#endif // ManagementUser_H

@@ -47,7 +47,7 @@ public:
     void stackedWidgetDisplay(QStackedWidget* toSet, QWidget* page);
 
     //catalogueTab related
-    void loadCatalogue();
+    void displayCatalogue();
     void clearDisplay();
 
 public slots:

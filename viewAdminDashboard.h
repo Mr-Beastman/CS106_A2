@@ -29,7 +29,7 @@ private slots:
 public:
     explicit ViewAdminDashboard(QWidget* parent = nullptr);
 
-    void loadAdminCatalogue();
+    void displayAdminCatalogue();
     void displayUsers();
     void updateDisplays();
     void onMemberClicked(QListWidgetItem *user);

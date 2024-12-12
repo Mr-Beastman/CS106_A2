@@ -1,5 +1,5 @@
-#ifndef MANAGEMENTDATA_H
-#define MANAGEMENTDATA_H
+#ifndef ManagementData_H
+#define ManagementData_H
 
 #include <QJsonObject>
 #include <QJsonArray>
@@ -33,4 +33,4 @@ public:
     void clearData();
 };
 
-#endif // MANAGEMENTDATA_H
+#endif // ManagementData_H

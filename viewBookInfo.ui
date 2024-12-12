@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1267</width>
-    <height>478</height>
+    <width>1217</width>
+    <height>726</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,19 @@
    <string notr="true">
 
 QPushButton{
-	border: 1px solid;
+	padding: 8px 20px;
+	border-radius: 5px;
+	outline: none;
 	color: rgb(0, 0, 0);
 	font: 700 9pt &quot;Segoe UI&quot;;
 	background-color: rgb(192, 220, 161);
+	
 }
+
+QPushButton:hover {
+	background-color: rgb(161, 184, 135);
+}
+
 
 QLabel{
 	color: rgb(0, 0, 0);
@@ -108,8 +116,8 @@ QLabel{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1251</width>
-        <height>419</height>
+        <width>1215</width>
+        <height>586</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -183,6 +191,11 @@ QLabel{
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
               <widget class="QLabel" name="titleLabel">
+               <property name="styleSheet">
+                <string notr="true">#titleLabel{
+	font: 700 26pt &quot;Segoe UI&quot;;
+}</string>
+               </property>
                <property name="text">
                 <string>title</string>
                </property>
@@ -197,11 +210,11 @@ QLabel{
 	border: 0px solid;
 }</string>
                  </property>
-                 <layout class="QGridLayout" name="bookDetailsLayout">
-                  <item row="1" column="1">
-                   <widget class="QLabel" name="isbnOutputLabel">
+                 <layout class="QGridLayout" name="bookDetailsLayout" columnstretch="0,1">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="authorLabel">
                     <property name="text">
-                     <string>placeHolder</string>
+                     <string>Author:</string>
                     </property>
                    </widget>
                   </item>
@@ -212,17 +225,17 @@ QLabel{
                     </property>
                    </widget>
                   </item>
-                  <item row="0" column="1">
-                   <widget class="QLabel" name="authorOutputLabel">
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="isbnOutputLabel">
                     <property name="text">
                      <string>placeHolder</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="authorLabel">
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="authorOutputLabel">
                     <property name="text">
-                     <string>Author:</string>
+                     <string>placeHolder</string>
                     </property>
                    </widget>
                   </item>

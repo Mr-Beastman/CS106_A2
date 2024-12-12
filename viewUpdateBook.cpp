@@ -26,7 +26,7 @@ ViewUpdateBook::~ViewUpdateBook() {
 void ViewUpdateBook::populateDetails(const QString &isbn){
 
     qDebug()<<"Pop:"<<isbn;
-    managementBook bookManager;
+    ManagementBook bookManager;
     QJsonObject bookDetails = bookManager.getBookDetails(isbn);
 
     if(bookDetails.isEmpty()){
@@ -56,7 +56,7 @@ void ViewUpdateBook::updateButtonClicked(){
     updatedBook["sect"] = ui->sectionLineEdit->text();
     updatedBook["desc"] = ui->descriptionTextEdit->toPlainText();
 
-    managementBook bookManager;
+    ManagementBook bookManager;
 
     qDebug()<<"viewUpdateBook: Starting update process";
     if(bookManager.updateBook(ui->isbnLineEdit->text(), updatedBook)){

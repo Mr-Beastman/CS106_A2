@@ -6,8 +6,9 @@
             "genre": "LitRpg",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "B0CVD8D7H6",
+            "issuedTo": "",
             "sect": "",
             "title": "Heretical Fishing : Book 1"
         },
@@ -17,8 +18,9 @@
             "genre": "Romantasy",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "B0BGDM197Q",
+            "issuedTo": "ratmaster",
             "sect": "",
             "title": "Fourth Wing (The Empyrean Book 1)"
         },
@@ -28,8 +30,9 @@
             "genre": "Fantasy",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "9780765326355",
+            "issuedTo": "ratmaster",
             "sect": "",
             "title": "The Way of Kings: Book One Stormlight Archive"
         },
@@ -39,8 +42,9 @@
             "genre": "Fantasy",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "054792822X",
+            "issuedTo": "ratmaster",
             "sect": "",
             "title": "The Hobbit"
         },
@@ -50,11 +54,14 @@
             "genre": "Romantasy",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "1526605392",
+            "issuedTo": "windrunner",
             "sect": "",
             "title": "A Court of Thorns and Roses"
         }
+    ],
+    "holds": [
     ],
     "users": [
         {
@@ -71,6 +78,12 @@
         {
             "account": "21620",
             "activeLoans": [
+                {
+                    "checkoutDate": "Thu Dec 12 17:42:07 2024",
+                    "dueDate": "11/42/2025",
+                    "isbn": "1526605392",
+                    "status": "active"
+                }
             ],
             "address": "Urithiru",
             "email": "Storms@Archives.com",
@@ -82,6 +95,54 @@
             "password": "SylBlade",
             "phone": "0202020",
             "username": "windrunner"
+        },
+        {
+            "account": "30351",
+            "activeLoans": [
+            ],
+            "address": "Jack Skellington",
+            "email": "SandyClaws@halloween.com",
+            "holdRequests": [
+            ],
+            "isActive": true,
+            "isAdmin": false,
+            "name": "Jack Skellington",
+            "password": "boo",
+            "phone": "0202020202200",
+            "username": "pumpkinking"
+        },
+        {
+            "account": "19132",
+            "activeLoans": [
+                {
+                    "checkoutDate": "Thu Dec 12 12:27:08 2024",
+                    "dueDate": "11/27/2025",
+                    "isbn": "B0BGDM197Q",
+                    "status": "active"
+                },
+                {
+                    "checkoutDate": "Thu Dec 12 12:27:09 2024",
+                    "dueDate": "11/27/2025",
+                    "isbn": "9780765326355",
+                    "status": "active"
+                },
+                {
+                    "checkoutDate": "Thu Dec 12 12:27:12 2024",
+                    "dueDate": "11/27/2025",
+                    "isbn": "054792822X",
+                    "status": "active"
+                }
+            ],
+            "address": "The Sewers",
+            "email": "TurtleDad1969@gmail.com",
+            "holdRequests": [
+            ],
+            "isActive": true,
+            "isAdmin": false,
+            "name": "Splinter",
+            "password": "pizza",
+            "phone": "4555050550",
+            "username": "ratmaster"
         }
     ]
 }

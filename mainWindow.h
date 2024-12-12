@@ -5,11 +5,6 @@
 #include <QStackedWidget>
 #include <QProcess>
 
-#include "managementData.h"
-#include "managementUser.h"
-#include "managementBook.h"
-#include "managementTransaction.h"
-
 #include "viewLogin.h"
 #include "viewRegistration.h"
 #include "viewAdminDashboard.h"
@@ -47,6 +42,7 @@ private slots:
     void updateAdminDisplays();
     void updateMemberDisplays();
     void goBack();
+    void goBackAdmin();
     void logOut();
 
 public:
