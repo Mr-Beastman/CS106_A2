@@ -126,11 +126,16 @@ bool ManagementTransaction::removeHold(const QString& holdId){
         QJsonObject book = bookArray[i].toObject();
         QJsonArray inQueue = book["inQueue"].toArray();
 
-        for(int j = 0; j<inQueue.count(); j++){
+        for(int j = 0; j<inQueue.size(); j++){
             QJsonObject queueEntry = inQueue[j].toObject();
             if(queueEntry["holdId"].toString() == holdId){
                 inQueue.removeAt(j);
                 book["inQueue"] = inQueue;
+                //resetting book to availble if no further holds.
+                if(inQueue.isEmpty() && book["issuedTo"].toString().isEmpty()){
+                    book["isAvailable"] = true;
+                }
+
                 bookArray.replace(i, book);
                 qDebug()<<"ManagementTransaction: Hold id removed from book";
                 break;
@@ -164,6 +169,7 @@ bool ManagementTransaction::removeHold(const QString& holdId){
             break;
         }
     }
+
 
     //update database for saving
     QJsonObject& database = getFileData();
@@ -448,6 +454,49 @@ QString ManagementTransaction::checkedOutTo(const QString &isbn){
     return "Not Currently Checked Out";
 }
 
+bool ManagementTransaction::bookIsDue(const QString& username, const QString& isbn){
+    QJsonObject user = getUserObj(username);
+    QJsonArray activeLoans = user["activeLoans"].toArray();
+
+    for(int i = 0; i<activeLoans.size(); i++){
+        QJsonObject loan = activeLoans[i].toObject();
+
+        if(loan["isbn"].toString() == isbn){
+            QDate dueDate = QDate::fromString(loan["dueDate"].toString(), "dd/MM/yyyy");
+            QDate sevenDaysBefore = dueDate.addDays(-7);
+
+            if(QDate::currentDate() >= sevenDaysBefore && QDate::currentDate() <= dueDate){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    qDebug()<<"Management Transaction: Due date could not be confirmed";
+    return false;
+}
+
+bool ManagementTransaction::bookIsOverDue(const QString &username, const QString &isbn){
+    QJsonObject user = getUserObj(username);
+    QJsonArray activeLoans = user["activeLoans"].toArray();
+
+    for(int i = 0; i<activeLoans.size(); i++){
+        QJsonObject loan = activeLoans[i].toObject();
+
+        if(loan["isbn"].toString() == isbn){
+            QDate dueDate = QDate::fromString(loan["dueDate"].toString(), "dd/MM/yyyy");
+
+            if(QDate::currentDate() > dueDate){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    qDebug()<<"Management Transaction: Due date could not be confirmed";
+    return false;
+}
+
 void ManagementTransaction::setBookAvailibityOptions(ViewBookItem *viewBookItem, const QJsonObject &book, const QString& username){
     QStackedWidget* availabilityWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
     QStackedWidget* optionsWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
@@ -461,9 +510,15 @@ void ManagementTransaction::setBookAvailibityOptions(ViewBookItem *viewBookItem,
         optionsPage = viewBookItem->findChild<QWidget*>("userAvailablePage");
     } else if (book["issuedTo"].toString() == username) {
         //book is checked out by the current user
-        availabilityPage = viewBookItem->findChild<QWidget*>("checkedoutPage");
+        if(bookIsDue(username, book["isbn"].toString())){
+            availabilityPage = viewBookItem->findChild<QWidget*>("dueBackPage");
+        } else if(bookIsOverDue(username, book["isbn"].toString())) {
+            availabilityPage = viewBookItem->findChild<QWidget*>("overduePage");
+        } else {
+            availabilityPage = viewBookItem->findChild<QWidget*>("checkedoutPage");
+        }
         optionsPage = viewBookItem->findChild<QWidget*>("userCheckedoutPage");
-        //setting due back date
+        //setting due date
         QLabel* dueLabel = viewBookItem->findChild<QLabel*>("dueOutputLabel");
         dueLabel->setText(getDueDate(username, book["isbn"].toString()));
     } else {
@@ -479,12 +534,22 @@ void ManagementTransaction::setBookAvailibityOptions(ViewBookItem *viewBookItem,
                 userHold = true;
                 holdId = hold["holdId"].toString();
                 status = hold["holdStatus"].toString();
-                place = j+1;
                 break;
             }
         }
 
         if (userHold) {
+            //getting place number
+            QJsonArray holds = book["inQueue"].toArray();
+            for(int k = 0; k<holds.size(); k++){
+                QJsonObject hold = holds[k].toObject();
+
+                if(hold["holdId"].toString()== holdId){
+                    place = k+1;
+                    break;
+                }
+            }
+
             //storing hold ID
             QLabel* holdIdLabel = viewBookItem->findChild<QLabel*>("holdStoredIdLabel");
             holdIdLabel->setText(holdId);

@@ -3,6 +3,12 @@
 
 #include "managementBook.h"
 
+#include <QDragEnterEvent>
+#include <QMimeData>
+#include <QFileDialog>
+#include <QImageReader>
+#include <QFile>
+
 // --------------- constructor ---------------
 ViewUpdateBook::ViewUpdateBook(QWidget *parent) : QDialog(parent), ui(new Ui::ViewUpdateBook) {
     ui->setupUi(this); // Initialize UI from the generated class
@@ -13,6 +19,10 @@ ViewUpdateBook::ViewUpdateBook(QWidget *parent) : QDialog(parent), ui(new Ui::Vi
 
     //connect button
     connect(ui->updateButton, &QPushButton::clicked, this, &ViewUpdateBook::updateButtonClicked);
+
+    //allowing for drag and drop features
+    setAcceptDrops(true);
+    ui->coverPreviewLabel->setAcceptDrops(true);
 }
 
 // --------------- destructor ---------------
@@ -42,6 +52,40 @@ void ViewUpdateBook::populateDetails(const QString &isbn){
     ui->descriptionTextEdit->setText(bookDetails["desc"].toString());
 }
 
+//logic for users to drag file onto window
+void ViewUpdateBook::dragEnterEvent(QDragEnterEvent *event){
+    if(event->mimeData()->hasUrls()){
+        auto urls = event->mimeData()->urls();
+        //checking file is image
+        for(const QUrl &url : urls) {
+            QString fileLocation = url.toLocalFile();
+            QImageReader reader(fileLocation);
+            if(!reader.format().isEmpty()){
+                event->acceptProposedAction();
+                return;
+            }
+        }
+    }
+    event->ignore();
+}
+
+//logic for users to drop file onto window
+void ViewUpdateBook::dropEvent(QDropEvent *event){
+    auto urls = event->mimeData()->urls();
+    if(!urls.empty()){
+        QString fileLocation = urls.first().toLocalFile();
+        QImageReader reader(fileLocation);
+        if(!reader.format().isEmpty()){
+            //diplay a preview
+            QPixmap pixmap(fileLocation);
+            ui->coverPreviewLabel->setPixmap(pixmap.scaled(ui->coverPreviewLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }
+
+        //storing file path
+        this->imageLocation=fileLocation;
+    }
+}
+
 // --------------- private slots ---------------
 
 void ViewUpdateBook::updateButtonClicked(){
@@ -58,7 +102,26 @@ void ViewUpdateBook::updateButtonClicked(){
 
     ManagementBook bookManager;
 
+    //save image if one provided
+    if(!imageLocation.isEmpty()){
+        QString saveLocation = bookManager.findCoverPath()+ui->isbnLineEdit->text()+".png";
+
+        //checking if file already exists
+        if(QFile::exists(saveLocation)){
+            //delete exsiting if it does
+            QFile::remove(saveLocation);
+        }
+
+        //save updated version
+        if(QFile::copy(imageLocation,saveLocation)){
+            qDebug()<<"viewAddBook: Image saved Successfully";
+        } else {
+            qDebug()<<"viewAddBook: Failed to save image";
+        }
+    }
+
     qDebug()<<"viewUpdateBook: Starting update process";
+
     if(bookManager.updateBook(ui->isbnLineEdit->text(), updatedBook)){
         qDebug()<<"viewUpdateBook: Requesting display refreash";
         emit requestRefreash();

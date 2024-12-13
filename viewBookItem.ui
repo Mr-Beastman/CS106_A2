@@ -31,7 +31,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,0,0">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1,0">
    <property name="leftMargin">
     <number>10</number>
    </property>
@@ -196,7 +196,7 @@
       <item>
        <widget class="QStackedWidget" name="availabilityWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="availablePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -210,6 +210,40 @@
             </property>
             <property name="text">
              <string>Available</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="overduePage">
+         <layout class="QVBoxLayout" name="verticalLayout_15">
+          <item>
+           <widget class="QLabel" name="overdueLabel">
+            <property name="styleSheet">
+             <string notr="true">#overdueLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(255, 0, 0);
+}</string>
+            </property>
+            <property name="text">
+             <string>OVERDUE</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="dueBackPage">
+         <layout class="QVBoxLayout" name="verticalLayout_16">
+          <item>
+           <widget class="QLabel" name="dueBackLabel">
+            <property name="styleSheet">
+             <string notr="true">#dueBackLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(226, 106, 1);
+}</string>
+            </property>
+            <property name="text">
+             <string>Book is due back soon</string>
             </property>
            </widget>
           </item>
@@ -254,7 +288,7 @@
           <item>
            <widget class="QLabel" name="holdReadyDisplayLabel">
             <property name="styleSheet">
-             <string notr="true">#holdReadyLabel{
+             <string notr="true">#holdReadyDisplayLabel{
 	font: 700 12pt &quot;Segoe UI&quot;;
 	color: rgb(0, 170, 0);
 }</string>
@@ -290,8 +324,14 @@
    </item>
    <item>
     <widget class="QStackedWidget" name="optionsStackedWidget">
+     <property name="styleSheet">
+      <string notr="true">
+    font: 700 14pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+</string>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="userNotAvailablePage">
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -299,6 +339,12 @@
         <layout class="QHBoxLayout" name="holdDisplayLayout">
          <item>
           <widget class="QLabel" name="holdNumberLabel">
+           <property name="styleSheet">
+            <string notr="true">#holdNumberLabel{
+    font: 700 14pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
            <property name="text">
             <string>Currently Waiting in Queue:</string>
            </property>
@@ -306,6 +352,12 @@
          </item>
          <item>
           <widget class="QLabel" name="holdTextLabel">
+           <property name="styleSheet">
+            <string notr="true">#holdTextLabel{
+    font: 700 14pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
            <property name="text">
             <string>in Queue</string>
            </property>
@@ -527,6 +579,12 @@
         <layout class="QHBoxLayout" name="holdActiveLabelLayout">
          <item>
           <widget class="QLabel" name="queuePlaceLabel">
+           <property name="styleSheet">
+            <string notr="true">#queuePlaceLabel{
+    font: 700 14pt &quot;Segoe UI&quot;;
+    color: rgb(0, 0, 0);
+}</string>
+           </property>
            <property name="text">
             <string>Place in Queue:</string>
            </property>

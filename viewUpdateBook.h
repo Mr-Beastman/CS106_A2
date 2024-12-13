@@ -16,8 +16,8 @@ private:
 
 
     //overrides
-    // void dragEnterEvent(QDragEnterEvent *event);
-    // void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 
 private slots:
     void updateButtonClicked();

@@ -20,7 +20,7 @@
             ],
             "isAvailable": true,
             "isbn": "B0BGDM197Q",
-            "issuedTo": "ratmaster",
+            "issuedTo": "",
             "sect": "",
             "title": "Fourth Wing (The Empyrean Book 1)"
         },
@@ -32,7 +32,7 @@
             ],
             "isAvailable": true,
             "isbn": "9780765326355",
-            "issuedTo": "windrunner",
+            "issuedTo": "",
             "sect": "",
             "title": "The Way of Kings: Book One Stormlight Archive"
         },
@@ -59,6 +59,17 @@
             "issuedTo": "",
             "sect": "",
             "title": "A Court of Thorns and Roses"
+        },
+        {
+            "author": "Haylock Jobson",
+            "desc": "Power is returning to the world after millennia, ancient constructs are stirring back to life, and one man is doing his best to ignore all that noise.\nFischer has everything he needs in life: blossoming friendships, a menagerie of cute animal companions, a waterfront property with easy access to fishing, and enough coffee to take out a small elephant or a really big dog.\nUnfortunately, Fischer can’t catch a break. Cosmic forces? Still throwing curveballs. The bigwigs in the capital? Starting to sniff around his business. Cults? Still culting. Plus, awakened beings are washing up on his shores like flotsam after a storm. And worst of all? His coffee guy ghosted him!\nIt’s a lot for one heretical fisherman to handle. Thankfully, Fischer isn’t alone. Between his trusty guard crab, a mischievous otter who can wreathe herself in lightning, and an adorable bunny eager to solve every problem with a roundhouse kick, he’ll be just fine . . . probably.",
+            "genre": "Fantasy",
+            "inQueue": [
+            ],
+            "isAvailable": true,
+            "isbn": "B0CZ9V5J7W",
+            "sect": "a",
+            "title": "Heretical Fishing : Book 2"
         }
     ],
     "holds": [

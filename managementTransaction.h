@@ -29,6 +29,8 @@ public:
     bool checkoutBook(const QString& isbn, const QString& username);
     bool returnBook(const QString& isbn, const QString &username);
     QString checkedOutTo(const QString& isbn);
+    bool bookIsDue(const QString &username, const QString &isbn);
+    bool bookIsOverDue(const QString &username, const QString &isbn);
     QJsonArray getActiveLoans(const QString& username);
     void setBookAvailibityOptions(ViewBookItem* viewBookItem, const QJsonObject& book, const QString& username);
 };
