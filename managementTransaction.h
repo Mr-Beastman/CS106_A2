@@ -34,7 +34,7 @@ public:
     bool bookIsDue(const QString &username, const QString &isbn);
     bool bookIsOverDue(const QString &username, const QString &isbn);
     QJsonArray getActiveLoans(const QString& username);
-    void setBookAvailibityOptions(ViewBookItem* viewBookItem, const QJsonObject& book, const QString& username);
+    void setBookAvailibityOptions(QWidget* uiObject, const QJsonObject& book, const QString& username);
 };
 
 #endif // ManagementTransaction_H
