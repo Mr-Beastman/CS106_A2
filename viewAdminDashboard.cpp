@@ -17,6 +17,11 @@ ViewAdminDashboard::ViewAdminDashboard(QWidget *parent) : QWidget(parent), ui(ne
 
     //connect list items clicked
     connect(ui->membersList, &QListWidget::itemClicked, this, &ViewAdminDashboard::onMemberClicked);
+    connect(ui->catalogueList, &QListWidget::itemClicked, this, &ViewAdminDashboard::onBookClicked);
+}
+
+void ViewAdminDashboard::setAdminUser(const QString& username){
+    adminUser = username;
 }
 
 void ViewAdminDashboard::displayUsers() {
@@ -130,55 +135,7 @@ void ViewAdminDashboard::displayAdminCatalogue(){
         }
 
 
-        QStackedWidget* stackedWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
-        int index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("adminPage"));
-        stackedWidget->setCurrentIndex(index);
-
-        //getting current book activity.
-        QLabel* activeLoan  =  viewBookItem->findChild<QLabel*>("checkedOutputLabel");
-        activeLoan->setText(transactionManager.checkedOutTo(book["isbn"].toString()));
-
-        QJsonArray queue = book["inQueue"].toArray();
-
-        QLabel* holdArray =  viewBookItem->findChild<QLabel*>("QueueOutputLabel");
-        if(queue.isEmpty()){
-            holdArray->setText(QString::number(book["inQueue"].toArray().size()));
-        } else {
-            holdArray->setText(QString::number(0));
-        }
-
-
-        //enabling/disabling return button depending on status
-        QPushButton* returnButton = viewBookItem->findChild<QPushButton*>("returnButton");
-        stackedWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
-
-        if(book["isAvailable"].toBool()){
-            returnButton->hide();
-            index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("availablePage"));
-            stackedWidget->setCurrentIndex(index);
-        } else {
-            if(!queue.isEmpty()){
-                QJsonObject firstInQueue = queue[0].toObject();
-                QString holdStatus = firstInQueue["holdStatus"].toString();
-
-                if(holdStatus == "ready"){
-                    returnButton->hide();
-                    index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("holdReadyPage"));
-                    stackedWidget->setCurrentIndex(index);
-                } else if (holdStatus == "active"){
-                    returnButton->show();
-                    index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("notAvailablePage"));
-                    stackedWidget->setCurrentIndex(index);
-                }
-            } else {
-                returnButton->show();
-                index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("notAvailablePage"));
-                stackedWidget->setCurrentIndex(index);
-            }
-        }
-
-        QLabel* queueLabel = viewBookItem->findChild<QLabel*>("QueueOutputLabel");
-        queueLabel->setText(QString::number(queue.size()));
+        transactionManager.setBookAvailibityOptions(viewBookItem, book, adminUser);
 
         item->setSizeHint(viewBookItem->sizeHint());
 
@@ -212,8 +169,7 @@ void ViewAdminDashboard::onBookClicked(QListWidgetItem *book) {
     QJsonObject bookDetails = bookManger.getBookDetails(isbn);
 
     qDebug()<<"viewMemberDashboard: Generating Book Info View";
-    QString username = "test";
-    emit requestBookInfo(bookDetails,username);
+    emit requestBookInfo(bookDetails,adminUser);
 }
 
 //view methods

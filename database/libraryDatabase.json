@@ -6,9 +6,9 @@
             "genre": "LitRpg",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "B0CVD8D7H6",
-            "issuedTo": "",
+            "issuedTo": "windrunner",
             "sect": "",
             "title": "Heretical Fishing : Book 1"
         },
@@ -89,6 +89,12 @@
         {
             "account": "21620",
             "activeLoans": [
+                {
+                    "checkoutDate": "Sat Dec 14 10:47:19 2024",
+                    "dueDate": "13/01/2025",
+                    "isbn": "B0CVD8D7H6",
+                    "status": "active"
+                }
             ],
             "address": "Urithiru",
             "email": "Storms@Archives.com",

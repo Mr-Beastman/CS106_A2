@@ -116,8 +116,8 @@ QLabel{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1215</width>
-        <height>594</height>
+        <width>1201</width>
+        <height>601</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -628,6 +628,22 @@ QLabel{
              </item>
             </layout>
            </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="adminInfoDisplay" native="true">
+         <layout class="QVBoxLayout" name="adminInfoLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="listWidget"/>
           </item>
          </layout>
         </widget>

@@ -81,6 +81,7 @@ void MainWindow::userLogin(const QString& username, QString password){
     if(userManager.verifyLogin(username,password)){
         //set current user
         userManager.setCurrentUser(username);
+        loggedIn = username;
 
         //clearing error messgaes
         loginPage->clearError();
@@ -90,6 +91,7 @@ void MainWindow::userLogin(const QString& username, QString password){
             qDebug()<<"MainWindow: Admin Login Succesful. Loading Admin View";
 
             //populate admin dashboards
+            adminPage->setAdminUser(username);
             adminPage->displayUsers();
             adminPage->displayAdminCatalogue();
 
@@ -135,6 +137,15 @@ void MainWindow::showRegister(){
 void MainWindow::showBookInfo(QJsonObject &bookDetails, const QString& username) {
     bookInfoPage->setBookDetails(bookDetails);
     bookInfoPage->setBookAvailibity(bookDetails,username);
+
+    ManagementUser userManager;
+    if(userManager.isAdmin(loggedIn)){
+        bookInfoPage->showAdminInfo();
+        qDebug()<<"MainWindow: Displaying admin info for book view";
+    } else {
+        bookInfoPage->hideAdminInfo();
+        qDebug()<<"MainWindow: Hiding admin info for book view";
+    }
     stackedWidget->setCurrentIndex(4);
 }
 
@@ -158,7 +169,12 @@ void MainWindow::updateMemberDisplays(){
 
 void MainWindow::goBack(){
     qDebug()<<"MainWindow: Going back to memberview";
+    ManagementUser userManager;
+    if(userManager.isAdmin(loggedIn)){
+        stackedWidget->setCurrentIndex(2);
+    } else {
     stackedWidget->setCurrentIndex(3);
+    }
 }
 
 void MainWindow::goBackAdmin(){

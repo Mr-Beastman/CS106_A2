@@ -25,6 +25,7 @@ public:
     QJsonObject getUserObjAccount(const QString &account);
     QString getAccount(const QString& username);
 
+
     //methods
     void updateCurrentUser();
     bool usernameExists(QJsonObject& user);

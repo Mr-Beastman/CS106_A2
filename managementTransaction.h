@@ -4,6 +4,8 @@
 #include "managementUser.h"
 #include "managementBook.h"
 
+#include "qpushbutton.h";
+
 class ManagementTransaction : public ManagementUser, public ManagementBook {
 
 private:

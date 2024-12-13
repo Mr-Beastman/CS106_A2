@@ -27,6 +27,8 @@ public:
     void setBookDetails(const QJsonObject& bookDetails);
     void setBookAvailibity(const QJsonObject& book, const QString& username);
     void logoutButtonClicked();
+    void hideAdminInfo();
+    void showAdminInfo();
 
 signals:
     void goBack();

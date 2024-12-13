@@ -33,6 +33,9 @@ private:
     ViewBookInfo* bookInfoPage;
     ViewMemberInfo* memberInfoPage;
 
+    //logged in store
+    QString loggedIn;
+
 private slots:
     void showLogin();
     void userLogin(const QString& username, QString password);
