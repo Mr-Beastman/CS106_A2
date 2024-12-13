@@ -471,6 +471,7 @@ void ManagementTransaction::setBookAvailibityOptions(ViewBookItem *viewBookItem,
         bool userHold = false;
         QString status;
         QString holdId;
+        int place;
 
         for (int j = 0; j < holdArray.size(); ++j) {
             QJsonObject hold = holdArray[j].toObject();
@@ -478,6 +479,7 @@ void ManagementTransaction::setBookAvailibityOptions(ViewBookItem *viewBookItem,
                 userHold = true;
                 holdId = hold["holdId"].toString();
                 status = hold["holdStatus"].toString();
+                place = j+1;
                 break;
             }
         }
@@ -493,6 +495,8 @@ void ManagementTransaction::setBookAvailibityOptions(ViewBookItem *viewBookItem,
             } else {
                 availabilityPage = viewBookItem->findChild<QWidget*>("holdPendingPage");
                 optionsPage = viewBookItem->findChild<QWidget*>("holdActivePage");
+                QLabel* dueLabel = viewBookItem->findChild<QLabel*>("queuePlaceOutPutLabel");
+                dueLabel->setNum(place);
             }
         } else {
             //allow user to request hold

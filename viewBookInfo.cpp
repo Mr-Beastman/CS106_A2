@@ -11,6 +11,7 @@ ViewBookInfo::ViewBookInfo(QWidget* parent) : QDialog(parent), ui(new Ui::ViewBo
 
     //connect buttons
     connect(ui->backButton, &QPushButton::clicked, this, &ViewBookInfo::backButtonClicked);
+    connect(ui->logoutButton, &QPushButton::clicked, this, &::ViewBookInfo::logoutButtonClicked);
 }
 
 ViewBookInfo::~ViewBookInfo() {
@@ -64,6 +65,9 @@ void ViewBookInfo::setBookAvailibity(const QJsonObject& book, const QString& use
         qDebug()<<"ViewBookInfo: Book is issued to currrent user";
         availabilityPage = this->findChild<QWidget*>("checkedoutPage");
         optionsPage = this->findChild<QWidget*>("userCheckedoutPage");
+        QLabel* dueLabel = this->findChild<QLabel*>("dueOutputLabel");
+        ManagementBook bookManager;
+        dueLabel->setText(bookManager.getDueDate(username, book["isbn"].toString()));
     } else {
         //book is unavailable, checking if the user has a hold
         bool userHold = false;
@@ -112,4 +116,8 @@ void ViewBookInfo::setBookAvailibity(const QJsonObject& book, const QString& use
         index = optionsWidget->indexOf(optionsPage);
         optionsWidget->setCurrentIndex(index);
     }
+}
+
+void ViewBookInfo::logoutButtonClicked() {
+    emit logoutRequest();
 }

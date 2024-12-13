@@ -4,7 +4,6 @@
 #include "ui_viewMemberDashboard.h"
 #include "viewUpdateUser.h"
 #include "ManagementBook.h"
-#include "ManagementUser.h"
 #include "viewBookItem.h"
 
 ViewMemberDashboard::ViewMemberDashboard(QWidget *parent) : QWidget(parent), ui(new Ui::ViewMemberDashboard) {
@@ -12,7 +11,7 @@ ViewMemberDashboard::ViewMemberDashboard(QWidget *parent) : QWidget(parent), ui(
 
     //connect buttons
     connect(ui->updateButton, &QPushButton::clicked, this, &ViewMemberDashboard::updateButtonClicked);
-    connect(ui->logoutButton, &QAbstractButton::clicked, this, &ViewMemberDashboard::logoutButtonClicked);
+    connect(ui->logoutButton, &QPushButton::clicked, this, &ViewMemberDashboard::logoutButtonClicked);
 
     //connect signals
     connect(ui->issuedList, &QListWidget::itemClicked, this, &ViewMemberDashboard::onBookClicked);
@@ -85,6 +84,7 @@ void ViewMemberDashboard::displayCheckedOut() {
 
     ManagementUser userManager;
     ManagementBook bookManager;
+    ManagementTransaction transactionManager;
 
     QJsonObject currentUser = userManager.getUserObj(username);
     QJsonArray activeLoans = currentUser["activeLoans"].toArray();
@@ -119,23 +119,8 @@ void ViewMemberDashboard::displayCheckedOut() {
         //connect refreash signal doing in book list view
         connect(bookListItem, &ViewBookItem::refreashviewMemberDashboard, this, &ViewMemberDashboard::updateDisplays);
 
-        //setting variables for display widgets
-        QStackedWidget* loansStackedWidget ;
-        int index = 0;
-
-        //display due date
-        loansStackedWidget = bookListItem->findChild<QStackedWidget*>("optionsStackedWidget");
-        if(loansStackedWidget){
-            index = loansStackedWidget->indexOf(bookListItem->findChild<QWidget*>("userCheckedoutPage"));
-            loansStackedWidget->setCurrentIndex(index);
-        }
-
-        //set availbility display
-        loansStackedWidget = bookListItem->findChild<QStackedWidget*>("availabilityWidget");
-        if(loansStackedWidget){
-            index = loansStackedWidget->indexOf(bookListItem->findChild<QWidget*>("checkedoutPage"));
-            loansStackedWidget->setCurrentIndex(index);
-        }
+        //set book availbity and the options aavialble
+        transactionManager.setBookAvailibityOptions(bookListItem, book, username);
 
         //adding entry to list
         QListWidgetItem* item = new QListWidgetItem(ui->issuedList);
@@ -223,28 +208,8 @@ void ViewMemberDashboard::displayHoldRequests() {
         usernameLabel->setText(username);
 
         //setting availability and members action displays
-        ManagementTransaction transactionManager;
-        QStackedWidget* stackedWidget;
-        int index = 0;
-
-        if(transactionManager.checkHoldstatus(holdId) == "ready"){
-            //shows book is ready and allows for confirming pick or removing hold
-            stackedWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
-            index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("holdReadyPage"));
-            stackedWidget->setCurrentIndex(index);
-            stackedWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
-            index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("holdReadyDisplayPage"));
-            stackedWidget->setCurrentIndex(index);
-        } else {
-            //shows book is pending and place in queue
-            stackedWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
-            index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("holdActivePage"));
-            stackedWidget->setCurrentIndex(index);
-            stackedWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
-            index = stackedWidget->indexOf(viewBookItem->findChild<QWidget*>("holdPendingPage"));
-            stackedWidget->setCurrentIndex(index);
-        }
-
+        //set book availbity and the options aavialble
+        transactionManager.setBookAvailibityOptions(viewBookItem, book, username);
         ui->holdList->setItemWidget(item, viewBookItem);
     }
 }
@@ -307,63 +272,6 @@ void ViewMemberDashboard::displayCatalogue() {
 
         //set book availbity and the options aavialble
         transactionManager.setBookAvailibityOptions(viewBookItem, book, username);
-        // QStackedWidget* availabilityWidget = viewBookItem->findChild<QStackedWidget*>("availabilityWidget");
-        // QStackedWidget* optionsWidget = viewBookItem->findChild<QStackedWidget*>("optionsStackedWidget");
-        // QWidget* availabilityPage = nullptr;
-        // QWidget* optionsPage = nullptr;
-        // int index = 0;
-
-        // if (book["isAvailable"].toBool()) {
-        //     //book is available
-        //     availabilityPage = viewBookItem->findChild<QWidget*>("availablePage");
-        //     optionsPage = viewBookItem->findChild<QWidget*>("userAvailablePage");
-        // } else if (book["issuedTo"].toString() == username) {
-        //     //book is checked out by the current user
-        //     availabilityPage = viewBookItem->findChild<QWidget*>("checkedoutPage");
-        //     optionsPage = viewBookItem->findChild<QWidget*>("userCheckedoutPage");
-        // } else {
-        //     //book is unavailable, checking if the user has a hold
-        //     bool userHold = false;
-        //     QString status;
-        //     QString holdId;
-
-        //     for (int j = 0; j < holdsArray.size(); ++j) {
-        //         QJsonObject hold = holdsArray[j].toObject();
-        //         if (hold["isbn"].toString() == isbn && hold["username"].toString() == username) {
-        //             userHold = true;
-        //             holdId = hold["holdId"].toString();
-        //             status = hold["holdStatus"].toString();
-        //             break;
-        //         }
-        //     }
-
-        //     if (userHold) {
-        //         //storing hold ID
-        //         QLabel* holdIdLabel = viewBookItem->findChild<QLabel*>("holdStoredIdLabel");
-        //         holdIdLabel->setText(holdId);
-
-        //         if (status == "ready") {
-        //             availabilityPage = viewBookItem->findChild<QWidget*>("holdReadyDisplayPage");
-        //             optionsPage = viewBookItem->findChild<QWidget*>("holdReadyPage");
-        //         } else {
-        //             availabilityPage = viewBookItem->findChild<QWidget*>("holdPendingPage");
-        //             optionsPage = viewBookItem->findChild<QWidget*>("holdActivePage");
-        //         }
-        //     } else {
-        //         //allow user to request hold
-        //         availabilityPage = viewBookItem->findChild<QWidget*>("notAvailablePage");
-        //         optionsPage = viewBookItem->findChild<QWidget*>("userNotAvailablePage");
-        //     }
-        // }
-
-        // if (availabilityPage) {
-        //     index = availabilityWidget->indexOf(availabilityPage);
-        //     availabilityWidget->setCurrentIndex(index);
-        // }
-        // if (optionsPage) {
-        //     index = optionsWidget->indexOf(optionsPage);
-        //     optionsWidget->setCurrentIndex(index);
-        // }
 
         ui->catalogueList->setItemWidget(item, viewBookItem);
 

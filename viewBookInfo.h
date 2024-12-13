@@ -26,9 +26,11 @@ public:
     ~ViewBookInfo();
     void setBookDetails(const QJsonObject& bookDetails);
     void setBookAvailibity(const QJsonObject& book, const QString& username);
+    void logoutButtonClicked();
 
 signals:
     void goBack();
+    void logoutRequest();
 };
 
 #endif // VIEWBOOKINFO_H

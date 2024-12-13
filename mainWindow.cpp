@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(memberPage, &ViewMemberDashboard::requestBookInfo, this, &MainWindow::showBookInfo);
     connect(memberPage, &ViewMemberDashboard::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
     connect(bookInfoPage, &ViewBookInfo::goBack, this, &MainWindow::goBack);
+    connect(bookInfoPage, &ViewBookInfo::logoutRequest, this, &MainWindow::logOut);
     connect(memberInfoPage, &ViewMemberInfo::goBackAdmin, this, &MainWindow::goBackAdmin);
     connect(memberInfoPage, &ViewMemberInfo::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
 
@@ -156,7 +157,8 @@ void MainWindow::updateMemberDisplays(){
 }
 
 void MainWindow::goBack(){
-        stackedWidget->setCurrentIndex(3);
+    qDebug()<<"MainWindow: Going back to memberview";
+    stackedWidget->setCurrentIndex(3);
 }
 
 void MainWindow::goBackAdmin(){

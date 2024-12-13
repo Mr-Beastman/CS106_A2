@@ -6,9 +6,9 @@
             "genre": "LitRpg",
             "inQueue": [
             ],
-            "isAvailable": false,
+            "isAvailable": true,
             "isbn": "B0CVD8D7H6",
-            "issuedTo": "windrunner",
+            "issuedTo": "",
             "sect": "",
             "title": "Heretical Fishing : Book 1"
         },
@@ -20,7 +20,7 @@
             ],
             "isAvailable": true,
             "isbn": "B0BGDM197Q",
-            "issuedTo": "",
+            "issuedTo": "ratmaster",
             "sect": "",
             "title": "Fourth Wing (The Empyrean Book 1)"
         },
@@ -32,7 +32,7 @@
             ],
             "isAvailable": true,
             "isbn": "9780765326355",
-            "issuedTo": "",
+            "issuedTo": "windrunner",
             "sect": "",
             "title": "The Way of Kings: Book One Stormlight Archive"
         },
@@ -78,12 +78,6 @@
         {
             "account": "21620",
             "activeLoans": [
-                {
-                    "checkoutDate": "Fri Dec 13 10:38:27 2024",
-                    "dueDate": "12/01/2025",
-                    "isbn": "B0CVD8D7H6",
-                    "status": "active"
-                }
             ],
             "address": "Urithiru",
             "email": "Storms@Archives.com",
