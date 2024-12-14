@@ -5,11 +5,17 @@
             "desc": "A world abandoned by the gods, mystifying cosmic forces, unimaginable power for those willing to ascend, and a hero who would rather . . . go fishing???\n\nWhen summoned to a fantastical world and granted powers by a broken System, most freshly minted protagonists would strap on their big-boy boots and get ready for their stats to start climbing. But Fischer isn’tlike most MCs. In fact, he doesn’t want to be a hero at all.\n\nFame? Fortune? Power? He had enough of all that in his old life. Discovering forbidden fishing techniques and petting every cute animal that comes within scritching distance? Now that’s a good time.\n\nUnfortunately for Fischer, cosmic forces rarely care for mortal feelings. He’s hounded on all sides by inept cults, conspiring nobles, and more magical misunderstandings than those of a preteen relationship. Even his dutiful pet crab is firing energy blades like an anime antagonist.\n\nSo grab your fishing rod and a good snack, and pet your dog for me. The catch of a lifetime awaits!",
             "genre": "LitRpg",
             "inQueue": [
+                {
+                    "holdId": "{7799c023-c33e-495e-9b08-920908afffc0}"
+                },
+                {
+                    "holdId": "{37721cb7-eaf3-410e-a3cd-8804a1055c90}"
+                }
             ],
             "isAvailable": false,
             "isbn": "B0CVD8D7H6",
-            "issuedTo": "windrunner",
-            "sect": "",
+            "issuedTo": "",
+            "sect": "Fiction",
             "title": "Heretical Fishing : Book 1"
         },
         {
@@ -21,8 +27,8 @@
             "isAvailable": true,
             "isbn": "B0BGDM197Q",
             "issuedTo": "",
-            "sect": "",
-            "title": "Fourth Wing (The Empyrean Book 1)"
+            "sect": "Fiction",
+            "title": "Fourth Wing : The Empyrean Book 1"
         },
         {
             "author": "Brandon Sanderson",
@@ -34,7 +40,7 @@
             "isbn": "9780765326355",
             "issuedTo": "",
             "sect": "",
-            "title": "The Way of Kings: Book One Stormlight Archive"
+            "title": "The Way of Kings: The Stormlight Archive Book 1"
         },
         {
             "author": "J R R Tolkien",
@@ -56,9 +62,9 @@
             ],
             "isAvailable": true,
             "isbn": "1526605392",
-            "issuedTo": "",
+            "issuedTo": "windrunner",
             "sect": "",
-            "title": "A Court of Thorns and Roses"
+            "title": "A Court of Thorns and Roses : ACOTAR Book 1"
         },
         {
             "author": "Haylock Jobson",
@@ -73,6 +79,20 @@
         }
     ],
     "holds": [
+        {
+            "holdDate": "14-mm-2024",
+            "holdId": "{7799c023-c33e-495e-9b08-920908afffc0}",
+            "holdStatus": "ready",
+            "isbn": "B0CVD8D7H6",
+            "username": "ratmaster"
+        },
+        {
+            "holdDate": "14-mm-2024",
+            "holdId": "{37721cb7-eaf3-410e-a3cd-8804a1055c90}",
+            "holdStatus": "active",
+            "isbn": "B0CVD8D7H6",
+            "username": "ratmaster"
+        }
     ],
     "users": [
         {
@@ -83,18 +103,12 @@
             "isAdmin": true,
             "name": "The Admin",
             "password": "password",
-            "phone": "00000000000",
+            "phone": "0000011111",
             "username": "admin"
         },
         {
             "account": "21620",
             "activeLoans": [
-                {
-                    "checkoutDate": "Sat Dec 14 10:47:19 2024",
-                    "dueDate": "13/01/2025",
-                    "isbn": "B0CVD8D7H6",
-                    "status": "active"
-                }
             ],
             "address": "Urithiru",
             "email": "Storms@Archives.com",
@@ -129,6 +143,12 @@
             "address": "The Sewers",
             "email": "TurtleDad1969@gmail.com",
             "holdRequests": [
+                {
+                    "holdId": "{7799c023-c33e-495e-9b08-920908afffc0}"
+                },
+                {
+                    "holdId": "{37721cb7-eaf3-410e-a3cd-8804a1055c90}"
+                }
             ],
             "isActive": true,
             "isAdmin": false,

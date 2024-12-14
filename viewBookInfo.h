@@ -17,9 +17,17 @@ class ViewBookInfo : public QDialog {
 
 private:
     Ui::ViewBookInfo* ui;
+    QString currentUser;
 
 private slots:
     void backButtonClicked();
+    void checkoutButtonClicked();
+    void returnButtonClicked();
+    void holdButtonClicked();
+    void removeHoldbuttonClicked();
+    void confirmButtonClicked();
+    void editButtonClicked();
+    void refreashBookInfo();
 
 public:
     ViewBookInfo(QWidget* parent = nullptr);
@@ -29,10 +37,12 @@ public:
     void logoutButtonClicked();
     void hideAdminInfo();
     void showAdminInfo();
+    void setCurrentUser(const QString& username);
 
 signals:
     void goBack();
     void logoutRequest();
+    void refreashMemberDisplay();
 };
 
 #endif // VIEWBOOKINFO_H

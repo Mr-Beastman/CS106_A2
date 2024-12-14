@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(memberPage, &ViewMemberDashboard::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
     connect(bookInfoPage, &ViewBookInfo::goBack, this, &MainWindow::goBack);
     connect(bookInfoPage, &ViewBookInfo::logoutRequest, this, &MainWindow::logOut);
+    connect(bookInfoPage, &ViewBookInfo::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
     connect(memberInfoPage, &ViewMemberInfo::goBackAdmin, this, &MainWindow::goBackAdmin);
     connect(memberInfoPage, &ViewMemberInfo::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
 
@@ -136,6 +137,7 @@ void MainWindow::showRegister(){
 
 void MainWindow::showBookInfo(QJsonObject &bookDetails, const QString& username) {
     bookInfoPage->setBookDetails(bookDetails);
+    bookInfoPage->setCurrentUser(username);
     bookInfoPage->setBookAvailibity(bookDetails,username);
 
     ManagementUser userManager;
