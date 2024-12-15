@@ -46,8 +46,11 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(bookInfoPage, &ViewBookInfo::goBack, this, &MainWindow::goBack);
     connect(bookInfoPage, &ViewBookInfo::logoutRequest, this, &MainWindow::logOut);
     connect(bookInfoPage, &ViewBookInfo::refreashMemberDisplay, this, &MainWindow::updateMemberDisplays);
+    connect(bookInfoPage, &ViewBookInfo::refreashAdminDisplay, this, &MainWindow::updateAdminDisplays);
+    connect(memberInfoPage, &ViewMemberInfo::logoutRequest, this, &MainWindow::logOut);
     connect(memberInfoPage, &ViewMemberInfo::goBackAdmin, this, &MainWindow::goBackAdmin);
     connect(memberInfoPage, &ViewMemberInfo::requestUpdateDisplay, this, &MainWindow::updateAdminDisplays);
+
 
     stackedWidget->setCurrentIndex(0);
 
@@ -138,7 +141,7 @@ void MainWindow::showRegister(){
 void MainWindow::showBookInfo(QJsonObject &bookDetails, const QString& username) {
     bookInfoPage->setBookDetails(bookDetails);
     bookInfoPage->setCurrentUser(username);
-    bookInfoPage->setBookAvailibity(bookDetails,username);
+    bookInfoPage->setBookAvailibity(bookDetails);
     bookInfoPage->populateCurrentHolds(bookDetails);
 
     ManagementUser userManager;
@@ -152,8 +155,9 @@ void MainWindow::showBookInfo(QJsonObject &bookDetails, const QString& username)
     stackedWidget->setCurrentIndex(4);
 }
 
-void MainWindow::showMemberInfo(QJsonObject &userToView){
+void MainWindow::showMemberInfo(QJsonObject &userToView, const QString& adminUser){
     memberInfoPage->setMemberDetails(userToView);
+    memberInfoPage->setAdminUser(adminUser);
     memberInfoPage->generateCheckedout(userToView["account"].toString());
     memberInfoPage->displayHoldRequests(userToView["account"].toString());
     stackedWidget->setCurrentIndex(5);

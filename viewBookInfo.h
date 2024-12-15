@@ -33,7 +33,7 @@ public:
     ViewBookInfo(QWidget* parent = nullptr);
     ~ViewBookInfo();
     void setBookDetails(const QJsonObject& bookDetails);
-    void setBookAvailibity(const QJsonObject& book, const QString& username);
+    void setBookAvailibity(const QJsonObject& book);
     void logoutButtonClicked();
     void hideAdminInfo();
     void showAdminInfo();
@@ -44,6 +44,7 @@ signals:
     void goBack();
     void logoutRequest();
     void refreashMemberDisplay();
+    void refreashAdminDisplay();
 };
 
 #endif // VIEWBOOKINFO_H

@@ -7,41 +7,78 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>364</height>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#ModifyBookView{
-background-color: rgb(227, 238, 219);
+   <string notr="true">#ViewUpdateBook {
+    background-color: rgb(227, 238, 219); 
+}
+QLabel {
+    color: rgb(0, 0, 0); 
+    font: 700 9pt &quot;Segoe UI&quot;; 
 }
 
-QLabel{
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
+QLineEdit {
+    font: 9pt &quot;Segoe UI&quot;; 
+    background-color: rgb(255, 255, 255); 
+    border: 1px solid; 
+    color: rgb(0, 0, 0); 
 }
 
-QLineEdit{
-	font: 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(255, 255, 255);
-	border: 1px solid;
-	color: rgb(0, 0, 0);
+QTextEdit {
+    font: 9pt &quot;Segoe UI&quot;; 
+    background-color: rgb(255, 255, 255); 
+    border: 1px solid; 
+    color: rgb(0, 0, 0); 
 }
 
-QPushButton{
-	border: 1px solid;
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(192, 220, 161);
+QPushButton {
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    outline: none;
+    color: rgb(0, 0, 0);
+    font: 700 9pt &quot;Segoe UI&quot;; 
+    background-color: rgb(192, 220, 161); 
+    border: 2px solid rgb(145, 185, 120);
 }
 
-QTextEdit{
-	font: 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(255, 255, 255);
-	border: 1px solid;
-	color: rgb(0, 0, 0);
+QPushButton:hover {
+    background-color: rgb(161, 184, 135); 
+    border: 2px solid rgb(130, 165, 110); 
+}
+
+QPushButton:pressed {
+    background-color: rgb(145, 165, 120); 
+    border: 2px solid rgb(130, 155, 100); 
+    padding-top: 10px; 
+    padding-bottom: 6px; 
+}
+
+
+QMessageBox {
+    background-color: rgb(40, 40, 40);
+    color: white; 
+    font: 700 10pt &quot;Segoe UI&quot;;
+}
+
+QMessageBox QLabel {
+    color: white; 
+}
+
+QMessageBox QPushButton {
+    background-color: rgb(80, 80, 80);
+    color: white;
+    border: 1px solid white;
+    font: 700 9pt &quot;Segoe UI&quot;;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: rgb(100, 100, 100); 
+    border: 1px solid rgb(200, 200, 200); 
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -67,22 +104,15 @@ QTextEdit{
        <item>
         <layout class="QGridLayout" name="inputsLayout">
          <item row="2" column="1">
-          <widget class="QLineEdit" name="isbnLineEdit"/>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="descriptionLabel">
-           <property name="text">
-            <string>Description</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
           <widget class="QLineEdit" name="genreLineEdit"/>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="titleLabel">
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="sectionLineEdit"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="sectionLabel">
            <property name="text">
-            <string>Title</string>
+            <string>Section</string>
            </property>
           </widget>
          </item>
@@ -93,38 +123,42 @@ QTextEdit{
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="isbnLabel">
-           <property name="text">
-            <string>ISBN</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QTextEdit" name="descriptionTextEdit"/>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="titleLineEdit"/>
-         </item>
          <item row="1" column="1">
           <widget class="QLineEdit" name="authorLineEdit"/>
          </item>
+         <item row="4" column="1">
+          <widget class="QTextEdit" name="descriptionTextEdit"/>
+         </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="sectionLabel">
+          <widget class="QLabel" name="descriptionLabel">
            <property name="text">
-            <string>Section</string>
+            <string>Description</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="0" column="0">
+          <widget class="QLabel" name="titleLabel">
+           <property name="text">
+            <string>Title</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
           <widget class="QLabel" name="genreLabel">
            <property name="text">
             <string>Genre</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="sectionLineEdit"/>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="titleLineEdit"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="storedIsbnLabel">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -133,11 +167,16 @@ QTextEdit{
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>100</height>
+           <height>150</height>
           </size>
          </property>
          <property name="acceptDrops">
           <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#coverPreviewLabel{
+	background-color: rgb(255, 255, 255);
+}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Shape::Box</enum>
@@ -154,13 +193,30 @@ QTextEdit{
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="errorLabel">
+         <property name="styleSheet">
+          <string notr="true">#errorLabel{
+	
+	color: rgb(255, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="buttonLayout">
          <item>
           <widget class="QPushButton" name="updateButton">
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>25</height>
+             <height>30</height>
             </size>
            </property>
            <property name="text">
@@ -173,7 +229,7 @@ QTextEdit{
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>25</height>
+             <height>30</height>
             </size>
            </property>
            <property name="text">

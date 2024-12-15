@@ -16,7 +16,30 @@
   <property name="styleSheet">
    <string notr="true">#MemberInfoView{
 	background-color: rgb(255, 255, 255);
-}</string>
+}
+
+QPushButton {
+    padding: 5px 10px;
+    border-radius: 5px;
+    outline: none;
+    color: rgb(0, 0, 0);
+    font: 700 9pt &quot;Segoe UI&quot;;
+    background-color: rgb(192, 220, 161);
+    border: 2px solid rgb(145, 185, 120);
+}
+
+QPushButton:hover {
+    background-color: rgb(161, 184, 135); 
+    border: 2px solid rgb(130, 165, 110); 
+}
+
+QPushButton:pressed {
+    background-color: rgb(145, 165, 120);
+    border: 2px solid rgb(130, 155, 100); 
+    padding-top: 10px; 
+    padding-bottom: 6px; 
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <property name="leftMargin">
@@ -80,12 +103,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">#logoutButton{
-	border: 1px solid;
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(192, 220, 161);
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Log Out</string>
@@ -111,7 +129,7 @@
         <x>0</x>
         <y>0</y>
         <width>1067</width>
-        <height>1037</height>
+        <height>1042</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -138,15 +156,10 @@
           <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
          <property name="styleSheet">
-          <string notr="true">#backButton{
-	border: 1px solid;
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(192, 220, 161);
-}</string>
+          <string notr="true"/>
          </property>
          <property name="text">
-          <string>back</string>
+          <string>Back</string>
          </property>
         </widget>
        </item>
@@ -216,7 +229,7 @@
                <property name="minimumSize">
                 <size>
                  <width>0</width>
-                 <height>25</height>
+                 <height>30</height>
                 </size>
                </property>
                <property name="maximumSize">
@@ -226,12 +239,7 @@
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">#updateButton{
-	border: 1px solid;
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(192, 220, 161);
-}</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Update</string>
@@ -414,12 +422,7 @@
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">#activateButton{
-	border: 1px solid;
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(192, 220, 161);
-}</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Activate Member</string>

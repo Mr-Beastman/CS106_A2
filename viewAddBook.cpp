@@ -66,20 +66,25 @@ void ViewAddBook::saveButtonClicked() {
 
     ManagementBook bookManager;
 
-    QString title = ui->titleLineEdit->text();
-    QString author = ui->authorLineEdit->text();
-    QString isbn = ui->isbnLineEdit->text();
-    QString genre = ui->genreLineEdit->text();
-    QString section = ui->sectionLineEdit->text();
-    QString description = ui->descriptionTextEdit->toPlainText();
+    QJsonObject newBook;
+
+    newBook["title"] = ui->titleLineEdit->text();
+    newBook["author"]= ui->authorLineEdit->text();
+    newBook["isAvailable"] = true;
+    newBook["isbn"] = ui->isbnLineEdit->text();
+    newBook["issuedTo"] = QString();
+    newBook["inQueue"] = QJsonArray();
+    newBook["genre"] = ui->genreLineEdit->text();
+    newBook["sect"] = ui->sectionLineEdit->text();
+    newBook["desc"] = ui->descriptionTextEdit->toPlainText();
 
     //saving the book details
-    if(bookManager.addBook(title, author, isbn, description, genre, section)){
+    if(bookManager.addBook(newBook)){
         qDebug()<<"viewAddBook: Book Added Succesfully";
 
         //save image if one provided
         if(!imageLocation.isEmpty()){
-            QString saveLocation = bookManager.findCoverPath()+isbn+".png";
+            QString saveLocation = bookManager.findCoverPath()+ui->isbnLineEdit->text()+".png";
             if(QFile::copy(imageLocation,saveLocation)){
                 qDebug()<<"viewAddBook: Image saved Successfully";
             } else {
@@ -91,7 +96,7 @@ void ViewAddBook::saveButtonClicked() {
         emit updateDisplayRequest();
 
         this->accept();
-    } else {
+        } else {
         qDebug()<<"viewAddBook: Failed to add book";
     }
 }

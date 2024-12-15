@@ -5,16 +5,16 @@
 #include "managementUser.h"
 #include "viewUpdateUser.h"
 
-ViewMemberInfo::ViewMemberInfo(QWidget* parent, const QJsonObject &user) : QDialog(parent), ui(new Ui::ViewMemberInfo) {
+#include <QMessageBox>
+
+ViewMemberInfo::ViewMemberInfo(QWidget* parent) : QDialog(parent), ui(new Ui::ViewMemberInfo) {
     ui->setupUi(this);
 
     connect(ui->backButton, &QPushButton::clicked, this, &ViewMemberInfo::backButtonClicked);
     connect(ui->activateButton, &QPushButton::clicked, this, &ViewMemberInfo::activateButtonClicked);
     connect(ui->updateButton, &QPushButton::clicked, this, &ViewMemberInfo::updateButtonClicked);
     connect(ui->deleteMember, &QPushButton::clicked, this, &ViewMemberInfo::deleteButtonClicked);
-
-    // generateCheckedout(user["account"].toString());
-    // displayHoldRequests(user["account"].toString());
+    connect(ui->logoutButton, &QPushButton::clicked, this, &ViewMemberInfo::logoutButtonClicked);
 }
 
 ViewMemberInfo::~ViewMemberInfo(){
@@ -37,13 +37,15 @@ void ViewMemberInfo::generateCheckedout(const QString account){
 
     //if no checked out books, set display to reflect this
     if(activeLoans.isEmpty()){
-        qDebug()<<"viewMemberInfo: No Active loans found. Setting to empty";
+        qDebug()<<"ViewMemberInfo: No Active loans found. Setting to empty";
         ui->issuedStackedWidget->setCurrentWidget(ui->noIssuedPage);
+        hasIssused = false;
         return;
     }
 
-    qDebug()<<"viewMemberInfo: Active loans found, generating list";
+    qDebug()<<"ViewMemberInfo: Active loans found, generating list";
     ui->issuedStackedWidget->setCurrentWidget(ui->issuedPage);
+    hasIssused = true;
 
     //ensure clean list on updating
     ui->issuedList->clear();
@@ -77,8 +79,13 @@ void ViewMemberInfo::generateCheckedout(const QString account){
 
 }
 
+void ViewMemberInfo::logoutButtonClicked() {
+    emit logoutRequest();
+}
+
+
 void ViewMemberInfo::displayHoldRequests(const QString accountNumber){
-    qDebug()<<"viewMemberInfo: Checking for active hold requests";
+    qDebug()<<"ViewMemberInfo: Checking for active hold requests";
 
     //set managers
     ManagementUser userManager;
@@ -88,23 +95,23 @@ void ViewMemberInfo::displayHoldRequests(const QString accountNumber){
     //get user and book data
     QJsonObject user = userManager.getUserObjAccount(accountNumber);
     QJsonArray activeHolds = user["holdRequests"].toArray();
-    QJsonArray bookArray = bookManager.getBookArray();
     QJsonArray holdsArray = transactionManager.getHoldArray();
 
     //end if user has no active holds
     if(activeHolds.isEmpty()){
-        qDebug()<<"ViewMemberInfo: No hold requets to display";
+        qDebug()<<"ViewMemberInfo: No Active holds found. Setting to empty";
         ui->holdStackedWidget->setCurrentWidget(ui->noHoldPage);
+        hasHolds=false;
         return;
     }
 
-    qDebug()<<"viewMemberInfo: Active holds found, generating list";
+    qDebug()<<"ViewMemberInfo: Active holds found, generating list";
     ui->holdStackedWidget->setCurrentWidget(ui->holdPage);
+    hasHolds=true;
 
     //ensure clean list on updating
     ui->holdList->clear();
 
-    qDebug()<<"ViewMemberDashboard: Generating users hold items";
     //build items for list to display
     for(int i = 0; i<activeHolds.size(); ++i){
         QJsonObject userHold = activeHolds[i].toObject();
@@ -164,10 +171,31 @@ void ViewMemberInfo::activateButtonClicked(){
 void ViewMemberInfo::deleteButtonClicked(){
     ManagementUser userManager;
 
-    userManager.deleteMember(ui->accountOutputLabel->text());
+    //check if admin is attempting to delete there own account and prevent it.
 
-    emit requestUpdateDisplay();
-    emit goBackAdmin();
+    if(ui->accountOutputLabel->text() == adminUser){
+        qDebug()<<"ViewMemberInfo: Displaying self delete warning";
+        QMessageBox::warning(this, tr("Delete Denied"),tr("You cannot delete your own account"), QMessageBox::Ok);
+        return;
+    }
+
+    if(!hasIssused && !hasHolds){
+        QMessageBox::StandardButton response;
+        response = QMessageBox::warning(this, tr("Confirm Delete"),tr("Are you sure you wish to delete this user?"), QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
+
+        if(response == QMessageBox::Yes){
+            qDebug()<<"ViewMemberInfo: User confirmed the deletion request";
+            userManager.deleteMember(ui->accountOutputLabel->text());
+            emit requestUpdateDisplay();
+            emit goBackAdmin();
+        } else {
+            qDebug()<<"ViewMemberInfo: User cancelled the deletion request";
+        }
+    } else {
+        QMessageBox::warning(this, tr("Warning"),tr("User has active loans or holds. Please remove these before attempting to delete user."), QMessageBox::Ok);
+        qDebug()<<"ViewMemberInfo: Can't delete member as they have current loans/holds";
+    }
+
 }
 
 void ViewMemberInfo::updateButtonClicked(){
@@ -181,6 +209,10 @@ void ViewMemberInfo::updateButtonClicked(){
     QJsonObject user = userManager.getUserObjAccount(ui->accountOutputLabel->text());
     updateDisplay(user);
     emit requestUpdateDisplay();
+}
+
+void ViewMemberInfo::setAdminUser(const QString& adminUsername){
+    adminUser = adminUsername;
 }
 
 bool ViewMemberInfo::setMemberDetails(const QJsonObject &userToView){

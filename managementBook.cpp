@@ -73,37 +73,56 @@ ViewBookItem *ManagementBook::createBookList(const QJsonObject &book, const QJso
 //add book to Json file database
 //parameters : book title, author, isbn, description, genre and section.
 //returns : true if ran successfully, false if errror encountered.
-bool ManagementBook::addBook(const QString& titleInput,
-                             const QString& authorInput,
-                             const QString& isbnInput,
-                             const QString& descInput,
-                             const QString& genreInput,
-                             const QString& sectInput){
-
-    //creating Json obj with new user details;
-    QJsonObject newBook;
-    newBook["title"] = titleInput;
-    newBook["author"] = authorInput;
-    newBook["isbn"] = isbnInput;
-    newBook["desc"] = descInput;
-    newBook["genre"] = genreInput;
-    newBook["sect"] = sectInput;
-    newBook["inQueue"] = QJsonArray();
-    newBook["isAvailable"] = true;
+bool ManagementBook::addBook(const QJsonObject& newBook){
 
     //add the new book to the existing array
     QJsonArray bookArray = getBookArray();
+
     bookArray.append(newBook);
     libraryDatabase["books"] = bookArray;
 
     //save updates to json file
     if(saveData()){
-        qDebug()<<"BookManagemt: New book has been added";
+        qDebug()<<"ManagementBook: New book has been added";
         return true;
     }
 
-    qDebug()<<"BookManagment: Failed to save new book";
+    qDebug()<<"ManagementBook: Failed to save new book";
     return false;
+}
+
+bool ManagementBook::deleteBook(const QString& isbn){
+
+    for(int i = 0; i<bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
+
+        if(book["isbn"].toString() == isbn){
+            bookArray.removeAt(i);
+
+            //update database
+            QJsonObject& fileData = getFileData();
+            fileData["books"] = bookArray;
+
+            if (saveData()) {
+                qDebug() << "ManagementBook: Book has been deleted";
+
+                //delete the cover image if one is stored.
+                QString coverIsbn = isbn;
+                QFile coverFile(findCoverImage(coverIsbn));
+                if(coverFile.exists()){
+                    coverFile.remove();
+                }
+
+                return true;
+            } else {
+                qDebug() << "ManagementBook: Failed to save database after deleting book";
+                return false;
+            }
+        }
+    }
+
+    qDebug()<<"ManagementBook: Could not find book to delete";
+    return true;
 }
 
 bool ManagementBook::updateBook(const QString &isbn, const QJsonObject &updatedBook){
@@ -117,9 +136,6 @@ bool ManagementBook::updateBook(const QString &isbn, const QJsonObject &updatedB
         updated = true;
     }
     if(originalBook["author"].toString() != updatedBook["author"].toString()){
-        updated = true;
-    }
-    if(originalBook["isbn"].toString() != updatedBook["isbn"].toString()){
         updated = true;
     }
     if(originalBook["genre"].toString() != updatedBook["genre"].toString()){
@@ -142,7 +158,6 @@ bool ManagementBook::updateBook(const QString &isbn, const QJsonObject &updatedB
             if(book["isbn"].toString() == isbn) {
                 book["title"] = updatedBook["title"];
                 book["author"] = updatedBook["author"];
-                book["isbn"] = updatedBook["isbn"];
                 book["genre"] = updatedBook["genre"];
                 book["sect"] = updatedBook["sect"];
                 book["desc"] = updatedBook["desc"];
@@ -198,6 +213,25 @@ bool ManagementBook::isIssued(const QString &isbn){
                 return false;
             } else {
                 qDebug()<<"ManagementBook: "<<isbn<<" is issued to "<<book["issuedTo"];
+                return true;
+            }
+        }
+    }
+
+    qDebug()<<"ManagementBook: "<<isbn<<" not found";
+    return false;
+}
+
+bool ManagementBook::hasHolds(const QString &isbn){
+
+    for(int i = 0; i<bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
+        if(book["isbn"].toString() == isbn){
+            QJsonArray holdRequests = book["holdRequests"].toArray();
+
+            if(holdRequests.isEmpty()){
+                return false;
+            } else {
                 return true;
             }
         }

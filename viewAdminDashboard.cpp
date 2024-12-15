@@ -24,6 +24,10 @@ void ViewAdminDashboard::setAdminUser(const QString& username){
     adminUser = username;
 }
 
+ QString ViewAdminDashboard::getAdminUser(){
+    return adminUser;
+}
+
 //dyanmically populate users list from the Json file ["users"]
 //parameters: none
 //returns: none
@@ -96,11 +100,11 @@ void ViewAdminDashboard::displayUsers() {
         ui->membersList->setItemWidget(entry, userWidget);
     }
 
-    qDebug()<<"viewAdminDashboard: User Database Populated";
+    qDebug()<<"ViewAdminDashboard: User Database Populated";
 }
 
 void ViewAdminDashboard::updateDisplays(){
-    qDebug()<<"viewAdminDashboard: Refreashing Displays";
+    qDebug()<<"ViewAdminDashboard: Refreashing Displays";
 
     displayUsers();
     displayAdminCatalogue();
@@ -172,8 +176,10 @@ void ViewAdminDashboard::onMemberClicked(QListWidgetItem *user){
     qDebug()<<"viewAdminDashboard: Populating Member Info View";
     QJsonObject toView = userManager.getUserObj(userAccount);
 
+    QString adminAccount = userManager.getAccount(adminUser);
+
     qDebug()<<"viewAdminDashboard: Requesting to display member info view";
-    emit requestMemberInfo(toView);
+    emit requestMemberInfo(toView, adminAccount);
 }
 
 void ViewAdminDashboard::onBookClicked(QListWidgetItem *book) {
@@ -184,7 +190,7 @@ void ViewAdminDashboard::onBookClicked(QListWidgetItem *book) {
     ManagementBook bookManger;
     QJsonObject bookDetails = bookManger.getBookDetails(isbn);
 
-    qDebug()<<"viewMemberDashboard: Generating Book Info View";
+    qDebug()<<"ViewAdminDashboard: Generating Book Info View";
     emit requestBookInfo(bookDetails,adminUser);
 }
 

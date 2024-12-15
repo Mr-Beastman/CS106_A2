@@ -14,20 +14,26 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-
-QPushButton{
-	padding: 8px 20px;
-	border-radius: 5px;
-	outline: none;
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
-	background-color: rgb(192, 220, 161);
-	
+   <string notr="true">QPushButton {
+    padding: 5px 10px;
+    border-radius: 5px;
+    outline: none;
+    color: rgb(0, 0, 0);
+    font: 700 9pt &quot;Segoe UI&quot;;
+    background-color: rgb(192, 220, 161);
+    border: 2px solid rgb(145, 185, 120);
 }
 
 QPushButton:hover {
-	background-color: rgb(161, 184, 135);
+    background-color: rgb(161, 184, 135); 
+    border: 2px solid rgb(130, 165, 110); 
+}
+
+QPushButton:pressed {
+    background-color: rgb(145, 165, 120);
+    border: 2px solid rgb(130, 155, 100); 
+    padding-top: 10px; 
+    padding-bottom: 6px; 
 }
 </string>
   </property>
@@ -298,21 +304,7 @@ padding-left: 5px;
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton {
-	font: 700 12pt &quot;Segoe UI&quot;;
-	background-color: rgb(112, 129, 137);
-    color: white;       	
-	padding: 2px;
-	border-radius: 5px;
-}
-
-QPushButton:hover {
-    background-color: #555;
-}
-
-QPushButton:pressed {
-    background-color: #444;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Login</string>

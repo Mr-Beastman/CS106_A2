@@ -15,8 +15,6 @@ ViewBookInfo::ViewBookInfo(QWidget* parent) : QDialog(parent), ui(new Ui::ViewBo
     connect(ui->logoutButton, &QPushButton::clicked, this, &::ViewBookInfo::logoutButtonClicked);
     connect(ui->checkoutButton, &QPushButton::clicked, this, &::ViewBookInfo::checkoutButtonClicked);
     connect(ui->holdButton_2, &QPushButton::clicked, this, &::ViewBookInfo::holdButtonClicked);
-    connect(ui->removeHoldButton, &QPushButton::clicked, this, &::ViewBookInfo::removeHoldbuttonClicked);
-    connect(ui->removeHold02Button, &QPushButton::clicked, this, &::ViewBookInfo::removeHoldbuttonClicked);
     connect(ui->confirmButton, &QPushButton::clicked, this, &::ViewBookInfo::confirmButtonClicked);
     connect(ui->returnButton, &QPushButton::clicked, this, &::ViewBookInfo::returnButtonClicked);
     connect(ui->editButton, &QPushButton::clicked, this, &::ViewBookInfo::editButtonClicked);
@@ -85,7 +83,6 @@ void ViewBookInfo::confirmButtonClicked(){
 void ViewBookInfo::editButtonClicked(){
     ViewUpdateBook* viewUpdateBook = new ViewUpdateBook(this);
     ViewBookInfo* viewBookInfo = qobject_cast<ViewBookInfo*>(parentWidget());
-    qDebug()<<"parent widget is: "<<parentWidget();
     connect(viewUpdateBook, &ViewUpdateBook::updateDisplayRequest, viewBookInfo, &ViewBookInfo::refreashBookInfo);
 
     viewUpdateBook->populateDetails(ui->isbnOutputLabel->text());
@@ -98,9 +95,11 @@ void ViewBookInfo::refreashBookInfo(){
     QJsonObject book = bookManager.getBookDetails(ui->isbnOutputLabel->text());
 
     setBookDetails(book);
-    setBookAvailibity(book, currentUser);
+    setBookAvailibity(book);
+    populateCurrentHolds(book);
 
     emit refreashMemberDisplay();
+    emit refreashAdminDisplay();
 }
 
 void ViewBookInfo::setBookDetails(const QJsonObject &bookDetails){
@@ -126,14 +125,11 @@ void ViewBookInfo::setBookDetails(const QJsonObject &bookDetails){
     qDebug()<<"viewBookInfo: Book Info View Generated";
 }
 
-void ViewBookInfo::setBookAvailibity(const QJsonObject& book, const QString& username){
+void ViewBookInfo::setBookAvailibity(const QJsonObject& book){
 
     qDebug()<<"ViewBookInfo: Setting Availbility and Options";
-    qDebug()<<book["title"].toString();
-    qDebug()<<username;
 
     ManagementTransaction transactionManager;
-    qDebug()<<currentUser;
     transactionManager.setBookAvailibityOptions(this, book, currentUser);
 }
 
@@ -186,7 +182,7 @@ void ViewBookInfo::populateCurrentHolds(const QJsonObject &bookDetails){
                 //creating viewBookItem for hold
                 ViewBookItem* viewBookItem = bookManager.createBookList(bookDetails, holdEntry);
 
-                //dynamically adding a label to identify who has made the requests
+                connect(viewBookItem, &ViewBookItem::refreashviewMemberDashboard, this, &ViewBookInfo::refreashBookInfo);
 
                 //adding entry to list
                 QListWidgetItem* item = new QListWidgetItem(ui->holdList);
@@ -210,6 +206,16 @@ void ViewBookInfo::populateCurrentHolds(const QJsonObject &bookDetails){
                 //setting availability and members action displays
                 //set book availbity and the options aavialble
                 transactionManager.setBookAvailibityOptions(viewBookItem, bookDetails, holdEntry["username"].toString());
+
+                //show and populate detials for who made hold request
+                QLabel* requestLabel = viewBookItem->findChild<QLabel*>("requestLabel");
+                QLabel* requestDisplayLabel = viewBookItem->findChild<QLabel*>("requestOutputLabel");
+                if(requestLabel && requestDisplayLabel){
+                    requestLabel->show();
+                    requestDisplayLabel->show();
+                    requestDisplayLabel->setText(holdEntry["username"].toString());
+                }
+
                 ui->holdList->setItemWidget(item, viewBookItem);
             }
         }

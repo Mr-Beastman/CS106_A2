@@ -17,6 +17,9 @@ class ViewMemberInfo : public QDialog {
 
 private:
     Ui::ViewMemberInfo* ui;
+    bool hasIssused;
+    bool hasHolds;
+    QString adminUser;
 
 
 private slots:
@@ -24,9 +27,11 @@ private slots:
     void activateButtonClicked();
     void deleteButtonClicked();
     void updateButtonClicked();
+    void logoutButtonClicked();
 
 public:
-    ViewMemberInfo(QWidget* parent = nullptr, const QJsonObject& user=QJsonObject());
+    void setAdminUser(const QString &adminUsername);
+    ViewMemberInfo(QWidget* parent = nullptr);
     ~ViewMemberInfo();
     bool setMemberDetails(const QJsonObject& userToView);
     void updateDisplay(const QJsonObject& updatedMember);
@@ -36,6 +41,7 @@ public:
 signals:
     void goBackAdmin();
     void requestUpdateDisplay();
+    void logoutRequest();
 };
 
 #endif // VIEWMEMBERINFO_H

@@ -395,7 +395,7 @@ bool ManagementUser::deleteMember(const QString &accountNumber){
                 qDebug() << "ManagementUser: User has been deleted";
                 return true;
             } else {
-                qDebug() << "ManagementUser: Could not save updated user data after deletion";
+                qDebug() << "ManagementUser: Failed to save database after deleting user";
                 return false;
             }
         }

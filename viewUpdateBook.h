@@ -21,11 +21,11 @@ private:
 
 private slots:
     void updateButtonClicked();
+    void deleteButtonClicked();
 
 public:
     explicit ViewUpdateBook(QWidget *parent = nullptr);
     ~ViewUpdateBook();
-    void initialize(const QString& isbn);
     void populateDetails(const QString& isbn);
 
 signals:

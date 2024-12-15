@@ -36,16 +36,12 @@ public:
     //methods
     //vertical format for ease of reading
     ViewBookItem* createBookList(const QJsonObject& book, const QJsonObject& entry);
-    bool addBook(
-        const QString& titleInput,
-        const QString& authorInput,
-        const QString& isbnInput,
-        const QString& descInput,
-        const QString& genreInput,
-        const QString& sectInput);
+    bool addBook(const QJsonObject& newbook);
+    bool deleteBook(const QString &isbn);
     bool updateBook(const QString& isbn, const QJsonObject& updatedBook);
     bool isAvailable(const QString& isbn);
     bool isIssued(const QString& isbn);
+    bool hasHolds(const QString& isbn);
     QString getDueDate(const QString& username, const QString& isbn);
     QString findCoverPath();
     QString findCoverImage(QString& isbn);

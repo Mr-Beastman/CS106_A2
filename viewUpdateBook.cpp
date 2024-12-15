@@ -8,10 +8,11 @@
 #include <QFileDialog>
 #include <QImageReader>
 #include <QFile>
+#include <QMessageBox>
 
 // --------------- constructor ---------------
 ViewUpdateBook::ViewUpdateBook(QWidget *parent) : QDialog(parent), ui(new Ui::ViewUpdateBook) {
-    ui->setupUi(this); // Initialize UI from the generated class
+    ui->setupUi(this);
 
     // Set up window
     this->setWindowTitle("Modify Book Details");
@@ -19,7 +20,7 @@ ViewUpdateBook::ViewUpdateBook(QWidget *parent) : QDialog(parent), ui(new Ui::Vi
 
     //connect button
     connect(ui->updateButton, &QPushButton::clicked, this, &ViewUpdateBook::updateButtonClicked);
-
+    connect(ui->deleteButton, &QPushButton::clicked, this, &ViewUpdateBook::deleteButtonClicked);
     //allowing for drag and drop features
     setAcceptDrops(true);
     ui->coverPreviewLabel->setAcceptDrops(true);
@@ -35,7 +36,6 @@ ViewUpdateBook::~ViewUpdateBook() {
 
 void ViewUpdateBook::populateDetails(const QString &isbn){
 
-    qDebug()<<"Pop:"<<isbn;
     ManagementBook bookManager;
     QJsonObject bookDetails = bookManager.getBookDetails(isbn);
 
@@ -46,10 +46,11 @@ void ViewUpdateBook::populateDetails(const QString &isbn){
 
     ui->titleLineEdit->setText(bookDetails["title"].toString());
     ui->authorLineEdit->setText(bookDetails["author"].toString());
-    ui->isbnLineEdit->setText(bookDetails["isbn"].toString());
     ui->genreLineEdit->setText(bookDetails["genre"].toString());
     ui->sectionLineEdit->setText(bookDetails["sect"].toString());
     ui->descriptionTextEdit->setText(bookDetails["desc"].toString());
+    ui->storedIsbnLabel->setText(bookDetails["isbn"].toString());
+    ui->storedIsbnLabel->hide();
 }
 
 //logic for users to drag file onto window
@@ -95,7 +96,6 @@ void ViewUpdateBook::updateButtonClicked(){
     qDebug()<<"viewUpdateBook: Storing Updates";
     updatedBook["title"] = ui->titleLineEdit->text();
     updatedBook["author"]= ui->authorLineEdit->text();
-    updatedBook["isbn"] = ui->isbnLineEdit->text();
     updatedBook["genre"] = ui->genreLineEdit->text();
     updatedBook["sect"] = ui->sectionLineEdit->text();
     updatedBook["desc"] = ui->descriptionTextEdit->toPlainText();
@@ -104,7 +104,7 @@ void ViewUpdateBook::updateButtonClicked(){
 
     //save image if one provided
     if(!imageLocation.isEmpty()){
-        QString saveLocation = bookManager.findCoverPath()+ui->isbnLineEdit->text()+".png";
+        QString saveLocation = bookManager.findCoverPath()+ui->storedIsbnLabel->text()+".png";
 
         //checking if file already exists
         if(QFile::exists(saveLocation)){
@@ -122,25 +122,33 @@ void ViewUpdateBook::updateButtonClicked(){
 
     qDebug()<<"viewUpdateBook: Starting update process";
 
-    if(bookManager.updateBook(ui->isbnLineEdit->text(), updatedBook)){
+    bool updated = bookManager.updateBook(ui->storedIsbnLabel->text(), updatedBook);
+
+    if(updated || !imageLocation.isEmpty()){
         qDebug()<<"viewUpdateBook: Requesting display refreash";
         emit requestRefreash();
         accept();
+    } else {
+        ui->errorLabel->setText("No Updates Identified");
+    }
+}
+
+void ViewUpdateBook::deleteButtonClicked(){
+    ManagementBook bookManager;
+
+    if(bookManager.isIssued(ui->storedIsbnLabel->text()) || bookManager.hasHolds(ui->storedIsbnLabel->text())){
+        qDebug()<<"ViewUpdateBook: Cant delete book due to activity";
+        QMessageBox::warning(this,tr("Delete Denied"),tr("Book currently has active loans and/or holds. Please remove these first."), QMessageBox::Ok);
+    } else {
+        qDebug()<<"ViewUpdateBook: Book can be deleted";
+        if(bookManager.deleteBook(ui->storedIsbnLabel->text())){
+            emit requestRefreash();
+            accept();
+        }
     }
 }
 
 
 // --------------- public methods ---------------
-
-
-void ViewUpdateBook::initialize(const QString &isbn) {
-
-    qDebug()<<"init:"<<isbn;
-    if(!isbn.isEmpty()){
-        populateDetails(isbn);
-    } else {
-        qDebug()<<"viewUpdateBook: Isbn is empty. Cannon load details";
-    }
-}
 
 

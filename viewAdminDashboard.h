@@ -34,6 +34,8 @@ public:
     //setters
     void setAdminUser(const QString& username);
 
+    //getters
+    QString getAdminUser();
 
     void displayAdminCatalogue();
     void displayUsers();
@@ -44,7 +46,7 @@ public:
 signals:
     void logoutRequest();
     void requestBookInfo(QJsonObject& bookDetails, const QString& username);
-    void requestMemberInfo(QJsonObject& bookDetails);
+    void requestMemberInfo(QJsonObject& bookDetails, const QString& adminUser);
 };
 
 #endif // VIEWADMINDASHBOARD_H

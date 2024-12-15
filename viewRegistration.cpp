@@ -22,6 +22,38 @@ void ViewRegistration::submitButtonClicked() {
 
     QJsonObject newUser;
 
+    bool missingdata = false;
+
+    if(ui->nameLineEdit->text().isEmpty()){
+        missingdata = true;
+    }
+
+    if(ui->usernameLineEdit->text().isEmpty()){
+        missingdata = true;
+    }
+
+    if(ui->passwordLineEdit->text().isEmpty()){
+        missingdata = true;
+    }
+
+    if(ui->phoneLineEdit->text().isEmpty()){
+        missingdata = true;
+    }
+
+    if(ui->emailLineEdit->text().isEmpty()){
+        missingdata = true;
+    }
+
+    if(ui->addressLineEdit->text().isEmpty()){
+        missingdata = true;
+    }
+
+    if(missingdata){
+        qDebug()<<"ViewRegistration: Not all fields have been filled";
+        ui->errorLabel->setText("Please complete all fields before submitting");
+        return;
+    }
+
     newUser["name"] = ui->nameLineEdit->text();
     newUser["username"] = (ui->usernameLineEdit->text()).toLower();
     newUser["password"] = ui->passwordLineEdit->text();
@@ -35,6 +67,7 @@ void ViewRegistration::submitButtonClicked() {
 
         if(memberAdded){
             qDebug()<<"viewRegistration: Member added Succesfully";
+            ui->errorLabel->clear();
             //return to login screen
             emit loginRequest();
         } else {
@@ -47,5 +80,6 @@ void ViewRegistration::submitButtonClicked() {
 }
 
 void ViewRegistration::cancelButtonClicked() {
+    ui->errorLabel->clear();
     emit loginRequest();
 }

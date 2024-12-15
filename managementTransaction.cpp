@@ -614,6 +614,19 @@ void ManagementTransaction::setBookAvailibityOptions(QWidget* uiObject, const QJ
             }
         }
     }
+
+    //hide hold request details used in admin book info view
+    QLabel* requestLabel = uiObject->findChild<QLabel*>("requestLabel");
+    QLabel* requestDisplayLabel = uiObject->findChild<QLabel*>("requestOutputLabel");
+
+    if(requestLabel && requestDisplayLabel){
+        requestLabel->hide();
+        requestDisplayLabel->hide();
+    }
+
+    // requestLabel->hide();
+    // requestDisplayLabel->hide();
+
     if (availabilityPage) {
         index = availabilityWidget->indexOf(availabilityPage);
         availabilityWidget->setCurrentIndex(index);

@@ -4,7 +4,7 @@
 #include "managementUser.h"
 #include "managementBook.h"
 
-#include "qpushbutton.h";
+#include "qpushbutton.h"
 
 class ManagementTransaction : public ManagementUser, public ManagementBook {
 
@@ -33,7 +33,6 @@ public:
     QString checkedOutTo(const QString& isbn);
     bool bookIsDue(const QString &username, const QString &isbn);
     bool bookIsOverDue(const QString &username, const QString &isbn);
-    QJsonArray getActiveLoans(const QString& username);
     void setBookAvailibityOptions(QWidget* uiObject, const QJsonObject& book, const QString& username);
 };
 

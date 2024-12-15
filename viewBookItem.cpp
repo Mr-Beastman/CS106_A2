@@ -86,7 +86,6 @@ void ViewBookItem::confirmButtonClicked(){
 void ViewBookItem::editBook(){
     ViewUpdateBook* viewUpdateBook = new ViewUpdateBook(this);
     ViewAdminDashboard* viewAdminDashboard = qobject_cast<ViewAdminDashboard*>(parentWidget());
-    qDebug()<<"parent widget is: "<<parentWidget();
     connect(viewUpdateBook, &ViewUpdateBook::updateDisplayRequest, viewAdminDashboard, &ViewAdminDashboard::updateDisplays);
 
     viewUpdateBook->populateDetails(ui->isbnOutputLabel->text());
