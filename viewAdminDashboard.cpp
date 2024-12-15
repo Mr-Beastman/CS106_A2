@@ -24,6 +24,9 @@ void ViewAdminDashboard::setAdminUser(const QString& username){
     adminUser = username;
 }
 
+//dyanmically populate users list from the Json file ["users"]
+//parameters: none
+//returns: none
 void ViewAdminDashboard::displayUsers() {
 
     ManagementUser userManager;
@@ -41,9 +44,11 @@ void ViewAdminDashboard::displayUsers() {
 
         //adding the users details
         QLabel*nameEntryLabel = new QLabel("Name: " +user["name"].toString());
+        QLabel*usernameEntryLavbel = new QLabel("Username: " +user["username"].toString());
         QLabel*accountEntryLabel = new QLabel("account #: " +user["account"].toString());
         QLabel*phoneEntryLabel = new QLabel("Phone: " +user["phone"].toString());
         QLabel*emailEntryLabel = new QLabel("Email: " +user["email"].toString());
+        QLabel*activeEntryLabel = new QLabel("Active: ");
 
         //display isActive Status
         QLabel*isActiveLabel = new QLabel();
@@ -55,10 +60,21 @@ void ViewAdminDashboard::displayUsers() {
 
         //adding widgest to layout
         layout->addWidget(nameEntryLabel);
+        layout->addWidget(usernameEntryLavbel);
         layout->addWidget(accountEntryLabel);
         layout->addWidget(phoneEntryLabel);
         layout->addWidget(emailEntryLabel);
+        layout->addWidget(activeEntryLabel);
         layout->addWidget(isActiveLabel);
+
+        //setting stretchFactors
+        layout->setStretch(0,1);
+        layout->setStretch(1,1);
+        layout->setStretch(2,1);
+        layout->setStretch(3,1);
+        layout->setStretch(4,1);
+        layout->setStretch(5,0);
+        layout->setStretch(6,1);
 
 
         QListWidgetItem *entry = new QListWidgetItem();

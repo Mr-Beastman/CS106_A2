@@ -139,6 +139,7 @@ void MainWindow::showBookInfo(QJsonObject &bookDetails, const QString& username)
     bookInfoPage->setBookDetails(bookDetails);
     bookInfoPage->setCurrentUser(username);
     bookInfoPage->setBookAvailibity(bookDetails,username);
+    bookInfoPage->populateCurrentHolds(bookDetails);
 
     ManagementUser userManager;
     if(userManager.isAdmin(loggedIn)){

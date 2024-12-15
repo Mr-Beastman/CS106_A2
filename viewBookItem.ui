@@ -196,7 +196,7 @@
       <item>
        <widget class="QStackedWidget" name="availabilityWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="availablePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">

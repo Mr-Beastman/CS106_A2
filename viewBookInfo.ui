@@ -107,6 +107,28 @@ QLabel{
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="backButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>back</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
       <bool>true</bool>
@@ -117,7 +139,7 @@ QLabel{
         <x>0</x>
         <y>0</y>
         <width>1201</width>
-        <height>601</height>
+        <height>604</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -126,28 +148,6 @@ QLabel{
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="backButton">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LayoutDirection::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>back</string>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QWidget" name="bookLayout" native="true">
          <property name="styleSheet">
@@ -243,7 +243,7 @@ QLabel{
                   <item>
                    <widget class="QStackedWidget" name="availabilityWidget">
                     <property name="currentIndex">
-                     <number>4</number>
+                     <number>6</number>
                     </property>
                     <widget class="QWidget" name="availablePage">
                      <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -257,6 +257,23 @@ QLabel{
                         </property>
                         <property name="text">
                          <string>Available</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="dueBackPage">
+                     <layout class="QVBoxLayout" name="verticalLayout_7">
+                      <item>
+                       <widget class="QLabel" name="dueBackLabel">
+                        <property name="styleSheet">
+                         <string notr="true">#dueBackLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(226, 106, 1);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Book is due back soon</string>
                         </property>
                        </widget>
                       </item>
@@ -325,6 +342,23 @@ QLabel{
                         </property>
                         <property name="text">
                          <string>Not Available</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="overduePage">
+                     <layout class="QVBoxLayout" name="verticalLayout_2">
+                      <item>
+                       <widget class="QLabel" name="overdueLabel">
+                        <property name="styleSheet">
+                         <string notr="true">#overdueLabel{
+	font: 700 12pt &quot;Segoe UI&quot;;
+	color: rgb(255, 0, 0);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>OVERDUE</string>
                         </property>
                        </widget>
                       </item>
@@ -634,16 +668,42 @@ QLabel{
        </item>
        <item>
         <widget class="QWidget" name="adminInfoDisplay" native="true">
+         <property name="styleSheet">
+          <string notr="true">#adminInfoDisplay{
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+	background-color: rgb(227, 238, 219);
+}</string>
+         </property>
          <layout class="QVBoxLayout" name="adminInfoLayout">
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>TextLabel</string>
+             <string>Current Hold Requests</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidget"/>
+           <widget class="QStackedWidget" name="holdStackedWidget">
+            <widget class="QWidget" name="currentHoldPage">
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <item>
+               <widget class="QListWidget" name="holdList"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="noCurrentHoldPage">
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <item>
+               <widget class="QLabel" name="noHoldsLabel">
+                <property name="text">
+                 <string>No current hold requests</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
           </item>
          </layout>
         </widget>

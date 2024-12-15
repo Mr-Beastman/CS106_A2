@@ -6,10 +6,7 @@
             "genre": "LitRpg",
             "inQueue": [
                 {
-                    "holdId": "{7799c023-c33e-495e-9b08-920908afffc0}"
-                },
-                {
-                    "holdId": "{37721cb7-eaf3-410e-a3cd-8804a1055c90}"
+                    "holdId": "{f5f445c4-6331-4c2d-a752-a44c69f6fc08}"
                 }
             ],
             "isAvailable": false,
@@ -24,9 +21,9 @@
             "genre": "Romantasy",
             "inQueue": [
             ],
-            "isAvailable": true,
+            "isAvailable": false,
             "isbn": "B0BGDM197Q",
-            "issuedTo": "",
+            "issuedTo": "windrunner",
             "sect": "Fiction",
             "title": "Fourth Wing : The Empyrean Book 1"
         },
@@ -80,18 +77,11 @@
     ],
     "holds": [
         {
-            "holdDate": "14-mm-2024",
-            "holdId": "{7799c023-c33e-495e-9b08-920908afffc0}",
+            "holdDate": "15-mm-2024",
+            "holdId": "{f5f445c4-6331-4c2d-a752-a44c69f6fc08}",
             "holdStatus": "ready",
             "isbn": "B0CVD8D7H6",
-            "username": "ratmaster"
-        },
-        {
-            "holdDate": "14-mm-2024",
-            "holdId": "{37721cb7-eaf3-410e-a3cd-8804a1055c90}",
-            "holdStatus": "active",
-            "isbn": "B0CVD8D7H6",
-            "username": "ratmaster"
+            "username": "pumpkinking"
         }
     ],
     "users": [
@@ -109,6 +99,12 @@
         {
             "account": "21620",
             "activeLoans": [
+                {
+                    "checkoutDate": "Sun Dec 15 14:21:39 2024",
+                    "dueDate": "14/01/2025",
+                    "isbn": "B0BGDM197Q",
+                    "status": "active"
+                }
             ],
             "address": "Urithiru",
             "email": "Storms@Archives.com",
@@ -128,6 +124,9 @@
             "address": "Jack Skellington",
             "email": "SandyClaws@halloween.com",
             "holdRequests": [
+                {
+                    "holdId": "{f5f445c4-6331-4c2d-a752-a44c69f6fc08}"
+                }
             ],
             "isActive": true,
             "isAdmin": false,
@@ -143,12 +142,6 @@
             "address": "The Sewers",
             "email": "TurtleDad1969@gmail.com",
             "holdRequests": [
-                {
-                    "holdId": "{7799c023-c33e-495e-9b08-920908afffc0}"
-                },
-                {
-                    "holdId": "{37721cb7-eaf3-410e-a3cd-8804a1055c90}"
-                }
             ],
             "isActive": true,
             "isAdmin": false,

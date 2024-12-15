@@ -272,20 +272,13 @@ QString ManagementTransaction::generateHoldId() {
 }
 
 QString ManagementTransaction::checkHoldstatus(const QString &holdId){
-    QJsonArray bookArray = getBookArray();
 
-    for(int i = 0; i<bookArray.size(); i++){
-        QJsonObject book = bookArray[i].toObject();
+    for(int i = 0; i<holdArray.size(); i++){
+        QJsonObject hold = holdArray[i].toObject();
 
-        QJsonArray inQueue = book["inQueue"].toArray();
-
-        for(int j = 0; j<inQueue.size(); j++){
-            QJsonObject entry = inQueue[i].toObject();
-
-            if(entry["holdId"].toString() == holdId){
-                qDebug()<<"ManagementTransaction: Returning hold Status";
-                return entry["holdStatus"].toString();
-            }
+        qDebug()<<hold["holdId"].toString();
+        if(hold["holdId"].toString() == holdId){
+            return hold["holdStatus"].toString();
         }
     }
     //if not found display error and return empty string
@@ -531,14 +524,18 @@ void ManagementTransaction::setBookAvailibityOptions(QWidget* uiObject, const QJ
             availabilityPage = uiObject->findChild<QWidget*>("availablePage");
         } else {
             if(!queue.isEmpty()){
+                qDebug()<<"Hold status for "<<book["title"].toString()<<" is has a queue";
                 QJsonObject firstInQueue = queue[0].toObject();
-                QString holdStatus = firstInQueue["holdStatus"].toString();
+                QString holdStatus = checkHoldstatus(firstInQueue["holdId"].toString());
+                qDebug()<<"Hold status for "<<book["title"].toString()<<" is "<< holdStatus;
 
                 if(holdStatus == "ready"){
                     returnButton->hide();
-                    availabilityPage = uiObject->findChild<QWidget*>("holdReadyPage");
+                    qDebug()<<"setting availability to hold ready";
+                    availabilityPage = uiObject->findChild<QWidget*>("holdReadyDisplayPage");
                 } else if (holdStatus == "active"){
                     returnButton->show();
+                    qDebug()<<"setting availability to not ready";
                     availabilityPage = uiObject->findChild<QWidget*>("notAvailablePage");
                 }
             } else {
@@ -546,9 +543,9 @@ void ManagementTransaction::setBookAvailibityOptions(QWidget* uiObject, const QJ
                 availabilityPage = uiObject->findChild<QWidget*>("notAvailablePage");
             }
         }
-
         QLabel* queueLabel = uiObject->findChild<QLabel*>("QueueOutputLabel");
         queueLabel->setText(QString::number(queue.size()));
+
     } else {
         //setting members displays
         if (book["isAvailable"].toBool()) {
@@ -617,7 +614,6 @@ void ManagementTransaction::setBookAvailibityOptions(QWidget* uiObject, const QJ
             }
         }
     }
-
     if (availabilityPage) {
         index = availabilityWidget->indexOf(availabilityPage);
         availabilityWidget->setCurrentIndex(index);

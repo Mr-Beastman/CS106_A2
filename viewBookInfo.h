@@ -38,6 +38,7 @@ public:
     void hideAdminInfo();
     void showAdminInfo();
     void setCurrentUser(const QString& username);
+    void populateCurrentHolds(const QJsonObject &bookDetails);
 
 signals:
     void goBack();

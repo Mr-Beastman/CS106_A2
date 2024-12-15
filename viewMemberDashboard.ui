@@ -109,7 +109,7 @@ QPushButton{
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-79</y>
+        <y>-97</y>
         <width>1085</width>
         <height>1015</height>
        </rect>
@@ -618,6 +618,12 @@ border-color: rgb(158, 206, 104);
 QListWidget::item::hover{
 	background-color: rgb(100, 130, 66);
 }</string>
+                          </property>
+                          <property name="verticalScrollBarPolicy">
+                           <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+                          </property>
+                          <property name="horizontalScrollBarPolicy">
+                           <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
                           </property>
                           <property name="isWrapping" stdset="0">
                            <bool>false</bool>

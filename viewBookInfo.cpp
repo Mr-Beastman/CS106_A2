@@ -152,3 +152,69 @@ void ViewBookInfo::showAdminInfo(){
 void ViewBookInfo::setCurrentUser(const QString &username){
     currentUser = username;
 }
+
+void ViewBookInfo::populateCurrentHolds(const QJsonObject &bookDetails){
+    QJsonArray holdRequests = bookDetails["inQueue"].toArray();
+
+    //end if user has no active holds
+    if(holdRequests.isEmpty()){
+        qDebug()<<"ViewMemberInfo: No hold requets to display";
+        ui->holdStackedWidget->setCurrentWidget(ui->noCurrentHoldPage);
+        return;
+    }
+
+    qDebug()<<"viewMemberInfo: Active holds found, generating list";
+    ui->holdStackedWidget->setCurrentWidget(ui->currentHoldPage);
+
+    //ensure clean list on updating
+    ui->holdList->clear();
+
+
+    ManagementTransaction transactionManager;
+
+    QJsonArray holdArray = transactionManager.getHoldArray();
+
+    for(int i = 0; i<holdRequests.size(); i++){
+        QJsonObject userHold = holdRequests[i].toObject();
+
+        for(int j = 0; j<holdArray.size(); j++){
+            QJsonObject holdEntry = holdArray[j].toObject();
+
+            if(userHold["holdId"].toString() == holdEntry["holdId"].toString()){
+
+                ManagementBook bookManager;
+                //creating viewBookItem for hold
+                ViewBookItem* viewBookItem = bookManager.createBookList(bookDetails, holdEntry);
+
+                //dynamically adding a label to identify who has made the requests
+
+                //adding entry to list
+                QListWidgetItem* item = new QListWidgetItem(ui->holdList);
+
+                //adding alternating colors
+                if(i % 2 == 0){
+                    item->setBackground(QBrush(QColor(158,206,104)));
+                } else {
+                    item->setBackground(QBrush(QColor(187,211,180)));
+                }
+
+                item->setSizeHint(viewBookItem->sizeHint());
+
+                //storing hidden values for transactions
+                QString holdId = holdEntry["holdId"].toString();
+                QLabel* idLabel = viewBookItem->findChild<QLabel*>("holdStoredIdLabel");
+                idLabel->setText(holdId);
+                QLabel* usernameLabel = viewBookItem->findChild<QLabel*>("usernameStoredLabel");
+                usernameLabel->setText(holdEntry["username"].toString());
+
+                //setting availability and members action displays
+                //set book availbity and the options aavialble
+                transactionManager.setBookAvailibityOptions(viewBookItem, bookDetails, holdEntry["username"].toString());
+                ui->holdList->setItemWidget(item, viewBookItem);
+            }
+        }
+
+    }
+}
+
+

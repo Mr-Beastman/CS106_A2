@@ -1,5 +1,6 @@
 #include "viewMemberInfo.h"
 #include "managementBook.h"
+#include "managementTransaction.h"
 #include "ui_viewMemberInfo.h"
 #include "managementUser.h"
 #include "viewUpdateUser.h"
@@ -29,6 +30,7 @@ void ViewMemberInfo::generateCheckedout(const QString account){
 
     ManagementUser userManager;
     ManagementBook bookManager;
+    ManagementTransaction transactionManager;
 
     QJsonObject user = userManager.getUserObjAccount(account);
     QJsonArray activeLoans = user["activeLoans"].toArray();
@@ -52,12 +54,8 @@ void ViewMemberInfo::generateCheckedout(const QString account){
 
         ViewBookItem* listItem = bookManager.createBookList(book, loan);
 
-        //setting display
-        QStackedWidget* stackedWidget = listItem->findChild<QStackedWidget*>("optionsStackedWidget");
-        int index = stackedWidget->indexOf(listItem->findChild<QWidget*>("userCheckedoutPage"));
-        stackedWidget->setCurrentIndex(index);
-        QLabel* dueLabel = listItem->findChild<QLabel*>("dueOutputLabel");
-        dueLabel->setText(loan["dueDate"].toString());
+        //set book availbity and the options aavialble
+        transactionManager.setBookAvailibityOptions(listItem, book, user["username"].toString());
 
         //adding loan entry to list
         QListWidgetItem* entry = new QListWidgetItem(ui->issuedList);
@@ -85,11 +83,13 @@ void ViewMemberInfo::displayHoldRequests(const QString accountNumber){
     //set managers
     ManagementUser userManager;
     ManagementBook bookManager;
+    ManagementTransaction transactionManager;
 
     //get user and book data
     QJsonObject user = userManager.getUserObjAccount(accountNumber);
     QJsonArray activeHolds = user["holdRequests"].toArray();
     QJsonArray bookArray = bookManager.getBookArray();
+    QJsonArray holdsArray = transactionManager.getHoldArray();
 
     //end if user has no active holds
     if(activeHolds.isEmpty()){
@@ -104,69 +104,50 @@ void ViewMemberInfo::displayHoldRequests(const QString accountNumber){
     //ensure clean list on updating
     ui->holdList->clear();
 
-    for(int i = 0; i<activeHolds.size(); i++){
-        QJsonObject hold = activeHolds[i].toObject();
-        QString holdIsbn  = hold["isbn"].toString();
-        QString holdId = hold["holdId"].toString();
+    qDebug()<<"ViewMemberDashboard: Generating users hold items";
+    //build items for list to display
+    for(int i = 0; i<activeHolds.size(); ++i){
+        QJsonObject userHold = activeHolds[i].toObject();
 
-        for(int j = 0; j<bookArray.size(); j++){
-            QJsonObject book = bookArray[j].toObject();
+        for(int j = 0; j<holdsArray.size(); j++){
+            QJsonObject storedHold = holdsArray[i].toObject();
 
-            if(book["isbn"].toString() == holdIsbn){
+            if(userHold["holdId"].toString() == storedHold["holdId"].toString()){
 
-                QJsonArray bookQueue = book["inQueue"].toArray();
+                QJsonObject book = bookManager.getBookDetails(storedHold["isbn"].toString());
 
-                for(int k = 0; k<bookQueue.size(); k++){
-                    QJsonObject userPlace = bookQueue[k].toObject();
+                qDebug()<<book["title"].toString();
 
-                    if(userPlace["holdId"] == holdId){
-                        QString holdStatus = userPlace["holdStatus"].toString();
+                //creating viewBookItem for hold
+                ViewBookItem* viewBookItem = bookManager.createBookList(book, userHold);
 
-                        ViewBookItem* listItem = bookManager.createBookList(book, hold);
+                //adding entry to list
+                QListWidgetItem* item = new QListWidgetItem(ui->holdList);
 
-                        //setting display
-                        QStackedWidget* availibiltyWidget = listItem->findChild<QStackedWidget*>("availabilityWidget");
-                        QStackedWidget* optionsWidget = listItem->findChild<QStackedWidget*>("optionsStackedWidget");
-                        int index;
-
-                        if(holdStatus == "active"){
-                            index = availibiltyWidget->indexOf(listItem->findChild<QWidget*>("holdPendingPage"));
-                            availibiltyWidget->setCurrentIndex(index);
-                            index = optionsWidget->indexOf(listItem->findChild<QWidget*>("holdActiveLabelLayout"));
-                            optionsWidget->setCurrentIndex(index);
-                            QLabel* placeInQueue = listItem->findChild<QLabel*>("queuePlaceOutPutLabel");
-                            placeInQueue->setText(QString::number(k+1));
-
-                        } else {
-                            index = availibiltyWidget->indexOf(listItem->findChild<QWidget*>("holdReadyPage"));
-                            availibiltyWidget->setCurrentIndex(index);
-                            optionsWidget->hide();
-                        }
-
-                        QLabel* holdIdWidget = listItem->findChild<QLabel*>("holdIdOutputLabel");
-                        holdIdWidget->setText(holdId);
-
-                        //adding loan entry to list
-                        QListWidgetItem* entry = new QListWidgetItem(ui->holdList);
-
-                        //assigning isbn to item
-                        entry->setData(Qt::UserRole, book["isbn"].toString());
-
-                        //entry display settings
-                        entry->setSizeHint(listItem->sizeHint());
-
-                        if(i % 2 == 0){
-                            entry->setBackground(QBrush(QColor(158,206,104)));
-                        } else {
-                            entry->setBackground(QBrush(QColor(187,211,180)));
-                        }
-
-                        ui->holdList->setItemWidget(entry, listItem);
-                    }
+                //adding alternating colors
+                if(i % 2 == 0){
+                    item->setBackground(QBrush(QColor(158,206,104)));
+                } else {
+                    item->setBackground(QBrush(QColor(187,211,180)));
                 }
+
+                item->setSizeHint(viewBookItem->sizeHint());
+
+                //storing hidden values for transactions
+                QString holdId = userHold["holdId"].toString();
+                QLabel* idLabel = viewBookItem->findChild<QLabel*>("holdStoredIdLabel");
+                idLabel->setText(holdId);
+                QLabel* usernameLabel = viewBookItem->findChild<QLabel*>("usernameStoredLabel");
+                usernameLabel->setText(user["username"].toString());
+
+                //setting availability and members action displays
+                //set book availbity and the options aavialble
+                transactionManager.setBookAvailibityOptions(viewBookItem, book, user["username"].toString());
+                ui->holdList->setItemWidget(item, viewBookItem);
             }
         }
     }
+
 }
 
 void ViewMemberInfo::backButtonClicked(){
