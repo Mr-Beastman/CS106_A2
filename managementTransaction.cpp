@@ -1,4 +1,5 @@
 #include "managementTransaction.h"
+#include <QPushButton>
 
 //place hold a curretnly checked out book
 //parameters : username requesting hold and isbn of book to hold
@@ -531,11 +532,9 @@ void ManagementTransaction::setBookAvailibityOptions(QWidget* uiObject, const QJ
 
                 if(holdStatus == "ready"){
                     returnButton->hide();
-                    qDebug()<<"setting availability to hold ready";
                     availabilityPage = uiObject->findChild<QWidget*>("holdReadyDisplayPage");
                 } else if (holdStatus == "active"){
                     returnButton->show();
-                    qDebug()<<"setting availability to not ready";
                     availabilityPage = uiObject->findChild<QWidget*>("notAvailablePage");
                 }
             } else {
@@ -570,7 +569,7 @@ void ManagementTransaction::setBookAvailibityOptions(QWidget* uiObject, const QJ
             bool userHold = false;
             QString status;
             QString holdId;
-            int place;
+            int place = 0;
 
             for (int j = 0; j < holdArray.size(); ++j) {
                 QJsonObject hold = holdArray[j].toObject();
@@ -634,5 +633,83 @@ void ManagementTransaction::setBookAvailibityOptions(QWidget* uiObject, const QJ
     if (optionsPage) {
         index = optionsWidget->indexOf(optionsPage);
         optionsWidget->setCurrentIndex(index);
+    }
+}
+
+void ManagementTransaction::updateOverdueLoans() {
+    QDate currentDate = QDate::currentDate();
+    bool updateMade = false;
+
+    for (int i = 0; i < userArray.size(); i++) {
+        QJsonObject user = userArray[i].toObject();
+
+        if (user.contains("activeLoans")) {
+            QJsonArray activeLoans = user["activeLoans"].toArray();
+
+            for (int j = 0; j < activeLoans.size(); j++) {
+                QJsonObject loan = activeLoans[j].toObject();
+                QString dueDateString = loan["dueDate"].toString();
+                QDate dueDate = QDate::fromString(dueDateString, "dd/MM/yyyy");
+
+                if (currentDate > dueDate && loan["status"].toString() != "overdue") {
+                    loan["status"] = "overdue";
+                    activeLoans.replace(j, loan);
+                    updateMade = true;
+                }
+            }
+            user["activeLoans"] = activeLoans;
+            userArray.replace(i, user);
+        }
+    }
+
+    if (updateMade) {
+        QJsonObject& database = getFileData();
+        database["users"] = userArray;
+
+        if (saveData()) {
+            qDebug() << "ManagementTransaction: Updated overdue loans";
+        } else {
+            qDebug() << "ManagementTransaction: Failed to update overdue loans";
+        }
+    }
+}
+
+void ManagementTransaction::updateDueLoans(){
+    QDate currentDate = QDate::currentDate();
+    bool updateMade = false;
+
+    for (int i = 0; i < userArray.size(); i++) {
+        QJsonObject user = userArray[i].toObject();
+
+        if (user.contains("activeLoans")) {
+            QJsonArray activeLoans = user["activeLoans"].toArray();
+
+            for (int j = 0; j < activeLoans.size(); j++) {
+                QJsonObject loan = activeLoans[j].toObject();
+                QString dueDateString = loan["dueDate"].toString();
+                QDate dueDate = QDate::fromString(dueDateString, "dd/MM/yyyy");
+
+                //check if the due date is within the next 7 days
+                int daysToDue = currentDate.daysTo(dueDate);
+                if (daysToDue > 0 && daysToDue <= 7 && loan["status"].toString() != "due") {
+                    loan["status"] = "due";
+                    activeLoans.replace(j, loan);
+                    updateMade = true;
+                }
+            }
+            user["activeLoans"] = activeLoans;
+            userArray.replace(i, user);
+        }
+    }
+
+    if (updateMade) {
+        QJsonObject& database = getFileData();
+        database["users"] = userArray;
+
+        if (saveData()) {
+            qDebug() << "ManagementTransaction: Updated due loans";
+        } else {
+            qDebug() << "ManagementTransaction: Failed to update due loans";
+        }
     }
 }

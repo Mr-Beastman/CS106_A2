@@ -16,7 +16,7 @@ public:
     //setters
     void setCurrentUser(const QString username);
     void setUserArray();
-    void clearCurrentUser();
+
 
     //getters
     QString& getCurrentUser();
@@ -27,7 +27,6 @@ public:
 
 
     //methods
-    void updateCurrentUser();
     bool usernameExists(QJsonObject& user);
     bool addUser(QJsonObject &newUser);
     bool updateUser(const QString& account, QJsonObject& updatedDetails);
@@ -35,10 +34,9 @@ public:
     bool verifyLogin(const QString& usernameInput, const QString& passwordInput);
     bool isAdmin(const QString& usernameInput);
     bool isActive(const QString &usernameInput);
-    bool activateUser(const QString& usernameInput);
-    bool deleteMember(const QString& accountNumber);
-    void updateUserArray(QJsonArray array);
-    void clearUserArray();
+    bool activateUser(QJsonObject &userAccount);
+    bool deleteUser(const QString& accountNumber);
+    void clearCurrentUser();
 };
 
 #endif // ManagementUser_H

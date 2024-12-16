@@ -101,7 +101,7 @@ QPushButton:pressed {
 }</string>
            </property>
            <property name="text">
-            <string>Description</string>
+            <string>Description*</string>
            </property>
           </widget>
          </item>
@@ -125,7 +125,7 @@ QPushButton:pressed {
 }</string>
            </property>
            <property name="text">
-            <string>Title</string>
+            <string>Title*</string>
            </property>
           </widget>
          </item>
@@ -138,7 +138,7 @@ QPushButton:pressed {
 }</string>
            </property>
            <property name="text">
-            <string>Author</string>
+            <string>Author*</string>
            </property>
           </widget>
          </item>
@@ -151,7 +151,7 @@ QPushButton:pressed {
 }</string>
            </property>
            <property name="text">
-            <string>ISBN</string>
+            <string>ISBN*</string>
            </property>
           </widget>
          </item>
@@ -253,6 +253,22 @@ QPushButton:pressed {
          </property>
          <property name="text">
           <string>Drag Cover Image Here</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="errorLabel">
+         <property name="styleSheet">
+          <string notr="true">#errorLabel{
+	color: rgb(255, 0, 0);
+	font: 700 9pt &quot;Segoe UI&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignmentFlag::AlignCenter</set>

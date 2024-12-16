@@ -13,7 +13,7 @@ ViewMemberInfo::ViewMemberInfo(QWidget* parent) : QDialog(parent), ui(new Ui::Vi
     connect(ui->backButton, &QPushButton::clicked, this, &ViewMemberInfo::backButtonClicked);
     connect(ui->activateButton, &QPushButton::clicked, this, &ViewMemberInfo::activateButtonClicked);
     connect(ui->updateButton, &QPushButton::clicked, this, &ViewMemberInfo::updateButtonClicked);
-    connect(ui->deleteMember, &QPushButton::clicked, this, &ViewMemberInfo::deleteButtonClicked);
+    connect(ui->deleteUser, &QPushButton::clicked, this, &ViewMemberInfo::deleteButtonClicked);
     connect(ui->logoutButton, &QPushButton::clicked, this, &ViewMemberInfo::logoutButtonClicked);
 }
 
@@ -163,8 +163,11 @@ void ViewMemberInfo::backButtonClicked(){
 
 void ViewMemberInfo::activateButtonClicked(){
     ManagementUser userManager;
-    userManager.activateUser(ui->accountOutputLabel->text());
-    updateDisplay(userManager.getUserObjAccount(ui->accountOutputLabel->text()));
+
+    QJsonObject user = userManager.getUserObjAccount(ui->accountOutputLabel->text());
+
+    userManager.activateUser(user);
+    updateDisplay(user);
     emit requestUpdateDisplay();
 }
 
@@ -185,7 +188,7 @@ void ViewMemberInfo::deleteButtonClicked(){
 
         if(response == QMessageBox::Yes){
             qDebug()<<"ViewMemberInfo: User confirmed the deletion request";
-            userManager.deleteMember(ui->accountOutputLabel->text());
+            userManager.deleteUser(ui->accountOutputLabel->text());
             emit requestUpdateDisplay();
             emit goBackAdmin();
         } else {

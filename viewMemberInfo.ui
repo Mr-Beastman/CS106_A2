@@ -114,6 +114,63 @@ QPushButton:pressed {
     </widget>
    </item>
    <item>
+    <widget class="QWidget" name="backButtonLayout" native="true">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#backButtonLayout{
+	background-color: rgb(255, 255, 255);
+}</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>50</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="backButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Back</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="styleSheet">
       <string notr="true">#scrollArea::viewport{
@@ -129,7 +186,7 @@ QPushButton:pressed {
         <x>0</x>
         <y>0</y>
         <width>1067</width>
-        <height>1042</height>
+        <height>861</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -138,31 +195,12 @@ QPushButton:pressed {
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="backButton">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LayoutDirection::LeftToRight</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>Back</string>
-         </property>
-        </widget>
-       </item>
+       <property name="leftMargin">
+        <number>50</number>
+       </property>
+       <property name="rightMargin">
+        <number>50</number>
+       </property>
        <item>
         <widget class="QWidget" name="profileContent" native="true">
          <property name="styleSheet">
@@ -221,6 +259,9 @@ QPushButton:pressed {
                </property>
                <property name="text">
                 <string>Profile</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
                </property>
               </widget>
              </item>
@@ -484,6 +525,9 @@ QPushButton:pressed {
 </string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0,2">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -514,11 +558,23 @@ QPushButton:pressed {
             <property name="text">
              <string>Issued</string>
             </property>
+            <property name="margin">
+             <number>5</number>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QWidget" name="issuedContentLayout" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_16">
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
              <item>
               <widget class="QStackedWidget" name="issuedStackedWidget">
                <property name="styleSheet">
@@ -545,6 +601,21 @@ QPushButton:pressed {
                  </sizepolicy>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_10">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <widget class="QListWidget" name="issuedList">
                    <property name="sizePolicy">
@@ -561,7 +632,8 @@ QPushButton:pressed {
                    </property>
                    <property name="styleSheet">
                     <string notr="true">#issuedList{
-	background-color: rgb(255, 255, 255);
+	background-color: rgb(227, 238, 219);
+	border: 0px;
 }
 
 #issuedList::item::hover{
@@ -675,10 +747,22 @@ QPushButton:pressed {
 </string>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="holdPage">
                 <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <widget class="QListWidget" name="holdList">
                    <property name="sizePolicy">
@@ -695,7 +779,8 @@ QPushButton:pressed {
                    </property>
                    <property name="styleSheet">
                     <string notr="true">#holdList{
-	background-color: rgb(255, 255, 255);
+	background-color: rgb(227, 238, 219);
+	border: 0px;
 }
 
 #holdList::item::hover{
@@ -712,6 +797,9 @@ QPushButton:pressed {
                </widget>
                <widget class="QWidget" name="noHoldPage">
                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <widget class="QLabel" name="noHoldLabel">
                    <property name="styleSheet">
@@ -768,7 +856,7 @@ QPushButton:pressed {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="deleteMember">
+        <widget class="QPushButton" name="deleteUser">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -776,7 +864,7 @@ QPushButton:pressed {
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">#deleteMember{
+          <string notr="true">#deleteUser{
 	border: 1px solid;
 	color: rgb(0, 0, 0);
 	font: 700 9pt &quot;Segoe UI&quot;;
@@ -788,62 +876,67 @@ QPushButton:pressed {
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QWidget" name="footerBackground" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>110</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>110</height>
-          </size>
-         </property>
-         <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="footerLogo">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="images.qrc">:/branding/images/brand/logoSmall.png</pixmap>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>472</width>
-              <height>5</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="footerBackground" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>110</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>110</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#footerBackground{
+	background-color: rgb(215, 232, 194);
+}</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="footerLogo">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="images.qrc">:/branding/images/brand/logoSmall.png</pixmap>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>472</width>
+          <height>5</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

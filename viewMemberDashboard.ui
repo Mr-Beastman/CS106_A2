@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1101</width>
-    <height>683</height>
+    <width>1038</width>
+    <height>1124</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,9 +125,9 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>1085</width>
-        <height>1015</height>
+        <y>-24</y>
+        <width>1022</width>
+        <height>906</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -175,31 +175,37 @@ QPushButton:pressed {
 
 QTabWidget::pane {
     border: none;
+    background-color: rgb(255, 255, 255);
 }
 
 QTabBar::tab {
-    background-color: rgb(158, 206, 104);
-    color: white;
-    padding: 10px 20px;
-    border: 1px solid rgb(138, 207, 96);
+    padding: 5px 10px; 
     border-radius: 5px;
-    margin-left: 30px;
-    margin-right: 30px;
-	margin-bottom: 10px;
-    font-weight: bold;
+    outline: none;
+    color: rgb(0, 0, 0);
+    font: 700 9pt &quot;Segoe UI&quot;; 
+    background-color: rgb(192, 220, 161);
+    border: 2px solid rgb(145, 185, 120);
+    margin-left: 10px; 
+    margin-right: 10px; 
 }
 
 QTabBar::tab:hover {
-    background-color: rgb(118, 193, 68);
+    background-color: rgb(161, 184, 135);
+    border: 2px solid rgb(130, 165, 110);
 }
 
 QTabBar::tab:selected {
-    background-color: rgb(102, 177, 43);
-    border-color: rgb(74, 141, 33);
+    background-color: rgb(145, 165, 120);
+    border: 2px solid rgb(130, 155, 100);
 }
 
 QTabBar::tab:!selected {
-    background-color: rgb(169, 214, 141);
+    background-color: rgb(192, 220, 161);
+}
+
+QTabBar {
+    spacing: 0px; 
 }
 
 QTabWidget::indicator {
@@ -215,77 +221,77 @@ QTabWidget::indicator {
              <attribute name="title">
               <string>View Catalogue</string>
              </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <property name="leftMargin">
-               <number>50</number>
-              </property>
-              <property name="rightMargin">
-               <number>50</number>
-              </property>
+             <layout class="QVBoxLayout" name="verticalLayout_12">
               <item>
-               <layout class="QHBoxLayout" name="tabContents">
-                <item>
-                 <layout class="QVBoxLayout" name="searchContents">
-                  <property name="leftMargin">
-                   <number>25</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>25</number>
-                  </property>
-                  <item>
-                   <widget class="QListWidget" name="catalogueList">
-                    <property name="styleSheet">
-                     <string notr="true">#catalogueList{
-background-color: rgb(227, 238, 219);
-border: 5px solid;
-border-color: rgb(158, 206, 104);
+               <widget class="QWidget" name="searchLayout" native="true">
+                <property name="styleSheet">
+                 <string notr="true">#searchLayout{
+	background-color: rgb(227, 238, 219);
+border: 3px solid;
+	border-color: rgb(158, 206, 104);
 }</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_13">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="catalogueLabel">
+                   <property name="styleSheet">
+                    <string notr="true">#catalogueLabel{
+	color: rgb(0, 0, 0);
+	font: 700 12pt &quot;Segoe UI&quot;;
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Catalogue</string>
+                   </property>
+                   <property name="margin">
+                    <number>5</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="catalogueListLayout" native="true">
+                   <layout class="QVBoxLayout" name="verticalLayout_8">
+                    <property name="leftMargin">
+                     <number>3</number>
                     </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="catalogueFooter">
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QLabel" name="catalogueFooterLabel">
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="pixmap">
-                   <pixmap resource="images.qrc">:/branding/images/brand/logoSmall.png</pixmap>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_4">
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>3</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>3</number>
+                    </property>
+                    <item>
+                     <widget class="QListWidget" name="catalogueList">
+                      <property name="styleSheet">
+                       <string notr="true">#catalogueList{
+background-color: rgb(227, 238, 219);
+border: 0px solid;
+}</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -312,6 +318,9 @@ border-color: rgb(158, 206, 104);
 </string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <property name="spacing">
+                  <number>5</number>
+                 </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -355,6 +364,9 @@ border-color: rgb(158, 206, 104);
                       </property>
                       <property name="text">
                        <string>Profile</string>
+                      </property>
+                      <property name="margin">
+                       <number>5</number>
                       </property>
                      </widget>
                     </item>
@@ -588,6 +600,9 @@ border-color: rgb(158, 206, 104);
                    <property name="text">
                     <string>Issued</string>
                    </property>
+                   <property name="margin">
+                    <number>5</number>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -723,6 +738,9 @@ QListWidget::item::hover{
                    <property name="text">
                     <string>On Hold</string>
                    </property>
+                   <property name="margin">
+                    <number>5</number>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -730,10 +748,20 @@ QListWidget::item::hover{
                    <layout class="QVBoxLayout" name="verticalLayout_17">
                     <item>
                      <widget class="QStackedWidget" name="holdStackedWidget">
+                      <property name="styleSheet">
+                       <string notr="true">#holdStackedWidget{
+	background-color: rgb(227, 238, 219);
+}</string>
+                      </property>
                       <property name="currentIndex">
                        <number>0</number>
                       </property>
                       <widget class="QWidget" name="holdPage">
+                       <property name="styleSheet">
+                        <string notr="true">#holdPage{
+	background-color: rgb(227, 238, 219);
+}</string>
+                       </property>
                        <layout class="QVBoxLayout" name="verticalLayout_3">
                         <item>
                          <widget class="QListWidget" name="holdList">
@@ -750,7 +778,12 @@ QListWidget::item::hover{
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">QListWidget::item::hover{
+                           <string notr="true">QListWidget{
+	border: 0px;
+	background-color: rgb(227, 238, 219);
+}
+
+QListWidget::item::hover{
 	background-color: rgb(100, 130, 66);
 }</string>
                           </property>
@@ -786,60 +819,6 @@ QListWidget::item::hover{
                 </layout>
                </widget>
               </item>
-              <item>
-               <widget class="QWidget" name="accoutFooterBackground" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>110</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>110</height>
-                 </size>
-                </property>
-                <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
-                 <item row="0" column="2">
-                  <spacer name="horizontalSpacer_2">
-                   <property name="orientation">
-                    <enum>Qt::Orientation::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QLabel" name="footerLogo">
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="pixmap">
-                    <pixmap resource="images.qrc">:/branding/images/brand/logoSmall.png</pixmap>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <spacer name="horizontalSpacer">
-                   <property name="orientation">
-                    <enum>Qt::Orientation::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>472</width>
-                     <height>5</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </widget>
-              </item>
              </layout>
             </widget>
            </widget>
@@ -849,6 +828,59 @@ QListWidget::item::hover{
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="footerBackground" native="true">
+     <property name="styleSheet">
+      <string notr="true">#footerBackground{
+	background-color: rgb(215, 232, 194);
+}</string>
+     </property>
+     <layout class="QHBoxLayout" name="FooterLayout">
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="FooterLabel">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="images.qrc">:/branding/images/brand/logoSmall.png</pixmap>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

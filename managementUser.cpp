@@ -332,24 +332,26 @@ bool ManagementUser::isActive(const QString& usernameInput){
     return false;
 }
 
-bool ManagementUser::activateUser(const QString &accountInput) {
+bool ManagementUser::activateUser(QJsonObject& userAccount) {
     QJsonArray userArray = getUserArray();
-    qDebug()<<"login"<<userArray;
+
     for (int i = 0; i < userArray.size(); i++) {
         QJsonObject user = userArray[i].toObject();
 
-        if (user["account"].toString() == accountInput) {
+        if (user["username"].toString() == userAccount["username"].toString()) {
 
             // Check if the user is already active
-            if (isActive(accountInput)) {
+            if (isActive(userAccount["account"].toString())) {
                 qDebug() << "ManagementUser: User already active";
                 return true;
             } else {
+                qDebug() << userAccount["username"].toString();
                 qDebug() << "ManagementUser: Activating User";
 
 
-                user["isActive"] = true;
-                userArray[i] = user;
+                userAccount["isActive"] = true;
+                qDebug()<<userAccount["isActive"].toBool();
+                userArray.replace(i, userAccount);
 
 
                 QJsonObject& fileData = getFileData();
@@ -370,7 +372,7 @@ bool ManagementUser::activateUser(const QString &accountInput) {
     return false;
 }
 
-bool ManagementUser::deleteMember(const QString &accountNumber){
+bool ManagementUser::deleteUser(const QString &accountNumber){
     //checking if the user data exists
 
     if (userArray.isEmpty()) {

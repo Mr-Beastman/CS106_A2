@@ -241,6 +241,20 @@ bool ManagementBook::hasHolds(const QString &isbn){
     return false;
 }
 
+bool ManagementBook::bookExists(const QString &isbn){
+
+    for(int i = 0; i<bookArray.size(); i++){
+        QJsonObject book = bookArray[i].toObject();
+
+        if(book["isbn"].toString() == isbn){
+            qDebug()<<"ManagementBook: Book with Isbn Exisits";
+            return true;
+        }
+    }
+    qDebug()<<"ManagementBook: No book with Isbn Exisits";
+    return false;
+}
+
 QString ManagementBook::getDueDate(const QString &username, const QString &isbn){
     ManagementUser userManager;
 

@@ -1,4 +1,5 @@
 #include "mainWindow.h"
+#include "managementTransaction.h"
 #include "ui_mainWindow.h"
 
 #include "viewLogin.h"
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
     loadData();
 
+
     qDebug()<<"MainWindow: Main window created";
 }
 
@@ -81,6 +83,11 @@ void MainWindow::showLogin(){
 
 void MainWindow::userLogin(const QString& username, QString password){
     ManagementUser userManager;
+    ManagementTransaction transactionManager;
+
+    //using sign in to force loan status updates as it is regulary called
+    transactionManager.updateOverdueLoans();
+    transactionManager.updateDueLoans();
 
     if(userManager.verifyLogin(username,password)){
         //set current user
@@ -97,6 +104,8 @@ void MainWindow::userLogin(const QString& username, QString password){
             //populate admin dashboards
             adminPage->setAdminUser(username);
             adminPage->displayUsers();
+            adminPage->displayNewUsers();
+            adminPage->displayOverdueBooks();
             adminPage->displayAdminCatalogue();
 
             //directing to admin page

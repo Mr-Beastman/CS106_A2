@@ -66,6 +66,31 @@ void ViewAddBook::saveButtonClicked() {
 
     ManagementBook bookManager;
 
+    //checking if required fields are empty
+    if(ui->titleLineEdit->text().isEmpty()){
+        ui->errorLabel->setText("Please fill in required sections *");
+        return;
+    }
+    if(ui->authorLineEdit->text().isEmpty()){
+        ui->errorLabel->setText("Please fill in required sections *");
+        return;
+    }
+    if(ui->isbnLineEdit->text().isEmpty()){
+        ui->errorLabel->setText("Please fill in required sections *");
+        return;
+    }
+    if(ui->descriptionTextEdit->toPlainText().isEmpty()){
+        ui->errorLabel->setText("Please fill in required sections *");
+        return;
+    }
+
+    //check if book exists
+    if(bookManager.bookExists(ui->isbnLineEdit->text())){
+        qDebug()<<"viewAddBook: Displaying Exists Error";
+        ui->errorLabel->setText("ISBN already exsits in Database");
+        return;
+    }
+
     QJsonObject newBook;
 
     newBook["title"] = ui->titleLineEdit->text();

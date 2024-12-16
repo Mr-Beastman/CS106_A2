@@ -34,10 +34,10 @@ public:
     QJsonObject getBookDetails(const QString& isbn);
 
     //methods
-    //vertical format for ease of reading
     ViewBookItem* createBookList(const QJsonObject& book, const QJsonObject& entry);
     bool addBook(const QJsonObject& newbook);
     bool deleteBook(const QString &isbn);
+    bool bookExists(const QString& isbn);
     bool updateBook(const QString& isbn, const QJsonObject& updatedBook);
     bool isAvailable(const QString& isbn);
     bool isIssued(const QString& isbn);
@@ -45,11 +45,6 @@ public:
     QString getDueDate(const QString& username, const QString& isbn);
     QString findCoverPath();
     QString findCoverImage(QString& isbn);
-    void clearBookArray();
-
-signals:
-    void noUpdates();
-
 };
 
 

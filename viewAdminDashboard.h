@@ -38,10 +38,13 @@ public:
     QString getAdminUser();
 
     void displayAdminCatalogue();
+    void displayOverdueBooks();
     void displayUsers();
+    void displayNewUsers();
     void updateDisplays();
     void onMemberClicked(QListWidgetItem *user);
     void onBookClicked(QListWidgetItem *book);
+    QWidget* createUserEntry(const QJsonObject& user);
 
 signals:
     void logoutRequest();

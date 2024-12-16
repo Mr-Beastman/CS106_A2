@@ -4,7 +4,6 @@
 #include "managementUser.h"
 #include "managementBook.h"
 
-#include "qpushbutton.h"
 
 class ManagementTransaction : public ManagementUser, public ManagementBook {
 
@@ -34,6 +33,8 @@ public:
     bool bookIsDue(const QString &username, const QString &isbn);
     bool bookIsOverDue(const QString &username, const QString &isbn);
     void setBookAvailibityOptions(QWidget* uiObject, const QJsonObject& book, const QString& username);
+    void updateOverdueLoans();
+    void updateDueLoans();
 };
 
 #endif // ManagementTransaction_H

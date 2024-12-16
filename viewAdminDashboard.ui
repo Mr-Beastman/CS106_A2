@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1098</width>
-    <height>707</height>
+    <height>935</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,7 +54,7 @@ QPushButton:pressed {
     <widget class="QWidget" name="background" native="true">
      <property name="styleSheet">
       <string notr="true">#background{
-	background-color: rgb(227, 238, 219);
+	background-color: rgb(255, 255, 255);
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -143,41 +143,54 @@ QPushButton:pressed {
        </widget>
       </item>
       <item>
-       <widget class="QTabWidget" name="adminTabs">
-        <property name="styleSheet">
-         <string notr="true">QTabWidget {
+       <widget class="QWidget" name="pageLayout" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="leftMargin">
+          <number>50</number>
+         </property>
+         <property name="rightMargin">
+          <number>50</number>
+         </property>
+         <item>
+          <widget class="QTabWidget" name="adminTabs">
+           <property name="styleSheet">
+            <string notr="true">QTabWidget {
     border: none;
 }
 
 QTabWidget::pane {
     border: none;
-	
-	background-color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
 }
 
 QTabBar::tab {
-    background-color: rgb(158, 206, 104);
-    color: black;
-    padding: 10px 20px;
-    border: 1px solid rgb(138, 207, 96);
+    padding: 5px 10px; 
     border-radius: 5px;
-    margin-left: 30px;
-    margin-right: 30px;
-	margin-bottom: 10px;
-    font-weight: bold;
+    outline: none;
+    color: rgb(0, 0, 0);
+    font: 700 9pt &quot;Segoe UI&quot;; 
+    background-color: rgb(192, 220, 161);
+    border: 2px solid rgb(145, 185, 120);
+    margin-left: 10px; 
+    margin-right: 10px; 
 }
 
 QTabBar::tab:hover {
-    background-color: rgb(118, 193, 68);
+    background-color: rgb(161, 184, 135);
+    border: 2px solid rgb(130, 165, 110);
 }
 
 QTabBar::tab:selected {
-    background-color: rgb(102, 177, 43);
-    border-color: rgb(74, 141, 33);
+    background-color: rgb(145, 165, 120);
+    border: 2px solid rgb(130, 155, 100);
 }
 
 QTabBar::tab:!selected {
-    background-color: rgb(169, 214, 141);
+    background-color: rgb(192, 220, 161);
+}
+
+QTabBar {
+    spacing: 0px; 
 }
 
 QTabWidget::indicator {
@@ -185,68 +198,112 @@ QTabWidget::indicator {
     height: 0;
 }
 </string>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="accountTab">
-         <property name="styleSheet">
-          <string notr="true">#accountTab{
-	background-color: rgb(255, 255, 255);
-}</string>
-         </property>
-         <attribute name="title">
-          <string>Manage Members</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QPushButton" name="addMemberButton">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
+           </property>
+           <property name="currentIndex">
+            <number>2</number>
+           </property>
+           <widget class="QWidget" name="accountTab">
             <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>Add Member</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="memberLayout" native="true">
-            <property name="styleSheet">
-             <string notr="true">#memberLayout{
+             <string notr="true">#accountTab{
 	background-color: rgb(255, 255, 255);
 }</string>
             </property>
-            <layout class="QVBoxLayout" name="memberDisplayLayout">
+            <attribute name="title">
+             <string>Manage Members</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
-              <widget class="QLabel" name="memberListLabel">
+              <widget class="QPushButton" name="addMemberButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
                <property name="styleSheet">
-                <string notr="true">#memberListLabel{
-	color: rgb(0, 0, 0);
-	font: 700 12pt &quot;Segoe UI&quot;;
-}</string>
+                <string notr="true"/>
                </property>
                <property name="text">
-                <string>Member List</string>
+                <string>Add Member</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="membersList">
+              <widget class="QWidget" name="memberLayout" native="true">
                <property name="styleSheet">
-                <string notr="true">#membersList{
-	font: 12pt &quot;Segoe UI&quot;;
-	background-color: rgb(255, 255, 255);
+                <string notr="true">#memberLayout{
+	background-color: rgb(227, 238, 219);
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_9">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="memberListLabel">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">#memberListLabel{
 	color: rgb(0, 0, 0);
+	font: 700 12pt &quot;Segoe UI&quot;;
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>Member List</string>
+                  </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="membersListLayout" native="true">
+                  <layout class="QVBoxLayout" name="verticalLayout_8">
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <widget class="QListWidget" name="membersList">
+                     <property name="styleSheet">
+                      <string notr="true">#membersList{
+    font: 700 9pt &quot;Segoe UI&quot;; 
+	color: rgb(0, 0, 0);
+	background-color: rgb(227, 238, 219);
+	border: 0px;
 }
 
 #membersList::item {
-    color: rgb(0, 0, 0);
+	color: rgb(0, 0, 0);
 }
 
 #membersList::item::hover{
@@ -259,65 +316,110 @@ QTabWidget::indicator {
 	background-color: rgb(102, 177, 43);
 	color: rgb(0, 0, 0);
 }</string>
-               </property>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
            </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="catalogueTab">
-         <property name="styleSheet">
-          <string notr="true">#catalogueTab{
+           <widget class="QWidget" name="catalogueTab">
+            <property name="styleSheet">
+             <string notr="true">#catalogueTab{
 	background-color: rgb(255, 255, 255);
 }</string>
-         </property>
-         <attribute name="title">
-          <string>Manage Catalogue</string>
-         </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <layout class="QVBoxLayout" name="searchLayout">
-            <item>
-             <widget class="QPushButton" name="addButton">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">#addButton{
-	color: rgb(0, 0, 0);
-	font: 700 9pt &quot;Segoe UI&quot;;
-	border: 1px solid;
-	background-color: rgb(192, 220, 161);
+            </property>
+            <attribute name="title">
+             <string>Manage Catalogue</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QPushButton" name="addButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>Add Book</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="catalogueLayout" native="true">
+               <property name="styleSheet">
+                <string notr="true">#catalogueLayout{
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+	
+	background-color: rgb(227, 238, 219);
 }</string>
-              </property>
-              <property name="text">
-               <string>Add Book</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="catalogueLabel">
-              <property name="styleSheet">
-               <string notr="true">#catalogueLabel{
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="catalogueLabel">
+                  <property name="styleSheet">
+                   <string notr="true">#catalogueLabel{
 	color: rgb(0, 0, 0);
 	font: 700 12pt &quot;Segoe UI&quot;;
+	background-color: rgb(227, 238, 219);
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
 }</string>
-              </property>
-              <property name="text">
-               <string>Catalogue</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QListWidget" name="catalogueList">
-              <property name="styleSheet">
-               <string notr="true">#catalogueList{
+                  </property>
+                  <property name="text">
+                   <string>Catalogue</string>
+                  </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="catalogueListLayout" native="true">
+                  <layout class="QVBoxLayout" name="verticalLayout_7">
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <widget class="QListWidget" name="catalogueList">
+                     <property name="layoutDirection">
+                      <enum>Qt::LayoutDirection::LeftToRight</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">#catalogueList{
 	background-color: rgb(255, 255, 255);
+background-color: rgb(227, 238, 219);
+border: 0px;
 }
 
 #catalogueList::item::hover{
@@ -327,13 +429,358 @@ QTabWidget::indicator {
 #catalogueList::item::selected {
 	background-color: rgb(102, 177, 43);
 }</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="reportTab">
+            <property name="styleSheet">
+             <string notr="true">#reportTab{
+	background-color: rgb(255, 255, 255);
+}</string>
+            </property>
+            <attribute name="title">
+             <string>Manage Reports</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_18">
+             <item>
+              <widget class="QWidget" name="newMemberContent" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">#newMemberContent{
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+	background-color: rgb(227, 238, 219);
+}
+
+#newMemberContent * {
+	color: rgb(0, 0, 0);
+}
+</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_13" stretch="0,2">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="newMemberLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">#newMemberLabel {
+	font: 700 12pt &quot;Segoe UI&quot;;
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>New Members</string>
+                  </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="newMemberContentLayout" native="true">
+                  <layout class="QVBoxLayout" name="verticalLayout_16">
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <widget class="QStackedWidget" name="newMemberStackedWidget">
+                     <property name="styleSheet">
+                      <string notr="true">QStackedWidget {
+    
+	background-color: rgb(227, 238, 219);
+}
+#newMemberPage{
+    background-color: rgb(227, 238, 219);
+}
+#noNewMemberPage{
+    background-color: rgb(227, 238, 219);
+}
+</string>
+                     </property>
+                     <property name="currentIndex">
+                      <number>1</number>
+                     </property>
+                     <widget class="QWidget" name="newMemberPage">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_14">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QListWidget" name="newMemberList">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>250</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">#newMemberList{
+	background-color: rgb(227, 238, 219);
+    font: 700 9pt &quot;Segoe UI&quot;; 
+	border: 0px;
+}
+
+#newMemberList::item::hover{
+	background-color: rgb(102, 177, 43);
+}
+
+#newMemberList::item::selected {
+	background-color: rgb(102, 177, 43);
+}</string>
+                         </property>
+                         <property name="isWrapping" stdset="0">
+                          <bool>false</bool>
+                         </property>
+                         <property name="resizeMode">
+                          <enum>QListView::ResizeMode::Adjust</enum>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                     <widget class="QWidget" name="noNewMemberPage">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>50</height>
+                       </size>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_15">
+                       <item>
+                        <widget class="QLabel" name="noNewMemberLabel">
+                         <property name="styleSheet">
+                          <string notr="true">#noNewMemberLabel{
+	color: rgb(0, 0, 0);
+	font: 700 20pt &quot;Segoe UI&quot;;
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>No new members at this time</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="overdueContent" native="true">
+               <property name="styleSheet">
+                <string notr="true">#overdueContent{
+	border: 3px solid;
+	background-color: rgb(227, 238, 219);
+	border-color: rgb(158, 206, 104);
+}
+
+#overdueContent * {
+	color: rgb(0, 0, 0);
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="overdueLabel">
+                  <property name="styleSheet">
+                   <string notr="true">#overdueLabel {
+	font: 700 12pt &quot;Segoe UI&quot;;
+	border: 3px solid;
+	border-color: rgb(158, 206, 104);
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>Overdue</string>
+                  </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="overdueContentLayout" native="true">
+                  <layout class="QVBoxLayout" name="verticalLayout_17">
+                   <item>
+                    <widget class="QStackedWidget" name="overduetackedWidget">
+                     <property name="styleSheet">
+                      <string notr="true">QStackedWidget {
+    
+	background-color: rgb(227, 238, 219);
+}
+#overduePage{
+    background-color: rgb(227, 238, 219);
+}
+#noOverduePage{
+    background-color: rgb(227, 238, 219);
+}
+</string>
+                     </property>
+                     <property name="currentIndex">
+                      <number>1</number>
+                     </property>
+                     <widget class="QWidget" name="overduePage">
+                      <layout class="QVBoxLayout" name="verticalLayout_11">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QListWidget" name="overdueList">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>250</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">#overdueList{
+	background-color: rgb(227, 238, 219);
+	border: 0px;
+}
+
+#overdueList::item::hover{
+	background-color: rgb(102, 177, 43);
+}
+
+#overdueList::item::selected {
+	background-color: rgb(102, 177, 43);
+}</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                     <widget class="QWidget" name="noOverduePage">
+                      <layout class="QVBoxLayout" name="verticalLayout_12">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="noOverdueLabel">
+                         <property name="styleSheet">
+                          <string notr="true">#noOverdueLabel{
+	color: rgb(0, 0, 0);
+	font: 700 20pt &quot;Segoe UI&quot;;
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>No overdue books at this time</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -349,6 +796,11 @@ QTabWidget::indicator {
           <width>16777215</width>
           <height>110</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#footerBackground{
+	background-color: rgb(215, 232, 194);
+}</string>
         </property>
         <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
          <item row="0" column="2">
